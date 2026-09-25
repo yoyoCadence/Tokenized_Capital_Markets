@@ -1,0 +1,91 @@
+formulas:
+  tokenized_equity_penetration:
+    version: '1.0'
+    signature: eb42dd8b4193a105f51c3baccc28edb7ace2a77646579389219c8dda1baad137
+  model_tokenized_equity_aum:
+    version: '1.0'
+    signature: 97fda26a172c9f1f9852efbbef30161076ad6b1ac335f050f52a2d97064109e0
+  tokenized_equity_protocol_revenue:
+    version: '1.0'
+    signature: 2d18df798dd4611b9d83601bf38868af2b8d4274e361a908c03dcf52c4951349
+  gross_uni_accrual:
+    version: '1.0'
+    signature: 9533da18de137d9d3f07ed9e9d0b2ffd3285d5fef86ee1af6c59e0d9514a6f19
+  growth_distribution_value:
+    version: '1.0'
+    signature: 8f92cf8b4f0772091be798d6f934db6446365d47e8a673058ab7d6e203741e64
+  net_uni_accrual:
+    version: '1.0'
+    signature: 82071567a781e7cf70143c70c5b2a6dc0fa352d8b3a15480762370c704d27e15
+  net_burn_yield:
+    version: '1.0'
+    signature: 111ed6ca2d2a544d722df2fc1f0cd2c157c533c502bab27625991794881d5e77
+  required_uni_accrual:
+    version: '1.0'
+    signature: c324b3eb62c910acf020fe496b1d4180b7976246cad00358d43c0ac467e09731
+  required_uniswap_market_share:
+    version: '1.0'
+    signature: b3c642e5866d970f2e0d40b89daf988ad4fcbef88d900b8ec406929cbc05aba9
+  incremental_required_share:
+    version: '1.0'
+    signature: 6bbe4737ed2f1b4fbbe7d1e24d59475894a2152b25a9bf15c66341a56a252617
+  secz_revenue:
+    version: '1.0'
+    signature: c42ff81bf50f9fdb62da2bf8965a8a8b905a252f18b4ae5e18c2afbbd3bccdb4
+  secz_revenue_growth:
+    version: '1.0'
+    signature: 0c34433f3ed8f30d556638953423b5ae0df57d0a6db611e95f024f2a9b5480b3
+  secz_aum_growth:
+    version: '1.0'
+    signature: ad27da9f81b09576ee3377d65b2b64c1428a4c95e01c1832e3d20610f94644c8
+  secz_volume_growth:
+    version: '1.0'
+    signature: 8e178bf6ceecf288ad0c72b805c18067e90e9bd2f3cb7acaee661caf579d257c
+  secz_revenue_efficiency:
+    version: '1.0'
+    signature: 6a84a907dd993a656e4a32656f09cd21f71eb1119e0bd19e8a0ed0b64529aa29
+  secz_volume_monetization:
+    version: '1.0'
+    signature: 0d844a5340b255004b98344812ae3e45956674fa27b38ca2ae1d40c68501cbac
+  secz_operating_leverage:
+    version: '1.0'
+    signature: cc3223b36fea12acf182fe0c99b70ea199eb3de7ac1000a25a60414f38c96751
+  secz_ebitda_margin:
+    version: '1.0'
+    signature: bfe4cdab700e551ff837646fe8e3706661f2a1dac5048e5527a9d16148ed223b
+  secz_prior_ebitda_margin:
+    version: '1.0'
+    signature: e53cdafc51b08999666849c41505948ff1e104eefcf6c467281e136d94bd1522
+  secz_ebitda_margin_change:
+    version: '1.0'
+    signature: 034ff871c34b83577d63dd63c5a459dfc20f21c2a8fde2a083149e45a1d895e8
+  secz_required_fcf:
+    version: '1.0'
+    signature: 19dd4b7fa16eb56263e9ee0e3ec95db21c2249ac4d560fd7de0f486a3a4946d9
+  secz_required_revenue:
+    version: '1.0'
+    signature: ae846f7ccd63c0c05742d0dbf5508d0cf06d9a0aa70da31e975ec94354fc8d5a
+  secz_required_revenue_cagr:
+    version: '1.0'
+    signature: 46c856303448eca12263809b109c91ebedf154a5bfd1b8943677889cb19447e8
+  xlm_rwa_growth:
+    version: '1.0'
+    signature: ea052d408abf412f6843f1707699758c2c03b87584b32903a70bd8e4fe0a9730
+  xlm_institutional_growth:
+    version: '1.0'
+    signature: da1129d9ae40a50479ea270c8309e185241d5155865c9cd235d4f3c202ef088a
+  xlm_network_activity_growth:
+    version: '1.0'
+    signature: aa8d6ab066cd3fc44e6d9b66337a18eb542a0d3db52205eca45e6d7d500a2530
+  xlm_locked_demand:
+    version: '1.0'
+    signature: 19308248edeaceb1b419beae16a72fded6af29e6fafd2bdcf34adedaef94f15f
+  xlm_native_demand_growth:
+    version: '1.0'
+    signature: 4d21f649e537eb620b49bdb6b21998c6584af3ade94e5295756e3f4c79f84902
+  xlm_network_fee_value:
+    version: '1.0'
+    signature: d036624ab725ad748468ddbcc7db1848f74ad199aefd5ce3ecb661e706bafb14
+  xlm_economic_capture_ratio:
+    version: '1.0'
+    signature: 590eb11fbdc9f32d4b7c953ea212fd5f5fe80d96fcac618c19dfd0d462f96b9c

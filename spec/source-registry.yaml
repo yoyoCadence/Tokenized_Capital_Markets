@@ -1,0 +1,11 @@
+version: '1.0'
+policy:
+  tiers:
+    1: 'SEC filings/orders, Federal Register, DTCC, exchanges, audited accounts, onchain contracts'
+    2: 'Investor relations, official governance and analytics, SIFMA, WFE'
+    3: 'Reuters, Bloomberg, FT, WSJ'
+    4: 'Aggregators such as RWA.xyz, DefiLlama, CoinGecko'
+    5: 'Social media, crypto media and blogs; never the sole source for core observations'
+  conflict: 'Preserve all evidence; conflicting active observations block numeric selection.'
+  supersession: 'Append a new ID with supersedes_id; never edit/delete historical records.'
+  fixture: 'Synthetic evidence permitted only with --demo; never silently published as real.'

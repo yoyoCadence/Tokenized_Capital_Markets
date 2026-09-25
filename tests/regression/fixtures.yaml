@@ -1,0 +1,14 @@
+UNI:
+  inputs: {tokenized_equity_tam: 4000000000000, turnover: 2, onchain_share: 1, amm_share: 1, effective_protocol_fee_bp: 1.25, required_uni_accrual: 242000000, growth_distribution_value: 180000000}
+  expected_required_share: 0.422
+  tolerance: 1.0e-10
+SECZ:
+  inputs: {enterprise_value: 2000000000, terminal_multiple: 20, target_fcf_margin: 0.25, current_revenue: 100000000, years: 5}
+  expected_required_fcf: 100000000
+  expected_required_revenue: 400000000
+  expected_required_revenue_cagr: 0.3195079107728942
+XLM:
+  inputs: {operations: 1000000000, average_fee_xlm: 0.00001, xlm_price: 0.2, locked_xlm: 500000000, prior_locked_xlm: 490000000, transfer_volume: 12000000000, prior_transfer_volume: 10000000000}
+  expected_network_fee_usd: 2000
+  expected_native_demand_growth: 0.02040816326530612
+  expected_economic_capture_ratio: 0.1020408163265306

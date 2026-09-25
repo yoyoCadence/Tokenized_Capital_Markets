@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tokenized Capital Markets | Living Underwriting</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="wordmark">TCM <span> / RESEARCH ENGINE</span></div>
+    <div id="mode" class="mode">Loading canonical data…</div>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">LIVING UNDERWRITING / LOCAL FIRST</p>
+      <h1>Follow the economics.<br><em>Trace every number.</em></h1>
+      <p id="banner" class="banner">Loading…</p>
+      <div class="intro-meta"><span id="asof"></span><span id="snapshot-count"></span></div>
+    </section>
+
+    <nav class="navigation" aria-label="Sections">
+      <a href="#market">Market</a><a href="#uni">UNI</a><a href="#secz">SECZ</a><a href="#xlm">XLM</a>
+      <a href="#sensitivity">Sensitivity</a><a href="#graph">Dependencies</a>
+      <a href="#thesis">Thesis</a><a href="#comparison">Versions</a><a href="#inspector">Inspector</a>
+    </nav>
+
+    <section id="market" class="panel"><div class="section-head"><div><p class="eyebrow">01 / MARKET</p><h2>Observed footprint · modeled addressable market</h2></div><p>Current observations and hypothetical scenarios are separate records.</p></div><div id="market-grid" class="metric-grid"></div></section>
+    <section id="uni" class="panel"><div class="section-head"><div><p class="eyebrow">02 / UNI</p><h2>Net holder accrual</h2></div><p>The standalone required-share hurdle is separate from the incremental hurdle after other revenue.</p></div><div id="uni-grid" class="metric-grid"></div></section>
+    <section id="secz" class="panel"><div class="section-head"><div><p class="eyebrow">03 / SECZ</p><h2>Monetization and reverse economics</h2></div><p>Six revenue streams, operating leverage and required free cash flow.</p></div><div id="secz-grid" class="metric-grid"></div></section>
+    <section id="xlm" class="panel"><div class="section-head"><div><p class="eyebrow">04 / XLM</p><h2>Network activity / native asset demand</h2></div><p>Network fees are diagnostic. This is not a fee based XLM valuation.</p></div><div id="xlm-grid" class="metric-grid"></div></section>
+
+    <section id="sensitivity" class="panel"><div class="section-head"><div><p class="eyebrow">05 / WHAT IF</p><h2>Recalculate the whole chain</h2></div><p>Overrides stay in memory; they never overwrite evidence or create a snapshot.</p></div>
+      <form id="sensitivity-form"><div id="sensitivity-inputs" class="input-grid"></div><div class="actions"><button type="submit">Run sensitivity</button><button type="button" class="secondary" id="reset">Reset</button><span id="sensitivity-status" role="status"></span></div></form>
+      <h3>UNI standalone required share · turnover × fee</h3><div id="matrix" class="table-scroll"></div>
+    </section>
+    <section id="graph" class="panel"><div class="section-head"><div><p class="eyebrow">06 / DEPENDENCIES</p><h2>Research graph</h2></div><p>Dashed lines are assumptions. Orange lines flag hypothesized economic transmission.</p></div><div class="graph-wrap"><svg id="network" role="img" aria-label="Dependency graph" viewBox="0 0 920 700"></svg></div><div id="edges" class="edge-list"></div><div id="events" class="event-list"></div></section>
+    <section id="thesis" class="panel"><div class="section-head"><div><p class="eyebrow">07 / MONITOR</p><h2>Thesis states</h2></div><p>Analyst defined triggers are research flags, never BUY / HOLD / SELL instructions.</p></div><div id="thesis-grid" class="thesis-grid"></div></section>
+    <section id="comparison" class="panel"><div class="section-head"><div><p class="eyebrow">08 / VERSION CONTROL</p><h2>Previous vs current</h2></div><p>Input changes and formula revisions are shown separately.</p></div><div id="version-summary" class="subtle"></div><div id="diff" class="table-scroll"></div></section>
+    <section id="inspector" class="panel inspector"><div class="section-head"><div><p class="eyebrow">09 / DATA INSPECTOR</p><h2 id="inspection-title">Choose any metric above</h2></div><p>Value → formula → dependencies → leaf records → source.</p></div><div id="inspection-detail" class="inspection-detail">Select a metric card to inspect its complete provenance.</div></section>
+  </main>
+  <footer>Canonical YAML → append only observations → versioned formulas → snapshots → presentation</footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

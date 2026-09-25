@@ -1,0 +1,120 @@
+schema_version: '1.0'
+classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
+thesis_states: [HEALTHY, WATCH, STRESS, BREAK_CANDIDATE, INVALIDATED]
+period_basis: [SPOT, TTM, ANNUAL, QUARTER]
+units: [USD, XLM, UNI, COUNT, FRACTION, BP, MULTIPLE, YEARS, USD_PER_XLM, USD_PER_UNI]
+record_requirements:
+  OBSERVED: [id, metric_id, classification, value, unit, source_id, as_of_date, period, fixture]
+  DERIVED: [metric_id, value, formula_id, formula_version, dependencies, lineage]
+  ASSUMPTION: [id, metric_id, classification, value, rationale, effective_date]
+  SCENARIO: [id, metric_id, classification, value, scenario_name, effective_date]
+source_requirements: [id, url, publisher, title, date, retrieved_at, tier, covered_metrics, kind]
+event_types: [regulation, protocol_fee_change, token_burn, dilution, issuer_tokenization, permissioned_amm_launch, partnership, acquisition, quarterly_results, dtcc_migration, chain_integration, governance, competitive_entry]
+event_statuses: [PLANNED, ANNOUNCED, LIVE, COMPLETED]
+edge_types: [enables, supplies, settles, tokenizes, provides_liquidity, provides_oracle, provides_registry, regulates, increases_addressable_market, creates_revenue, creates_token_demand, dilutes, competes_with]
+transmission: [direct, medium, indirect]
+edge_evidence: [OBSERVED, PLANNED, ASSUMED]
+period_pairs:
+  - [secz_revenue, secz_prior_revenue]
+  - [secz_aum, secz_prior_aum]
+  - [secz_volume, secz_prior_volume]
+  - [secz_ebitda, secz_prior_ebitda]
+  - [xlm_rwa_value, xlm_prior_rwa_value]
+  - [xlm_institutional_assets, xlm_prior_institutional_assets]
+  - [xlm_transfer_volume, xlm_prior_transfer_volume]
+  - [xlm_locked_demand, xlm_prior_locked_demand]
+metrics:
+  tokenized_equity_aum: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  tokenized_equity_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  global_equity_market: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  tokenized_equity_penetration: {unit: FRACTION, class: DERIVED}
+  tokenized_equity_tam: {unit: USD, class: SCENARIO, min: 0}
+  tokenization_penetration: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  model_tokenized_equity_aum: {unit: USD, class: DERIVED}
+  turnover: {unit: MULTIPLE, class: ASSUMPTION, min: 0}
+  onchain_share: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  amm_share: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  uniswap_market_share: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  effective_protocol_fee_bp: {unit: BP, class: ASSUMPTION, min: 0}
+  uni_price: {unit: USD_PER_UNI, class: OBSERVED, min: 0, period: SPOT}
+  uni_market_cap: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  uni_fdv: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  crypto_protocol_fees: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  other_rwa_protocol_fees: {unit: USD, class: ASSUMPTION, min: 0}
+  unichain_accrual: {unit: USD, class: ASSUMPTION, min: 0}
+  mev_accrual: {unit: USD, class: ASSUMPTION, min: 0}
+  other_protocol_accrual: {unit: USD, class: ASSUMPTION, min: 0}
+  growth_budget_uni: {unit: UNI, class: ASSUMPTION, min: 0}
+  other_dilution_value: {unit: USD, class: ASSUMPTION, min: 0}
+  required_yield: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  uni_net_supply_change: {unit: UNI, class: OBSERVED, period: QUARTER}
+  uni_protocol_activity_growth: {unit: FRACTION, class: OBSERVED, period: QUARTER}
+  tokenized_equity_protocol_revenue: {unit: USD, class: DERIVED}
+  gross_uni_accrual: {unit: USD, class: DERIVED}
+  growth_distribution_value: {unit: USD, class: DERIVED}
+  net_uni_accrual: {unit: USD, class: DERIVED}
+  net_burn_yield: {unit: FRACTION, class: DERIVED}
+  required_uni_accrual: {unit: USD, class: DERIVED}
+  required_uniswap_market_share: {unit: FRACTION, class: DERIVED}
+  incremental_required_share: {unit: FRACTION, class: DERIVED}
+  secz_tokenization_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_servicing_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_transaction_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_issuer_saas_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_fund_admin_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_other_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_prior_revenue: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_aum: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  secz_prior_aum: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  secz_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_prior_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  secz_ebitda: {unit: USD, class: OBSERVED, period: TTM}
+  secz_prior_ebitda: {unit: USD, class: OBSERVED, period: TTM}
+  secz_ev: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  secz_price: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  secz_market_cap: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  secz_fdv: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  target_fcf_margin: {unit: FRACTION, class: ASSUMPTION, min: 0, max: 1}
+  terminal_multiple: {unit: MULTIPLE, class: ASSUMPTION, min_exclusive: 0}
+  forecast_years: {unit: YEARS, class: ASSUMPTION, min_exclusive: 0}
+  secz_revenue: {unit: USD, class: DERIVED}
+  secz_revenue_growth: {unit: FRACTION, class: DERIVED}
+  secz_aum_growth: {unit: FRACTION, class: DERIVED}
+  secz_volume_growth: {unit: FRACTION, class: DERIVED}
+  secz_revenue_efficiency: {unit: MULTIPLE, class: DERIVED}
+  secz_volume_monetization: {unit: FRACTION, class: DERIVED}
+  secz_operating_leverage: {unit: MULTIPLE, class: DERIVED}
+  secz_ebitda_margin: {unit: FRACTION, class: DERIVED}
+  secz_prior_ebitda_margin: {unit: FRACTION, class: DERIVED}
+  secz_ebitda_margin_change: {unit: FRACTION, class: DERIVED}
+  secz_required_fcf: {unit: USD, class: DERIVED}
+  secz_required_revenue: {unit: USD, class: DERIVED}
+  secz_required_revenue_cagr: {unit: FRACTION, class: DERIVED}
+  xlm_rwa_value: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_prior_rwa_value: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_institutional_assets: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_prior_institutional_assets: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_stablecoin_supply: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_stablecoin_transfer_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  xlm_active_addresses: {unit: COUNT, class: OBSERVED, min: 0, period: SPOT}
+  xlm_institutional_issuers: {unit: COUNT, class: OBSERVED, min: 0, period: SPOT}
+  xlm_transfer_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  xlm_prior_transfer_volume: {unit: USD, class: OBSERVED, min: 0, period: TTM}
+  xlm_operations: {unit: COUNT, class: OBSERVED, min: 0, period: TTM}
+  xlm_average_fee: {unit: XLM, class: OBSERVED, min: 0, period: TTM}
+  xlm_price: {unit: USD_PER_XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_market_cap: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_fdv: {unit: USD, class: OBSERVED, min: 0, period: SPOT}
+  xlm_account_reserve: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_liquidity_demand: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_collateral_demand: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_settlement_demand: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_other_locked: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_prior_locked_demand: {unit: XLM, class: OBSERVED, min: 0, period: SPOT}
+  xlm_rwa_growth: {unit: FRACTION, class: DERIVED}
+  xlm_institutional_growth: {unit: FRACTION, class: DERIVED}
+  xlm_network_activity_growth: {unit: FRACTION, class: DERIVED}
+  xlm_locked_demand: {unit: XLM, class: DERIVED}
+  xlm_native_demand_growth: {unit: FRACTION, class: DERIVED}
+  xlm_network_fee_value: {unit: USD, class: DERIVED}
+  xlm_economic_capture_ratio: {unit: MULTIPLE, class: DERIVED}

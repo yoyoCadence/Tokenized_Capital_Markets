@@ -1,0 +1,9 @@
+version: '1.0'
+required: [id, type, status, event_date, affected_nodes, source_ids, observation_ids, fixture]
+status_transition:
+  PLANNED: [ANNOUNCED, LIVE]
+  ANNOUNCED: [LIVE, COMPLETED]
+  LIVE: [COMPLETED]
+  COMPLETED: []
+completion_policy: 'A new sourced event record with supersedes_event_id is required; announced does not imply completed.'
+material_definition: 'Explicit analyst assumption, with rationale and evidence; never inferred from live alone.'

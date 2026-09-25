@@ -1,0 +1,3 @@
+version: '1.0'
+scenarios:
+  - {id: s01, metric_id: tokenized_equity_tam, value: 4000000000000, scenario_name: 'DEMO $4T hypothetical TAM', rationale: 'Matches deterministic UNI regression; not current tokenized AUM.', effective_date: '2026-01-01', classification: SCENARIO, fixture: true}

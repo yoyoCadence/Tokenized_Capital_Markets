@@ -1,0 +1,17 @@
+version: '1.0'
+# Every initial edge below is a research hypothesis, not a claim that a partnership is live.
+edges:
+  - {from: SEC, to: SECZ, type: regulates, transmission: medium, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: SEC, to: UNI, type: regulates, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: NYSE, to: SECZ, type: increases_addressable_market, transmission: medium, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: NASDAQ, to: SECZ, type: increases_addressable_market, transmission: medium, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: DTCC, to: XLM, type: enables, transmission: medium, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: XLM, to: XLM, type: creates_token_demand, transmission: indirect, evidence: ASSUMED, economic_transmission: true, source_ids: []}
+  - {from: SECZ, to: UNI, type: increases_addressable_market, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: UNI, to: UNI, type: creates_token_demand, transmission: direct, evidence: ASSUMED, economic_transmission: true, source_ids: []}
+  - {from: SOL, to: UNI, type: competes_with, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: LINK, to: SECZ, type: provides_oracle, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: SUPERSTATE, to: SECZ, type: competes_with, transmission: medium, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: GLXY, to: SECZ, type: increases_addressable_market, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: BLSH, to: UNI, type: competes_with, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}
+  - {from: EQUINITI, to: SECZ, type: provides_registry, transmission: indirect, evidence: ASSUMED, economic_transmission: false, source_ids: []}

@@ -1,0 +1,20 @@
+version: '1.0'
+# Revisions are append-only. The later effective_date supersedes the earlier value.
+assumptions:
+  - {id: a01, metric_id: tokenization_penetration, value: 1.0, rationale: 'DEMO full TAM realization for the reverse-share regression; not a forecast.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a02, metric_id: turnover, value: 2.0, rationale: 'Synthetic annual scenario turnover.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a03, metric_id: onchain_share, value: 1.0, rationale: 'Synthetic maximum scenario.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a04, metric_id: amm_share, value: 1.0, rationale: 'Synthetic maximum scenario.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a05, metric_id: uniswap_market_share, value: 0.25, rationale: 'Synthetic share for demonstration, not observed.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a06, metric_id: effective_protocol_fee_bp, value: 1.25, rationale: 'Synthetic effective protocol fee in basis points.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a07, metric_id: other_rwa_protocol_fees, value: 10000000, rationale: 'Synthetic revenue illustration.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a08, metric_id: unichain_accrual, value: 12000000, rationale: 'Synthetic revenue illustration.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a09, metric_id: mev_accrual, value: 3000000, rationale: 'Synthetic revenue illustration.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a10, metric_id: other_protocol_accrual, value: 0, rationale: 'Synthetic zero, not an assertion of no actual revenue.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a11, metric_id: growth_budget_uni, value: 20000000, rationale: '20M UNI/year supplied in project brief; unverified user baseline, modeled only as assumption.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a12, metric_id: other_dilution_value, value: 0, rationale: 'Synthetic zero; real non-budget dilution unknown.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a13, metric_id: required_yield, value: 0.03, rationale: 'Synthetic earlier reverse hurdle for snapshot comparison.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a14, metric_id: required_yield, value: 0.04, rationale: 'Synthetic revised reverse hurdle; supersedes a13 for later periods.', effective_date: '2026-04-01', supersedes_id: a13, classification: ASSUMPTION, fixture: true}
+  - {id: a15, metric_id: target_fcf_margin, value: 0.25, rationale: 'Synthetic SECZ FCF margin target.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a16, metric_id: terminal_multiple, value: 20, rationale: 'Synthetic SECZ terminal FCF multiple.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}
+  - {id: a17, metric_id: forecast_years, value: 5, rationale: 'Synthetic forecast horizon in years.', effective_date: '2026-01-01', classification: ASSUMPTION, fixture: true}

@@ -1,0 +1,34 @@
+registry_version: '1.0'
+# Expressions use only identifiers, numbers, + - * / ** and parentheses.
+# Changing an expression requires incrementing its version AND adding a changelog entry.
+formulas:
+  tokenized_equity_penetration: {version: '1.0', inputs: [tokenized_equity_aum, global_equity_market], expression: 'tokenized_equity_aum / global_equity_market'}
+  model_tokenized_equity_aum: {version: '1.0', inputs: [tokenized_equity_tam, tokenization_penetration], expression: 'tokenized_equity_tam * tokenization_penetration'}
+  tokenized_equity_protocol_revenue: {version: '1.0', inputs: [model_tokenized_equity_aum, turnover, onchain_share, amm_share, uniswap_market_share, effective_protocol_fee_bp], expression: 'model_tokenized_equity_aum * turnover * onchain_share * amm_share * uniswap_market_share * effective_protocol_fee_bp / 10000'}
+  gross_uni_accrual: {version: '1.0', inputs: [crypto_protocol_fees, tokenized_equity_protocol_revenue, other_rwa_protocol_fees, unichain_accrual, mev_accrual, other_protocol_accrual], expression: 'crypto_protocol_fees + tokenized_equity_protocol_revenue + other_rwa_protocol_fees + unichain_accrual + mev_accrual + other_protocol_accrual'}
+  growth_distribution_value: {version: '1.0', inputs: [growth_budget_uni, uni_price], expression: 'growth_budget_uni * uni_price'}
+  net_uni_accrual: {version: '1.0', inputs: [gross_uni_accrual, growth_distribution_value, other_dilution_value], expression: 'gross_uni_accrual - growth_distribution_value - other_dilution_value'}
+  net_burn_yield: {version: '1.0', inputs: [net_uni_accrual, uni_market_cap], expression: 'net_uni_accrual / uni_market_cap'}
+  required_uni_accrual: {version: '1.0', inputs: [uni_market_cap, required_yield], expression: 'uni_market_cap * required_yield'}
+  required_uniswap_market_share: {version: '1.0', inputs: [required_uni_accrual, growth_distribution_value, model_tokenized_equity_aum, turnover, onchain_share, amm_share, effective_protocol_fee_bp], expression: '(required_uni_accrual + growth_distribution_value) / (model_tokenized_equity_aum * turnover * onchain_share * amm_share * effective_protocol_fee_bp / 10000)'}
+  incremental_required_share: {version: '1.0', inputs: [required_uni_accrual, growth_distribution_value, other_dilution_value, crypto_protocol_fees, other_rwa_protocol_fees, unichain_accrual, mev_accrual, other_protocol_accrual, model_tokenized_equity_aum, turnover, onchain_share, amm_share, effective_protocol_fee_bp], expression: '(required_uni_accrual + growth_distribution_value + other_dilution_value - crypto_protocol_fees - other_rwa_protocol_fees - unichain_accrual - mev_accrual - other_protocol_accrual) / (model_tokenized_equity_aum * turnover * onchain_share * amm_share * effective_protocol_fee_bp / 10000)'}
+  secz_revenue: {version: '1.0', inputs: [secz_tokenization_revenue, secz_servicing_revenue, secz_transaction_revenue, secz_issuer_saas_revenue, secz_fund_admin_revenue, secz_other_revenue], expression: 'secz_tokenization_revenue + secz_servicing_revenue + secz_transaction_revenue + secz_issuer_saas_revenue + secz_fund_admin_revenue + secz_other_revenue'}
+  secz_revenue_growth: {version: '1.0', inputs: [secz_revenue, secz_prior_revenue], expression: 'secz_revenue / secz_prior_revenue - 1'}
+  secz_aum_growth: {version: '1.0', inputs: [secz_aum, secz_prior_aum], expression: 'secz_aum / secz_prior_aum - 1'}
+  secz_volume_growth: {version: '1.0', inputs: [secz_volume, secz_prior_volume], expression: 'secz_volume / secz_prior_volume - 1'}
+  secz_revenue_efficiency: {version: '1.0', inputs: [secz_revenue_growth, secz_aum_growth], expression: 'secz_revenue_growth / secz_aum_growth'}
+  secz_volume_monetization: {version: '1.0', inputs: [secz_revenue, secz_volume], expression: 'secz_revenue / secz_volume'}
+  secz_operating_leverage: {version: '1.0', inputs: [secz_ebitda, secz_prior_ebitda, secz_revenue, secz_prior_revenue], expression: '(secz_ebitda - secz_prior_ebitda) / (secz_revenue - secz_prior_revenue)'}
+  secz_ebitda_margin: {version: '1.0', inputs: [secz_ebitda, secz_revenue], expression: 'secz_ebitda / secz_revenue'}
+  secz_prior_ebitda_margin: {version: '1.0', inputs: [secz_prior_ebitda, secz_prior_revenue], expression: 'secz_prior_ebitda / secz_prior_revenue'}
+  secz_ebitda_margin_change: {version: '1.0', inputs: [secz_ebitda_margin, secz_prior_ebitda_margin], expression: 'secz_ebitda_margin - secz_prior_ebitda_margin'}
+  secz_required_fcf: {version: '1.0', inputs: [secz_ev, terminal_multiple], expression: 'secz_ev / terminal_multiple'}
+  secz_required_revenue: {version: '1.0', inputs: [secz_required_fcf, target_fcf_margin], expression: 'secz_required_fcf / target_fcf_margin'}
+  secz_required_revenue_cagr: {version: '1.0', inputs: [secz_required_revenue, secz_revenue, forecast_years], expression: '(secz_required_revenue / secz_revenue) ** (1 / forecast_years) - 1'}
+  xlm_rwa_growth: {version: '1.0', inputs: [xlm_rwa_value, xlm_prior_rwa_value], expression: 'xlm_rwa_value / xlm_prior_rwa_value - 1'}
+  xlm_institutional_growth: {version: '1.0', inputs: [xlm_institutional_assets, xlm_prior_institutional_assets], expression: 'xlm_institutional_assets / xlm_prior_institutional_assets - 1'}
+  xlm_network_activity_growth: {version: '1.0', inputs: [xlm_transfer_volume, xlm_prior_transfer_volume], expression: 'xlm_transfer_volume / xlm_prior_transfer_volume - 1'}
+  xlm_locked_demand: {version: '1.0', inputs: [xlm_account_reserve, xlm_liquidity_demand, xlm_collateral_demand, xlm_settlement_demand, xlm_other_locked], expression: 'xlm_account_reserve + xlm_liquidity_demand + xlm_collateral_demand + xlm_settlement_demand + xlm_other_locked'}
+  xlm_native_demand_growth: {version: '1.0', inputs: [xlm_locked_demand, xlm_prior_locked_demand], expression: 'xlm_locked_demand / xlm_prior_locked_demand - 1'}
+  xlm_network_fee_value: {version: '1.0', inputs: [xlm_operations, xlm_average_fee, xlm_price], expression: 'xlm_operations * xlm_average_fee * xlm_price'}
+  xlm_economic_capture_ratio: {version: '1.0', inputs: [xlm_native_demand_growth, xlm_network_activity_growth], expression: 'xlm_native_demand_growth / xlm_network_activity_growth'}

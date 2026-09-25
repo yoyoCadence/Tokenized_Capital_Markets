@@ -1,0 +1,11 @@
+events:
+  - id: event_demo_dtcc_planned
+    type: dtcc_migration
+    status: PLANNED
+    event_date: '2026-06-30'
+    affected_nodes: [DTCC, XLM]
+    observation_ids: []
+    source_ids: [demo_dataset_v1]
+    material: false
+    material_rationale: 'Synthetic planned event; no claim of a live or material migration.'
+    fixture: true

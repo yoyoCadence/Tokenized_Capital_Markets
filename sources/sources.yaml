@@ -1,0 +1,10 @@
+sources:
+  - id: demo_dataset_v1
+    url: 'repo://data/observed/demo.yaml'
+    publisher: 'Project synthetic fixture'
+    title: 'Generated deterministic demonstration values — no market claims'
+    date: '2026-06-30'
+    retrieved_at: '2026-09-25T00:00:00Z'
+    tier: FIXTURE
+    kind: FIXTURE
+    covered_metrics: ['*']

@@ -1,0 +1,19 @@
+version: '1.0'
+initial_core: [UNI, SECZ, XLM]
+universe_stages: [DISCOVERED, CANDIDATE, PRIMARY_SOURCE_VERIFIED, VALUE_CAPTURE_MAPPED, INVESTABILITY_CHECKED, REVERSE_UNDERWRITING_AVAILABLE, CORE, SECONDARY]
+promotion_rule: 'Primary evidence, explicit economic capture, investability and reverse underwriting required for CORE.'
+assets:
+  UNI: {name: Uniswap, kind: TOKEN, universe: CORE, capture_model: burn_net_of_distribution}
+  SECZ: {name: Securitize, kind: EQUITY, universe: CORE, capture_model: operating_fcf, investable: unknown, listing_status: unverified}
+  XLM: {name: Stellar Lumens, kind: TOKEN, universe: CORE, capture_model: native_demand_not_fee_dcf}
+  GLXY: {name: Galaxy Digital, kind: EQUITY, universe: SECONDARY}
+  SUPERSTATE: {name: Superstate, kind: COMPANY, universe: SECONDARY, investable: false}
+  BLSH: {name: Bullish, kind: EQUITY, universe: SECONDARY}
+  EQUINITI: {name: Equiniti, kind: COMPANY, universe: SECONDARY}
+  SOL: {name: Solana, kind: TOKEN, universe: SECONDARY}
+  LINK: {name: Chainlink, kind: TOKEN, universe: SECONDARY}
+  DTCC: {name: Depository Trust & Clearing Corporation, kind: INFRASTRUCTURE, universe: SECONDARY, investable: false}
+  SEC: {name: U.S. Securities and Exchange Commission, kind: REGULATOR, universe: SECONDARY, investable: false}
+  NYSE: {name: New York Stock Exchange, kind: EXCHANGE, universe: SECONDARY, investable: false}
+  NASDAQ: {name: Nasdaq, kind: EXCHANGE, universe: SECONDARY, investable: false}
+discovery_triggers: [material_dtcc_integration, issuer_native_tokenization, registered_transfer_agent_exposure, permissioned_amm_exposure, material_tokenized_aum, tokenized_equity_distribution, oracle_interoperability]

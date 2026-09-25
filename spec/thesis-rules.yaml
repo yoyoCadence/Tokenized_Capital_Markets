@@ -1,0 +1,85 @@
+version: '1.0'
+states: [HEALTHY, WATCH, STRESS, BREAK_CANDIDATE, INVALIDATED]
+# Every numerical trigger is an analyst-defined assumption, not an empirical law.
+rules:
+  - id: uni_low_net_burn
+    asset: UNI
+    state: WATCH
+    periods: 2
+    cadence: QUARTER
+    expression: 'net_burn_yield < low_yield'
+    thresholds: {low_yield: 0.02}
+    classification: ASSUMPTION
+    rationale: 'Initial analyst trigger; review after real burn and dilution history is sourced.'
+  - id: uni_fee_share_stress
+    asset: UNI
+    state: STRESS
+    periods: 1
+    cadence: QUARTER
+    expression: 'effective_protocol_fee_bp < fee_floor and required_uniswap_market_share > share_ceiling'
+    thresholds: {fee_floor: 0.5, share_ceiling: 0.5}
+    classification: ASSUMPTION
+    rationale: 'A low effective fee and a high standalone hurdle together challenge the scenario.'
+  - id: uni_supply_break
+    asset: UNI
+    state: BREAK_CANDIDATE
+    periods: 4
+    cadence: QUARTER
+    expression: 'uni_protocol_activity_growth > zero and uni_net_supply_change > zero'
+    thresholds: {zero: 0}
+    classification: ASSUMPTION
+    rationale: 'Repeated net supply growth despite activity growth is a research escalation.'
+  - id: secz_growth_watch
+    asset: SECZ
+    state: WATCH
+    periods: 1
+    cadence: QUARTER
+    expression: 'secz_aum_growth > zero and secz_revenue_growth <= zero'
+    thresholds: {zero: 0}
+    classification: ASSUMPTION
+    rationale: 'AUM growth without revenue conversion needs investigation.'
+  - id: secz_growth_stress
+    asset: SECZ
+    state: STRESS
+    periods: 2
+    cadence: QUARTER
+    expression: 'secz_aum_growth > aum_floor and secz_revenue_growth < zero'
+    thresholds: {aum_floor: 0.15, zero: 0}
+    classification: ASSUMPTION
+    rationale: 'Repeated AUM growth with falling revenue challenges monetization.'
+  - id: secz_volume_break
+    asset: SECZ
+    state: BREAK_CANDIDATE
+    periods: 4
+    cadence: QUARTER
+    expression: 'secz_volume_growth > volume_floor and secz_revenue_growth <= zero and secz_ebitda_margin_change <= zero'
+    thresholds: {volume_floor: 0.5, zero: 0}
+    classification: ASSUMPTION
+    rationale: 'High activity without revenue or EBITDA margin improvement over four observations.'
+  - id: xlm_native_demand_watch
+    asset: XLM
+    state: WATCH
+    periods: 1
+    cadence: QUARTER
+    expression: 'xlm_rwa_growth > rwa_floor and xlm_native_demand_growth <= zero'
+    thresholds: {rwa_floor: 0.25, zero: 0}
+    classification: ASSUMPTION
+    rationale: 'Network growth with stagnant native-asset demand.'
+  - id: xlm_capture_stress
+    asset: XLM
+    state: STRESS
+    periods: 4
+    cadence: QUARTER
+    expression: 'xlm_institutional_growth > institutional_floor and xlm_economic_capture_ratio < capture_floor'
+    thresholds: {institutional_floor: 0.5, capture_floor: 0.1}
+    classification: ASSUMPTION
+    rationale: 'Repeated institutional asset growth with weak native demand transmission.'
+  - id: xlm_dtcc_break
+    asset: XLM
+    state: BREAK_CANDIDATE
+    periods: 4
+    cadence: QUARTER
+    expression: 'dtcc_live_material == 1 and xlm_native_demand_growth <= demand_epsilon and xlm_native_demand_growth >= negative_epsilon'
+    thresholds: {demand_epsilon: 0.01, negative_epsilon: -0.01}
+    classification: ASSUMPTION
+    rationale: 'Requires separately sourced LIVE and material DTCC activity; demand change within +/-1%.'
