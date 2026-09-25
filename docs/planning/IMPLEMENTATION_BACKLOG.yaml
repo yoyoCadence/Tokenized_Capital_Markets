@@ -1,0 +1,725 @@
+plan_id: TCM-PLAN-2026-09-25
+version: '1.0'
+status: PROPOSED
+planning_date: '2026-09-25'
+baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
+classification: ASSUMPTION
+rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
+scope: planning_only
+first_work_package: WP-01
+execution_authorized_by_this_file: false
+effort_scale:
+  unit: relative_points
+  allowed: [1, 2, 3, 5, 8]
+  meaning: 相對複雜度，不等於工作日；8 點任務實作前須再拆分。
+task_statuses: [PLANNED, IN_PROGRESS, BLOCKED, DONE, CANCELLED]
+completion_policy:
+  - DONE 必須有 commit、驗收證據、測試或研究對帳、changelog。
+  - 依賴未完成可先做獨立來源查找，但不能發布受其影響的決策結果。
+  - P4 需要使用者新的具體資本政策與授權；P5 需另行立項。
+  - 規劃文件不改寫 canonical formula、source、observation 或歷史 snapshot。
+gates:
+  - id: G0
+    phase: P0
+    evidence: 隔離、時點、scope、頻率、重播、完整性及發布復原驗收通過。
+    capital_allowed: false
+  - id: G1
+    phase: P1
+    evidence: 每資產限定研究問題有經核對的真資料包與兩版可比較 snapshot。
+    capital_allowed: false
+  - id: G2
+    phase: P2
+    evidence: 真實研究工作流可用，模型獨立對帳、缺口與決策包清楚。
+    capital_allowed: false
+  - id: G3
+    phase: P3
+    evidence: 模擬運作與評估可重播；alpha 結論獨立報告，樣本不足不得冒稱證實。
+    capital_allowed: false
+  - id: G4
+    phase: P4
+    evidence: IPS 與有限人工實證授權、對帳、風險限制及停止程序齊備。
+    capital_allowed: explicit_user_authorization_only
+  - id: G5
+    phase: P5
+    evidence: 經濟與操作證據支持該項擴張，單獨核准範圍與資料授權。
+    capital_allowed: no_automatic_increase
+tasks:
+  - id: P0-01
+    title: RESEARCH 與 fixture 的完整隔離
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: [P0-02]
+    outputs: [模式隔離 validator, transitive evidence policy, 拒絕發布的診斷]
+    acceptance:
+      - research 檔含 fixture observation/event/assumption/scenario 時明確拒絕，不靜默過濾。
+      - RESEARCH 使用到的 source、graph evidence、derived lineage 均無 fixture；未使用的全域 fixture registry 記錄不誤擋空研究模式。
+      - CLI/API/snapshot 發布入口行為一致，DEMO 正常且明示 synthetic。
+    audit_refs: [A-01]
+  - id: P0-02
+    title: 嚴格 YAML、唯一 ID 與版本鏈 preflight
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: []
+    outputs: [strict loader, schema diagnostics, 負向案例]
+    acceptance:
+      - 重複 mapping key、錯誤型別、重複 source/record ID、非有限數值皆拒絕。
+      - supersession 自循環、多節點循環、dangling parent、跨語義替換有明確錯誤。
+      - 錯誤包含檔案與欄位或 record；formula DAG 循環在發布前被識別。
+    audit_refs: [A-07]
+  - id: P0-03
+    title: v2 時間、scope 與 record 契約及遷移 ADR
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-01]
+    outputs: [schema v2 proposal, compatibility matrix, migration ADR]
+    acceptance:
+      - economic period、knowledge time、valuation time、四分類與 scope 分離。
+      - legacy 資料缺失資訊不回填成虛構歷史；v1 snapshots 保留。
+      - metric concept/input role/record classification 的選用政策清楚。
+    audit_refs: [A-02, A-04, A-09]
+  - id: P0-04
+    title: 雙時間 selector 與歷史重述重播
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P0-03]
+    outputs: [context selector, 時間邊界回歸]
+    acceptance:
+      - system-as-known 與 public-information reconstruction 分開，無默認混用。
+      - 晚發布修正版不污染早期 cutoff；同期間衝突不被任意選一筆。
+      - 日期精度/timezone/available-time 不明的限制可見。
+    audit_refs: [A-02]
+  - id: P0-05
+    title: 已實現收益、run rate、forward 與 reverse 分流
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-03]
+    outputs: [scope validation, 新舊 metric mapping, UI scope labels]
+    acceptance:
+      - TAM scenario 不能進 realized net burn yield／當期規則。
+      - 同一語義的實測與情境 fee 使用不同 role/record，不升級舊 assumption。
+      - 現有 42.2% fixture 保持原版本意義，新結果另有驗收。
+    audit_refs: [A-04, A-09]
+  - id: P0-06
+    title: 資產與規則各自的期間和 freshness
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P0-04, P0-05]
+    outputs: [rule cadence v2, fiscal calendar mapping, period evidence]
+    acceptance:
+      - 新增每日 UNI quote 不改變 SECZ/XLM 季度樣本。
+      - 缺季度、不同 fiscal year、TTM 與 daily price 混合有明示政策。
+      - 所有觸發和未評估規則保留；incomplete 不變成 HEALTHY。
+    audit_refs: [A-03]
+  - id: P0-07
+    title: 自包含 compute manifest 與 snapshot 完整性
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P0-04, P0-05, P0-06]
+    outputs: [snapshot v2, replay command, tamper checks, migration report]
+    acceptance:
+      - 封存公式/rules/dictionary/graph/code/runtime 版本與可解析證據 references。
+      - 乾淨環境重播一致，修改一個 byte/內容欄位可被驗證拒絕。
+      - selected evidence 不含 cutoff 之後資料；current/historical tracks 分開。
+    audit_refs: [A-05]
+  - id: P0-08
+    title: 純讀 API 與可恢復的發布事務
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P0-07]
+    outputs: [publish workflow, write lock/journal, failure recovery]
+    acceptance:
+      - GET 不修改 ledger/snapshot/changelog。
+      - 重試與並行發布不遺失資料或重複事件。
+      - 在每個寫入步驟故障注入後，可恢復到完整舊版或完整新版。
+    audit_refs: [A-06]
+  - id: P0-09
+    title: Transitive uncertainty 與衝突選取理由
+    phase: P0
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 3
+    depends_on: [P0-03, P0-04]
+    outputs: [quality propagation, resolution ledger, inspector quality fields]
+    acceptance:
+      - 多層 DERIVED 保留最上游 scenario/assumption 影響。
+      - tier、freshness、coverage、measurement、mechanism 分開顯示。
+      - 值相同的多來源與未選衝突來源均可追溯。
+    audit_refs: [A-08]
+  - id: P0-10
+    title: G0 整合驗收與可重現測試環境
+    phase: P0
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: [P0-01, P0-02, P0-04, P0-05, P0-06, P0-07, P0-08, P0-09]
+    outputs: [locked test environment, CI checks, G0 report]
+    acceptance:
+      - 既有 regression 通過，新增 isolation/time/scope/replay/transaction 負向測試通過。
+      - golden results 以獨立計算或來源支持，不依實作自行更新預期。
+      - 所有未解 P0 列出；有 P0 就不發布 decision-ready research。
+    audit_refs: [A-01, A-02, A-03, A-04, A-05, A-06, A-07]
+  - id: P1-01
+    title: Source staging 與原始證據存證
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-03, P0-08]
+    outputs: [source adapter contract, artifact manifest, manual review flow]
+    acceptance:
+      - URL/publisher/date/retrieval/tier/metrics/hash/locator 完整。
+      - 日期不明或擷取失敗留 staging，不能自動成為 observed。
+      - 公開 repo 不含受限全文、credentials 或私有持倉。
+  - id: P1-02
+    title: Entity/security master 與可交易性查核
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P1-01]
+    outputs: [三資產 identity pack, aliases/corporate actions, eligibility evidence]
+    acceptance:
+      - company/protocol/network/security 分開，ticker/contract 有有效期間。
+      - SECZ 正式 filing 與 exchange evidence 查核，未完成維持 unknown。
+      - core research 不等於 investable；dependency nodes 可以無交易工具。
+    audit_refs: [A-11]
+  - id: P1-03
+    title: 財務／鏈上資料字典與 normalization
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-03, P1-01]
+    outputs: [normalization registry, units/period mapping, semantic checks]
+    acceptance:
+      - raw observed 與縮放/FX/TTM derived 分開，變換可追溯。
+      - stock/flow、GAAP/adjusted、gross/net、fiscal period 定義明確。
+      - 量綱、負基期 CAGR、近零分母與 incompatible scope 有測試。
+    audit_refs: [A-07, A-09]
+  - id: P1-04
+    title: 價格、供給、股本與 EV bridge
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P1-02, P1-03]
+    outputs: [market input pack, cap reconciliation, timestamp policy]
+    acceptance:
+      - price/venue/time/currency 與 supply/share basis 配對。
+      - equity claims/cash/debt 與 token FDV 語義分開；差額解釋。
+      - 假設價格 reverse 與 current-market reverse 明顯區別。
+    audit_refs: [A-10]
+  - id: P1-05
+    title: UNI primary evidence 最小包
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P1-01, P1-02, P1-03]
+    outputs: [governance/execution map, fee/burn/distribution ledger, residual report]
+    acceptance:
+      - 預算、execution、vesting、transfer、burn 不混淆。
+      - 至少一完整期間 fees/burn/distribution 可對帳，未分配差額明示。
+      - 官方提案不得代替當前合約執行與量測證據。
+    audit_refs: [A-10]
+  - id: P1-06
+    title: SECZ 官方財務與資本結構包
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P1-01, P1-02, P1-03]
+    outputs: [filing pack, revenue reconciliation, FCF/capital inputs]
+    acceptance:
+      - 官方 total revenue 可獨立使用，未披露六分項不虛構。
+      - 公司併表範圍、會計期間、EBITDA adjustments 與 cash inputs 明示。
+      - 稀釋工具是否存在與數量依正式申報，不作默認。
+    audit_refs: [A-10]
+  - id: P1-07
+    title: XLM 採用與 native demand 證據包
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P1-01, P1-02, P1-03]
+    outputs: [activity definitions, deduplicated demand ledger, DTCC milestone evidence]
+    acceptance:
+      - reserve/sponsorship/liquidity/collateral 去重與未知範圍可查。
+      - transfer flow、demand stock、price effects 分開。
+      - planned/live/material 各有證據；不能辨識的價值傳導保持 assumed。
+    audit_refs: [A-10]
+  - id: P1-08
+    title: Freshness、coverage 與 stale-data detection
+    phase: P1
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 3
+    depends_on: [P0-09, P1-03]
+    outputs: [source freshness policy, missing/conflict queue, readiness report]
+    acceptance:
+      - price、quarterly filing、governance 各自 cadence/SLA 且標為假設。
+      - 重要缺值不被總體完整率平均掉；age 和 unknown reason 可見。
+      - 來源失效不悄悄沿用舊值；可設定 block 或明示 stale。
+  - id: P1-09
+    title: 第一份真實研究發布與 G1
+    phase: P1
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P0-10, P1-04, P1-05, P1-06, P1-07, P1-08]
+    outputs: [research snapshot pair, comparison report, asset-specific readiness]
+    acceptance:
+      - 每資產限定問題、必要欄位與未知項預先明列。
+      - 兩個真實版本可重播並指出具體 source/assumption/formula/price 變化。
+      - 未達標資產不發布 ready；不得為湊完整 dashboard 補 fixture。
+  - id: P2-01
+    title: UNI realized 與 forward 模型 v2
+    phase: P2
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-05, P1-04, P1-05]
+    outputs: [UNI model v2, supply/economics bridge, new regression fixtures]
+    acceptance:
+      - LP fee、protocol revenue、burn、分配、鑄幣明確分離且不重複扣除。
+      - realized net yield 與 scenario opportunity 分開。
+      - standalone/incremental >100%、負剩餘需求、零分母可正確解釋。
+  - id: P2-02
+    title: SECZ revenue/FCF/diluted equity 模型 v2
+    phase: P2
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P1-04, P1-06]
+    outputs: [revenue buckets reconciliation, cash-flow bridge, equity per-share scenarios]
+    acceptance:
+      - 未披露分項保持 unknown，官方總收入仍可用。
+      - EBITDA/FCFF/equity distributions、SBC/share count 不混用。
+      - capital claims 與 dilution 在 scenario 中一致，獨立手算通過。
+  - id: P2-03
+    title: XLM 去重需求與經濟傳導模型
+    phase: P2
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P1-04, P1-07]
+    outputs: [native demand bridge, capture diagnostics, valuation identifiability result]
+    acceptance:
+      - sponsored/beneficiary 及 liquidity/collateral 不重複加總。
+      - 近零/負 activity growth 不輸出誤導 ratio。
+      - 無 capture-to-price 機制時拒絕 fair value，network fee 只作診斷。
+  - id: P2-04
+    title: Bottom-up TAM 與可服務量
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P1-02, P1-03, P1-01]
+    outputs: [issuer/security cohorts, addressable-volume bridge, overlap checks]
+    acceptance:
+      - equities/funds/credit、native/wrapped、bridge 去重有定義。
+      - eligible、issued、float、trade volume、revenue 每步有證據或假設。
+      - TAM 不直接輸出 asset value，wash/mint/internal transfer 不冒充成交。
+  - id: P2-05
+    title: 有時點的 reverse underwriting
+    phase: P2
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P2-01, P2-02, P2-03]
+    outputs: [discounted reverse solver, solution-range diagnostics, v1/v2 comparison]
+    acceptance:
+      - current price/EV 與明示 horizon、interim cash flow、terminal convention 對齊。
+      - 多解/無解/負基期/不可識別時不假裝唯一價格預期。
+      - XLM 僅對已識別機制建立要求；不能為一致 UI 硬套估值。
+  - id: P2-06
+    title: Joint scenarios 與研究價值排序
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 3
+    depends_on: [P2-04, P2-05]
+    outputs: [correlated scenario sets, sensitivity ranking, uncertainty register]
+    acceptance:
+      - 所有現有參數由 engine 重算，override 不入 observed。
+      - fee/share/growth/cost/margin 的一致性 constraints 可查。
+      - 機率未校準明示 subjective，優先指出最能改變決策的研究缺口。
+  - id: P2-07
+    title: 事件里程碑與經濟傳導監控
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-08, P1-01, P1-08]
+    outputs: [event transitions, graph lags/materiality, propagation report]
+    acceptance:
+      - 支援原規定全部 event types，延期/取消以新版本保留。
+      - planned/approved/deployed/live/material 不自動晉級。
+      - event → evidence → recompute → rules → snapshot → changelog 可重播。
+  - id: P2-08
+    title: Open Universe 與 promotion evidence
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P1-02, P2-07]
+    outputs: [candidate ledger, promotion/rejection records, exposure mapping]
+    acceptance:
+      - discovery 全部原始 triggers 保留，拒絕與未交易案例不刪。
+      - PRIMARY VERIFIED/CAPTURE/INVESTABILITY/REVERSE gates 有證據。
+      - initial_core 不作交易 eligibility 後門；所有 secondary 節點可見。
+  - id: P2-09
+    title: 研究工作佇列與 Data Inspector v2
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P1-08, P2-05, P2-07]
+    outputs: [research queue UI, inspector v2, changed-input explanation]
+    acceptance:
+      - 任一數值可查來源定位、時間、scope、公式與 conflict/quality。
+      - data change 與 price change 分開，重大變化可定位。
+      - UI 無金融常數或本地計算捷徑；敏感度維持 engine 來源。
+  - id: P2-10
+    title: 有審閱的自動研究 refresh
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P1-01, P1-08, P2-07]
+    outputs: [replaceable research adapters, staging review, earnings/governance refresh]
+    acceptance:
+      - SEC 財報與 protocol governance 至少各一個可重播流程。
+      - AI 擷取有原文 locator/版本，捏造引用、錯單位、prompt injection 測試拒絕。
+      - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
+  - id: P2-11
+    title: 決策研究包與前後版本解釋
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P2-06, P2-09]
+    outputs: [weekly research packet, counterevidence section, causal diff]
+    acceptance:
+      - 有市場要求、實現/模型 economics、敏感度、反證與missing。
+      - source/record/assumption/scenario/formula/rule/price 變更皆可辨。
+      - 多因素交互作用不冒稱唯一因果；state 不轉 BUY/HOLD/SELL。
+  - id: P2-12
+    title: 使用驗收與 G2
+    phase: P2
+    priority: P1
+    status: PLANNED
+    owner_role: user_research
+    effort_points: 2
+    depends_on: [P1-09, P2-08, P2-10, P2-11]
+    outputs: [task-based usability log, G2 report, revised time targets]
+    acceptance:
+      - 使用者能由真實變更完成一次限定決策研究並找到不確定性。
+      - 記錄實際每週負擔，不以漂亮 UI 取代研究價值。
+      - 評估三分鐘找變更/三十分鐘週檢視之初始目標，調整留理由。
+  - id: P3-01
+    title: Edge experiment 預先登錄
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P2-12]
+    outputs: [frozen experiment cards, benchmark plan, trial registry]
+    acceptance:
+      - claim/population/horizon/outcome/cost/stop/analysis 在結果前定義。
+      - 首個 UNI gross-vs-net 比較與投資交易假說分開。
+      - 看過結果的變更另開版本，不修改原試驗。
+  - id: P3-02
+    title: Forecast journal 與解析
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 3
+    depends_on: [P3-01]
+    outputs: [forecast ledger, resolution records, calibration outputs]
+    acceptance:
+      - snapshot/cutoff/probability 或 interval/resolution source 齊備。
+      - 二元、連續量、排序、投資結果採適當評分且明示樣本數。
+      - 未解析、取消、錯誤、修正版均保留。
+  - id: P3-03
+    title: 歷史可知重建與樣本外評估協議
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P0-04, P3-01]
+    outputs: [point-in-time dataset manifests, holdout/walk-forward protocol]
+    acceptance:
+      - 無 availability 證據資料不進歷史策略，寧可開始 forward journal。
+      - universe/survivorship/restatement/corporate actions 版本可查。
+      - 重疊 labels、TTM、事件更新相依性與試驗選擇偏誤明示。
+  - id: P3-04
+    title: 可成交條件與成本模型
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P1-04, P3-01]
+    outputs: [cost registry, fill assumptions, execution constraint tests]
+    acceptance:
+      - 決策之後才可成交；bid/ask/時段/size/延遲/partial fill 有政策。
+      - fees/spread/slippage/FX/gas/funding 適用者納入。
+      - depth/tax 未知有區間或unknown，不自稱完整稅後淨利。
+  - id: P3-05
+    title: 有權利依據的預期報酬情境
+    phase: P3
+    priority: P1
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P2-06, P3-04]
+    outputs: [terminal wealth scenarios, distributions, identifiability warnings]
+    acceptance:
+      - expected wealth 與 scenario CAGR 不錯誤混算，cash flow 時點明示。
+      - UNI burn 不作現金分配重算，SECZ EV/股數橋接正確。
+      - XLM price mapping 不可識別時可拒算，機率標為假設。
+  - id: P3-06
+    title: 永久損失與壓力情境
+    phase: P3
+    priority: P1
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P3-01, P3-05]
+    outputs: [loss definitions, recovery scenarios, correlated exposure map]
+    acceptance:
+      - 永久損失和短期 drawdown 分離，horizon/currency/recovery 明確。
+      - regulation/capture撤除/dilution/security/custody/liquidity 有適用情境。
+      - 未校準 probability 明示；三資產共同風險不當獨立。
+  - id: P3-07
+    title: 可重播 paper ledger
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P3-02, P3-04, P3-05]
+    outputs: [paper positions/cash/fills, reconciliation, no-trade records]
+    acceptance:
+      - 模擬、研究與真實帳本分離，所有假設成交可重播。
+      - 現金、公司行動、FX、費用與資金流對帳一致。
+      - 錯失交易和不可成交保留，不能挑成功 fills。
+  - id: P3-08
+    title: 固定基準、績效與歸因
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: engineering_research
+    effort_points: 5
+    depends_on: [P3-03, P3-07]
+    outputs: [benchmark ledger, net-performance report, uncertainty/attribution]
+    acceptance:
+      - benchmark weights/rebalance/cost/cash/eligibility 事前固定。
+      - gross/net/TWR/MWR/drawdown/turnover 適用口徑明示。
+      - beta/樣本依賴/試驗數/離群事件與成本敏感度不省略。
+  - id: P3-09
+    title: 影子運行與研究專案 ROI
+    phase: P3
+    priority: P1
+    status: PLANNED
+    owner_role: research
+    effort_points: 3
+    depends_on: [P3-06, P3-08]
+    outputs: [operational journal, matured forecast scores, cost/time ledger]
+    acceptance:
+      - 初始 8–12 週運作觀察，不冒稱長期 thesis 已驗證。
+      - 研究成本/時間與避免錯誤/改善決策分別評估。
+      - 不足樣本保持 inconclusive，不為湊樣本增加交易。
+  - id: P3-10
+    title: G3 證據審查
+    phase: P3
+    priority: P0
+    status: PLANNED
+    owner_role: research_user
+    effort_points: 2
+    depends_on: [P3-09]
+    outputs: [G3 operations report, edge verdict, continue/stop rationale]
+    acceptance:
+      - 計算、預測資訊、投資經濟價值三種結論分開。
+      - 支持/反對/無法判定及適用範圍均附證據。
+      - 通過操作驗收不自動授權資本或宣稱 alpha。
+  - id: P4-01
+    title: 使用者 IPS 與有限試驗授權
+    phase: P4
+    priority: P0
+    status: PLANNED
+    owner_role: user
+    effort_points: 2
+    depends_on: [P3-10]
+    outputs: [investment policy, explicit pilot budget/limits, private data policy]
+    acceptance:
+      - 本金/幣別/期限/損失/流動性/venue/暴露/停止規則由使用者確定。
+      - 無 alpha 證明時，若仍試行，明確記為有上限的學習試驗。
+      - 沒有具體授權就只保留研究和模擬。
+  - id: P4-02
+    title: 私有實際帳本與人工匯入
+    phase: P4
+    priority: P0
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: [P4-01]
+    outputs: [private portfolio import, broker reconciliation, access separation]
+    acceptance:
+      - 公開 repo 只含 schema/fixture；真實帳號/持倉保持私有。
+      - fills/cash/corporate actions/FX 對帳與去重通過。
+      - 無自動下單、秘密金鑰或資金轉移功能。
+  - id: P4-03
+    title: 人工有限 pilot
+    phase: P4
+    priority: P1
+    status: PLANNED
+    owner_role: user_research
+    effort_points: 3
+    depends_on: [P4-02, P4-04]
+    outputs: [authorized decision records, actual-vs-paper comparisons]
+    acceptance:
+      - 每次動作符合 IPS 與具體授權，決策前有合法 snapshot。
+      - 真實、模擬成交與成本差異逐筆記錄。
+      - 拒絕/未成交/停止均記錄，無自動資本擴張。
+  - id: P4-04
+    title: Pilot 故障、風險與停止演練
+    phase: P4
+    priority: P0
+    status: PLANNED
+    owner_role: user_engineering
+    effort_points: 2
+    depends_on: [P4-02]
+    outputs: [recovery/stop runbook, risk review log]
+    acceptance:
+      - 資料故障、thesis 變化、資本限制三種處置分開。
+      - 不可取得報價、venue 中斷、模型錯誤有人工處理路徑。
+      - 停止/復原不刪除歷史，不假設可立即成交退出。
+  - id: P4-05
+    title: G4 結案與規模決策
+    phase: P4
+    priority: P1
+    status: PLANNED
+    owner_role: user_research
+    effort_points: 2
+    depends_on: [P4-03, P4-04]
+    outputs: [pilot review, capacity/risk reassessment, explicit next decision]
+    acceptance:
+      - 經濟結果/成本/尾端風險/樣本限制/研究時間完整報告。
+      - 擴大資本需新的預算與授權；正報酬不自動通過。
+      - 可以停止、保持規模或縮小範圍，理由封存。
+  - id: P5-01
+    title: 依證據擴展 additional asset models
+    phase: P5
+    priority: P2
+    status: PLANNED
+    owner_role: research
+    effort_points: 5
+    depends_on: [P2-08, P3-10]
+    outputs: [new candidate evidence pack, incremental research-value case]
+    acceptance:
+      - 依資料可得性/value capture/可交易性選下一標的。
+      - 不因敘事把 secondary node 升級 core。
+      - 先驗證新增研究價值才增加專用模型。
+  - id: P5-02
+    title: Scheduler 與 unattended refresh
+    phase: P5
+    priority: P2
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 5
+    depends_on: [P2-10, P3-10]
+    outputs: [scheduler, retry/backoff, operational monitoring]
+    acceptance:
+      - 有別的立項授權、速率/成本/timeout/失敗處理政策。
+      - 自動擷取不能越過 evidence review 與 publication gates。
+      - 本地手動模式仍可用，無自動交易。
+  - id: P5-03
+    title: 自動 PR 與通知
+    phase: P5
+    priority: P2
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: [P5-02]
+    outputs: [reviewable research PRs, opt-in material-change notifications]
+    acceptance:
+      - diff 有來源/假設/公式變動與測試證據，受限資料不外洩。
+      - 通知對象/通道/頻率經使用者明確指定。
+      - 不自動合併重大模型改動或自動下單。
+  - id: P5-04
+    title: 可選付費研究產品探索
+    phase: P5
+    priority: P2
+    status: PLANNED
+    owner_role: product_research
+    effort_points: 3
+    depends_on: [P2-12, P3-10]
+    outputs: [customer problem interviews, willingness-to-pay evidence, unit economics]
+    acceptance:
+      - 使用者另行確認商業化目標後才立項。
+      - 先證明付費/續用需求和資料再散布權，才做多租戶/billing。
+      - 服務毛利與投資績效分開，不以報酬保證招攬。
+  - id: P5-05
+    title: Unattended API 與 provider 擴張評估
+    phase: P5
+    priority: P2
+    status: PLANNED
+    owner_role: engineering
+    effort_points: 3
+    depends_on: [P5-02]
+    outputs: [provider cost/license comparison, secret-management plan, ADR]
+    acceptance:
+      - 無具體資料瓶頸不採購；API key 不入 repo，限制與失效可回退。
+      - 核心模型與 provider SDK 分離。
+      - 任何交易 API 整合需另立風險/安全/授權計畫，不包含在本任務。

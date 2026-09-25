@@ -1,5 +1,13 @@
 # Research/software changelog
 
+## Development planning v1.0 — 2026-09-25
+
+- Added `docs/planning/`: detailed Chinese roadmap, current-state audit, proposed data/model contracts, edge validation and risk protocol, structured implementation backlog, first work package and primary-source research notes.
+- Audited baseline commit `68f19531cfd77bc2c70006921a6402e7a10f04f6`. The existing 26 tests and both validation modes pass; research observations remain empty. Four in-memory probes reproduced fixture-mode isolation, knowledge-time selection, mixed-frequency thesis and duplicate-YAML-key gaps.
+- Changed the recommended implementation order: repair the research boundaries (WP-01), then time/scope/replay/publication, then publish a verified research pack. Forecasting, paper evaluation and any authorized capital pilot have separate gates.
+- All future functionality is PROPOSED/PLANNED. No runtime implementation, canonical financial data, formula version, assumption, scenario, event, historical snapshot or actual position was changed.
+- Planning source notes are leads for future verified ingestion, not new canonical OBSERVED data. No new financial snapshot was created.
+
 ## MVP 0.1 — 2026-09-25
 
 - Initialized four-way classification, source policy, units and period matching.

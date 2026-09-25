@@ -2,6 +2,12 @@
 
 Local, reproducible investment research software. This MVP is an **engine plus a traceable presentation layer**, with a deliberately synthetic demo pack. It contains **no verified live prices or company financials**. The identifiers `SECZ` and its investability/listing status are research items, not an assertion that an instrument is currently listed.
 
+## 後續發展規劃 / Development plan
+
+已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。所有未來功能均標示 **PROPOSED / PLANNED**。
+
+目前 26 項測試通過，但真實 observation 為 0；稽核亦確認模式隔離、歷史可知時間與混合頻率的缺口。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 [WP-01：研究資料隔離與嚴格輸入驗證](docs/planning/FIRST_IMPLEMENTATION_PACKAGE.md)，工作依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+
 ## Requirements / 啟動
 
 Python 3.11+ and PyYAML 6.x. No API key, npm, paid database or AI provider SDK.

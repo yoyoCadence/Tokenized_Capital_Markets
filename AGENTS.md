@@ -2,6 +2,16 @@
 
 Read `spec/` and this file before editing calculations, evidence or UI. A UI display is never the source of financial truth.
 
+## Planning versus implemented behavior
+
+Read `docs/planning/README.md`, `docs/planning/CURRENT_STATE_AUDIT.md` and the relevant work package before continuing this project. The planning directory records proposed work; it does not replace canonical specs or assert that future fields, APIs or safeguards already exist.
+
+- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. The recommended first package is WP-01, covering P0-02 then P0-01.
+- A task becomes DONE only with its implementation/research evidence, tests or reconciliation, commit and changelog. Keep discovered defects visible until fixed.
+- Planning source notes are not canonical observations. Verify, archive, classify and review evidence before research publication; do not promote an official proposal into realized economics.
+- Preserve v1 snapshots and fixture regressions during any v2 migration. Never invent historical publication or first-seen timestamps.
+- Calculation correctness, forecast quality and profitable execution require separate evidence. Thesis states remain research states. Future capital use requires the user's concrete investment policy and authorization; this plan authorizes no trading.
+
 ## Canonical principles
 
 1. TAM is not asset value. Protocol adoption is not holder value. Business growth is not automatically equity or token capture.
