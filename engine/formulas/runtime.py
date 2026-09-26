@@ -4,7 +4,7 @@ from datetime import date
 import math
 
 from engine.formulas.expression import evaluate, ExpressionError
-from engine.validation.checks import issue, iso_date, validate_temporal_pairs
+from engine.validation.checks import issue, iso_date, validate_temporal_pairs, require_valid_project
 
 
 SENSITIVITY_INPUTS = ["tokenized_equity_tam", "turnover", "onchain_share", "amm_share",
@@ -43,7 +43,12 @@ def _select(records, cutoff, class_name):
             continue
         row = choices[0].copy()
         row["supporting_ids"] = [r["id"] for r in choices]
-        row["supporting_source_ids"] = [r["source_id"] for r in choices] if class_name == "OBSERVED" else []
+        row["supporting_records"] = choices
+        row["fixture"] = any(r.get("fixture", False) for r in choices)
+        row["supporting_source_ids"] = list(dict.fromkeys(
+            sid for r in choices for sid in
+            r.get("source_ids", []) + ([r["source_id"]] if "source_id" in r else [])
+        ))
         output[metric] = row
     return output, problems
 
@@ -53,20 +58,24 @@ def _leaf(metric_id, record, definition, sources):
     source_ids = record.get("supporting_source_ids", [])
     src = [sources[x] for x in source_ids]
     confidence = "DEMO" if record.get("fixture") else (
-        "HIGH" if src and all(s["tier"] <= 2 for s in src) else
-        "MEDIUM" if src and all(s["tier"] <= 4 for s in src) else "ANALYST")
-    leaf = {"record_id": record["id"], "classification": classification, "metric_id": metric_id,
-            "value": record["value"], "unit": definition["unit"],
-            "as_of_date": record.get("as_of_date"), "source_ids": source_ids,
-            "fixture": record.get("fixture", False)}
-    for name in ("rationale", "scenario_name", "period", "effective_date"):
-        if name in record:
-            leaf[name] = record[name]
+        "HIGH" if classification == "OBSERVED" and src and all(s["tier"] <= 2 for s in src) else
+        "MEDIUM" if classification == "OBSERVED" and src and all(s["tier"] <= 4 for s in src) else "ANALYST")
+    leaves = []
+    for supporting in record.get("supporting_records", [record]):
+        refs = supporting.get("source_ids", []) + ([supporting["source_id"]] if "source_id" in supporting else [])
+        leaf = {"record_id": supporting["id"], "classification": classification, "metric_id": metric_id,
+                "value": supporting["value"], "unit": definition["unit"],
+                "as_of_date": supporting.get("as_of_date"), "source_ids": list(dict.fromkeys(refs)),
+                "fixture": supporting.get("fixture", False)}
+        for name in ("rationale", "scenario_name", "period", "effective_date"):
+            if name in supporting:
+                leaf[name] = supporting[name]
+        leaves.append(leaf)
     return {"metric_id": metric_id, "value": record["value"], "unit": definition["unit"],
             "classification": classification, "as_of_date": record.get("as_of_date"),
             "period": record.get("period"), "record_ids": record["supporting_ids"],
             "source_ids": source_ids, "sources": src, "formula_id": None, "formula_version": None,
-            "dependencies": [], "lineage": {"formulas": [], "leaves": [leaf]},
+            "dependencies": [], "lineage": {"formulas": [], "leaves": leaves},
             "fixture": bool(record.get("fixture")), "confidence": confidence}
 
 
@@ -87,6 +96,7 @@ def _unique(values, key):
 
 def calculate(project, as_of=None, overrides=None):
     """Return every metric (including unknowns), source-backed lineage and validation issues."""
+    require_valid_project(project)
     observations = project["observations"]
     cutoff = iso_date(as_of) if as_of else max((iso_date(r["as_of_date"]) for r in observations), default=date.today())
     as_of = cutoff.isoformat()

@@ -3,18 +3,18 @@ from datetime import date, datetime
 import hashlib
 import json
 import math
+import re
 from urllib.parse import urlparse
 
 from engine.formulas.expression import names, ExpressionError
-
-
-def issue(level, code, message, path=""):
-    return {"level": level, "code": code, "message": message, "path": path}
+from engine.validation.errors import issue, location, reject_errors
+from engine.validation.isolation import validate_isolation
+from engine.validation.structure import validate_structure, validate_identity
 
 
 def iso_date(value):
-    if not isinstance(value, str):
-        raise ValueError("Date must be a quoted ISO string")
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        raise ValueError("Date must be a quoted YYYY-MM-DD string")
     return date.fromisoformat(value)
 
 
@@ -24,9 +24,21 @@ def signature(formula):
 
 
 def validate_project(project):
-    issues = []
+    issues = validate_structure(project)
+    if issues:
+        return issues
+    issues = validate_identity(project)
+    if issues:
+        return _locate_issues(project, issues)
+    issues = validate_isolation(project)
     schema = project["schema"]
     metric_defs = schema["metrics"]
+    if set(schema["classifications"]) != {"OBSERVED", "DERIVED", "ASSUMPTION", "SCENARIO"}:
+        issues.append(issue("ERROR", "CANONICAL_ENUM", "Exactly four canonical classifications are required", location(project, "schema")))
+    if set(schema["thesis_states"]) != {"HEALTHY", "WATCH", "STRESS", "BREAK_CANDIDATE", "INVALIDATED"}:
+        issues.append(issue("ERROR", "CANONICAL_ENUM", "Exactly five research thesis states are required", location(project, "schema")))
+    if set(project["rules"]["states"]) != set(schema["thesis_states"]):
+        issues.append(issue("ERROR", "THESIS_SPEC", "Rule states differ from canonical states", location(project, "rules")))
     sources = {s["id"]: s for s in project["sources"]}
     for source in project["sources"]:
         path = f"source:{source.get('id')}"
@@ -34,10 +46,17 @@ def validate_project(project):
         if missing:
             issues.append(issue("ERROR", "SOURCE_FIELDS", str(sorted(missing)), path))
             continue
+        if source["kind"] not in ("FIXTURE", "EXTERNAL"):
+            issues.append(issue("ERROR", "SOURCE_KIND", "Expected EXTERNAL or FIXTURE", path))
+        try:
+            parsed_url = urlparse(source["url"])
+        except ValueError as exc:
+            issues.append(issue("ERROR", "SOURCE_URL_TIER", str(exc), path))
+            continue
         if source["kind"] == "FIXTURE":
-            if source["tier"] != "FIXTURE" or urlparse(source["url"]).scheme != "repo":
+            if source["tier"] != "FIXTURE" or parsed_url.scheme != "repo":
                 issues.append(issue("ERROR", "FIXTURE_SOURCE", "Fixture must use FIXTURE tier and repo:// URL", path))
-        elif source["tier"] not in (1, 2, 3, 4, 5) or urlparse(source["url"]).scheme not in ("https", "http"):
+        elif type(source["tier"]) is not int or source["tier"] not in (1, 2, 3, 4, 5) or parsed_url.scheme not in ("https", "http") or not parsed_url.netloc:
             issues.append(issue("ERROR", "SOURCE_URL_TIER", "Real sources need HTTP URL and tier 1–5", path))
         try:
             iso_date(source["date"])
@@ -50,6 +69,8 @@ def validate_project(project):
             old_source = sources.get(parent)
             if not old_source or old_source["id"] == source["id"]:
                 issues.append(issue("ERROR", "SOURCE_SUPERSESSION", "New source ID must reference an older source", path))
+            elif old_source["kind"] != source["kind"]:
+                issues.append(issue("ERROR", "SOURCE_SUPERSESSION", "Source revision cannot change evidence kind", path))
 
     all_ids = set()
     observations = project["observations"]
@@ -131,6 +152,10 @@ def validate_project(project):
                 issues.append(issue("ERROR", "SUPERSESSION", "Must supersede an existing record of the same class/metric", record["id"]))
             elif record["classification"] == "OBSERVED" and old["as_of_date"] != record["as_of_date"]:
                 issues.append(issue("ERROR", "SUPERSESSION_DATE", "Corrected observation must keep original as_of_date", record["id"]))
+            elif old.get("fixture", False) != record.get("fixture", False):
+                issues.append(issue("ERROR", "SUPERSESSION", "Revision cannot turn fixture into research evidence", record["id"]))
+            elif record["classification"] == "OBSERVED" and (old["unit"] != record["unit"] or old["period"] != record["period"]):
+                issues.append(issue("ERROR", "SUPERSESSION", "Revision must retain the unit and economic period", record["id"]))
     for classification, records in (("ASSUMPTION", project["assumptions"]), ("SCENARIO", project["scenarios"])):
         by_metric = {}
         for record in records:
@@ -162,12 +187,27 @@ def validate_project(project):
             issues.append(issue("ERROR", "FORMULA_SPEC", str(exc), formula_id))
     if set(lock) != set(formulas):
         issues.append(issue("ERROR", "FORMULA_LOCK", "Lock and registry keys differ"))
+    pending = set(formulas)
+    while pending:
+        ready = {key for key in pending if not (set(formulas[key]["inputs"]) & pending)}
+        if not ready:
+            trail = []
+            node = min(pending)
+            while node not in trail:
+                trail.append(node)
+                node = min(set(formulas[node]["inputs"]) & pending)
+            cycle = trail[trail.index(node):] + [node]
+            issues.append(issue("ERROR", "FORMULA_CYCLE", " → ".join(cycle), location(project, "formulas")))
+            break
+        pending -= ready
     for rule in project["rules"]["rules"]:
         try:
             if rule["classification"] != "ASSUMPTION" or not rule["rationale"]:
                 raise ValueError("Thresholds require analyst-assumption rationale")
             if rule["state"] not in schema["thesis_states"] or rule["periods"] < 1:
                 raise ValueError("Invalid thesis state/period count")
+            if rule["cadence"] != "QUARTER" or rule["asset"] not in project["assets"]["assets"]:
+                raise ValueError("Unsupported cadence or unknown asset")
             allowed = set(rule["thresholds"]) | set(metric_defs) | {"dtcc_live_material"}
             if names(rule["expression"]) - allowed:
                 raise ValueError("Undeclared expression input")
@@ -175,6 +215,10 @@ def validate_project(project):
             issues.append(issue("ERROR", "THESIS_SPEC", str(exc), rule.get("id", "?")))
     nodes = project["assets"]["assets"]
     for asset_id, asset in nodes.items():
+        if asset["universe"] not in project["assets"]["universe_stages"] or asset["kind"] not in ("TOKEN", "EQUITY", "COMPANY", "INFRASTRUCTURE", "REGULATOR", "EXCHANGE"):
+            issues.append(issue("ERROR", "ASSET_ENUM", "Invalid asset kind/universe", asset_id))
+        if isinstance(asset.get("investable"), str) and asset["investable"] != "unknown":
+            issues.append(issue("ERROR", "ASSET_ENUM", "Investable must be boolean or unknown", asset_id))
         if asset.get("universe") == "CORE" and asset_id not in project["assets"].get("initial_core", []):
             evidence = asset.get("evidence_source_ids", [])
             if not evidence or not any(sources.get(sid, {}).get("tier") in (1, 2) for sid in evidence) or not asset.get("capture_model") or asset.get("investable") is not True or asset.get("reverse_underwriting_available") is not True:
@@ -197,7 +241,7 @@ def validate_project(project):
         event_ids.add(event["id"])
         if set(event["source_ids"]) - sources.keys() or set(event["affected_nodes"]) - nodes.keys():
             issues.append(issue("ERROR", "EVENT_REFERENCE", "Unknown source or node", path))
-        if event["source_ids"] and event["fixture"] != all(sources.get(sid, {}).get("kind") == "FIXTURE" for sid in event["source_ids"]):
+        if event["source_ids"] and event["fixture"] != any(sources.get(sid, {}).get("kind") == "FIXTURE" for sid in event["source_ids"]):
             issues.append(issue("ERROR", "EVENT_FIXTURE", "Event fixture flag and evidence disagree", path))
         if set(event["observation_ids"]) - {r["id"] for r in observations}:
             issues.append(issue("ERROR", "EVENT_OBSERVATION", "Unknown observation", path))
@@ -212,12 +256,31 @@ def validate_project(project):
     for event in project["events"]:
         if old_id := event.get("supersedes_event_id"):
             old = next((e for e in project["events"] if e.get("id") == old_id), None)
-            if not old or event["status"] not in project["event_schema"]["status_transition"].get(old["status"], []) or event["event_date"] < old["event_date"]:
+            if not old or old["type"] != event["type"] or old["fixture"] != event["fixture"] or event["status"] not in project["event_schema"]["status_transition"].get(old["status"], []) or event["event_date"] < old["event_date"]:
                 issues.append(issue("ERROR", "EVENT_TRANSITION", "Invalid event supersession", event["id"]))
         if event.get("type") == "acquisition" and event.get("status") == "COMPLETED":
             old = next((e for e in project["events"] if e.get("id") == event.get("supersedes_event_id")), None)
             if not old or old["status"] not in ("ANNOUNCED", "LIVE") or not (set(event["source_ids"]) - set(old["source_ids"])) or not any(sources.get(sid, {}).get("tier") in (1, 2) for sid in event["source_ids"]):
                 issues.append(issue("ERROR", "ACQUISITION_EVIDENCE", "Completion needs a new primary/official source and valid prior event", event["id"]))
+    return _locate_issues(project, issues)
+
+
+def _locate_issues(project, issues):
+    origins = {}
+    for key, prefix in (("sources", "source"), ("observations", "OBSERVED"),
+                        ("assumptions", "ASSUMPTION"), ("scenarios", "SCENARIO"), ("events", "event")):
+        for index, row in enumerate(project[key]):
+            where = f"{location(project, key, index)} ({row['id']})"
+            origins[row["id"]] = where
+            origins[f"{prefix}:{row['id']}"] = where
+    for name in project["formulas"]["formulas"]:
+        origins[name] = f"{location(project, 'formulas')}.formulas.{name}"
+    return [{**item, "path": origins.get(item["path"], item["path"])} for item in issues]
+
+
+def require_valid_project(project):
+    issues = validate_project(project)
+    reject_errors(issues)
     return issues
 
 

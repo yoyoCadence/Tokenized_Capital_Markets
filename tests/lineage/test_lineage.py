@@ -30,6 +30,30 @@ class LineageSnapshotTests(unittest.TestCase):
         leaf["source_ids"] = []
         self.assertIn("SOURCE_LINEAGE", {x["code"] for x in validate_lineage(self.project, state)})
 
+    def test_equal_value_corroboration_cannot_hide_fixture_behind_first_record(self):
+        p = copy.deepcopy(self.project)
+        # Test-only research-shaped input deliberately precedes a fixture with the same value.
+        source = dict(p["sources"][0], id="test_only_external", kind="EXTERNAL", tier=2,
+                      url="https://example.invalid/schema-test", publisher="TEST ONLY")
+        p["sources"].append(source)
+        old = next(r for r in p["observations"] if r["metric_id"] == "uni_price" and r["as_of_date"] == "2026-06-30")
+        peer = dict(old, id="test_only_peer", fixture=False, source_id=source["id"])
+        p["observations"].insert(0, peer)
+        state = calculate(p)
+        metric = state["metrics"]["uni_price"]
+        self.assertTrue(metric["fixture"])
+        self.assertEqual({x["record_id"] for x in metric["lineage"]["leaves"]}, {old["id"], peer["id"]})
+        self.assertTrue(state["metrics"]["growth_distribution_value"]["fixture"])
+        self.assertEqual(validate_lineage(p, state), [])
+
+    def test_malformed_or_incomplete_state_is_rejected_before_snapshot(self):
+        state = calculate(self.project)
+        del state["metrics"]["uni_price"]
+        self.assertIn("METRIC_SET", {i["code"] for i in validate_lineage(self.project, state)})
+        state = calculate(self.project)
+        state["metrics"]["net_burn_yield"]["lineage"]["leaves"] = ["not a leaf"]
+        self.assertIn("FIELD_TYPE", {i["code"] for i in validate_lineage(self.project, state)})
+
     def test_snapshots_deduplicate_compare_and_reject_in_place_edits(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = copy.deepcopy(self.project)

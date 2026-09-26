@@ -15,7 +15,10 @@ CMPS = {ast.Lt: operator.lt, ast.LtE: operator.le, ast.Gt: operator.gt,
 
 
 def names(expression):
-    tree = ast.parse(expression, mode="eval")
+    try:
+        tree = ast.parse(expression, mode="eval")
+    except (SyntaxError, TypeError) as exc:
+        raise ExpressionError(f"Invalid expression syntax: {exc}") from exc
     # This also rejects unsafe nodes when checking the expression.
     def visit(node):
         if isinstance(node, ast.Expression):
@@ -23,6 +26,12 @@ def names(expression):
         if isinstance(node, ast.Name):
             return {node.id}
         if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            try:
+                finite = math.isfinite(node.value)
+            except OverflowError:
+                finite = False
+            if not finite:
+                raise ExpressionError("Non-finite expression constant")
             return set()
         if isinstance(node, ast.BinOp) and type(node.op) in OPS:
             return visit(node.left) | visit(node.right)

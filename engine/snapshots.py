@@ -4,7 +4,11 @@ from pathlib import Path
 import hashlib
 import json
 
-from engine.validation.checks import signature
+from engine.validation.checks import signature, require_valid_project
+from engine.validation.errors import ValidationError, issue, reject_errors
+from engine.validation.isolation import synthetic_paths
+from engine.validation.lineage import validate_lineage
+from engine.validation.structure import Shape
 
 
 def canonical(value):
@@ -16,12 +20,55 @@ def digest(value):
 
 
 def read_snapshots(root, mode="RESEARCH"):
+    if mode not in ("DEMO", "RESEARCH"):
+        raise ValidationError([issue("ERROR", "MODE_MISMATCH", "Expected DEMO or RESEARCH", "snapshots.mode")])
     paths = (Path(root) / "data/snapshots" / mode.lower()).glob("*.json")
-    return sorted((json.loads(path.read_text(encoding="utf-8")) for path in paths),
-                  key=lambda x: (x["created_at"], x["id"]))
+    snapshots = []
+    for path in paths:
+        try:
+            snapshot = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ValidationError([issue("ERROR", "SNAPSHOT_READ", str(exc), path)]) from exc
+        if not isinstance(snapshot, dict) or any(not isinstance(snapshot.get(k), str) for k in ("id", "created_at", "mode")):
+            raise ValidationError([issue("ERROR", "SNAPSHOT_FIELDS", "Missing snapshot identity/mode", path)])
+        if snapshot["mode"] != mode:
+            raise ValidationError([issue("ERROR", "MODE_MISMATCH", f"Expected {mode} snapshot", path)])
+        if mode == "RESEARCH":
+            reject_errors([issue("ERROR", "RESEARCH_FIXTURE", "Synthetic evidence in research snapshot", found)
+                           for found in synthetic_paths(snapshot, str(path))])
+        snapshots.append(snapshot)
+    return sorted(snapshots, key=lambda x: (x["created_at"], x["id"]))
+
+
+def validate_snapshot_input(project, state):
+    require_valid_project(project)
+    reject_errors(validate_lineage(project, state))
+    reject_errors(state["issues"])
+    if not isinstance(state.get("thesis"), dict):
+        raise ValidationError([issue("ERROR", "SNAPSHOT_FIELDS", "Thesis results required", "state.thesis")])
+    shape = Shape()
+    if set(state["thesis"]) != {r["asset"] for r in project["rules"]["rules"]}:
+        raise ValidationError([issue("ERROR", "SNAPSHOT_FIELDS", "Thesis assets differ from rule registry", "state.thesis")])
+    for asset, thesis in state["thesis"].items():
+        if shape.fields(thesis, {"state": (str, type(None)), "triggered_rules": list, "insufficient_rules": list,
+                                 "last_changed": (str, type(None)), "why": str}, {}, f"state.thesis.{asset}"):
+            if thesis["state"] is not None and thesis["state"] not in project["schema"]["thesis_states"]:
+                shape.issues.append(issue("ERROR", "THESIS_SPEC", "Invalid thesis state", f"state.thesis.{asset}"))
+    reject_errors(shape.issues)
+    if state.get("overrides") or any(
+        leaf["record_id"].startswith("what_if:")
+        for metric in state["metrics"].values() for leaf in metric["lineage"]["leaves"]
+    ):
+        raise ValidationError([issue("ERROR", "UNSAVED_SCENARIO", "Sensitivity previews cannot be published", "state")])
+    if not project["demo"] and not any(m["classification"] == "OBSERVED" and m["value"] is not None for m in state["metrics"].values()):
+        raise ValidationError([issue("ERROR", "NO_RESEARCH_OBSERVATIONS", "Empty research snapshot refused", "state.metrics")])
 
 
 def make_snapshot(project, state, event=None):
+    validate_snapshot_input(project, state)
+    if not project["demo"] and event:
+        reject_errors([issue("ERROR", "RESEARCH_FIXTURE", "Synthetic event evidence", path)
+                       for path in synthetic_paths(event, "event", {s["id"] for s in project["sources"] if s["kind"] == "FIXTURE"})])
     inputs = {key: value for key, value in state["metrics"].items()
               if value["classification"] != "DERIVED" and value["value"] is not None}
     formulas = project["formulas"]["formulas"]
@@ -48,6 +95,11 @@ def make_snapshot(project, state, event=None):
 
 
 def save_snapshot(project, state, event=None):
+    # Guard before mkdir, mutating thesis metadata or reading/writing history.
+    validate_snapshot_input(project, state)
+    if not project["demo"] and event:
+        reject_errors([issue("ERROR", "RESEARCH_FIXTURE", "Synthetic event evidence", path)
+                       for path in synthetic_paths(event, "event", {s["id"] for s in project["sources"] if s["kind"] == "FIXTURE"})])
     directory = Path(project["root"]) / "data/snapshots" / state["mode"].lower()
     directory.mkdir(parents=True, exist_ok=True)
     history = read_snapshots(project["root"], state["mode"])
