@@ -1,0 +1,6 @@
+schema_version: '2.0'
+roles:
+  - {role_id: secz_quarterly_revenue, concept_id: secz_revenue, entity_id: SECZ, allowed_classifications: [OBSERVED], allowed_scopes: [REALIZED], required_period_basis: QUARTER, selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS}
+  - {role_id: uni_current_price, concept_id: uni_price, entity_id: UNI, allowed_classifications: [OBSERVED], allowed_scopes: [REALIZED], required_period_basis: SPOT, selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS, max_age_seconds: 86400}
+  - {role_id: uni_realized_protocol_fee, concept_id: uni_effective_protocol_fee, entity_id: UNI, allowed_classifications: [OBSERVED], allowed_scopes: [REALIZED], required_period_basis: QUARTER, selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS}
+  - {role_id: uni_forward_protocol_fee, concept_id: uni_effective_protocol_fee, entity_id: UNI, allowed_classifications: [ASSUMPTION, SCENARIO], allowed_scopes: [MODELED_HORIZON], required_period_basis: ANNUAL, selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS}

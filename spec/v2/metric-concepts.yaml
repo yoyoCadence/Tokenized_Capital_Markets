@@ -1,0 +1,5 @@
+schema_version: '2.0'
+concepts:
+  - {concept_id: secz_revenue, description: 'Securitize quarterly revenue evidence', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: uni_price, description: 'UNI venue quote', unit: USD_PER_UNI, measure_kind: PRICE, permitted_scopes: [REALIZED]}
+  - {concept_id: uni_effective_protocol_fee, description: 'Effective protocol fee', unit: BP, measure_kind: RATIO, permitted_scopes: [REALIZED, MODELED_HORIZON]}

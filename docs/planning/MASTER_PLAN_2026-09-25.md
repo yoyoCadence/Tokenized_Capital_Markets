@@ -2,7 +2,7 @@
 
 **2026-09-25｜PROPOSED v1.0｜本文件是未來實作計畫**
 
-**2026-09-26 進度註記：** 原規劃中的 WP-01 已完成，詳見 [驗收紀錄](../../reports/wp-01-validation.md)；P0-03 的 v2 契約及遷移 ADR 已完成，見[契約驗收](../../reports/p0-03-contract-validation.md)。目前下一項為 P0-04；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。v2 runtime 尚未實作。
+**2026-09-26 進度註記：** WP-01、P0-03 與 P0-04 唯讀雙時間 selector 已完成，詳見[契約驗收](../../reports/p0-03-contract-validation.md)及[時間選值驗收](../../reports/p0-04-validation.md)。目前下一項為 P0-05；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。v2 金融計算與 dashboard 尚未實作。
 
 ## 1. 最終目標與成功定義
 

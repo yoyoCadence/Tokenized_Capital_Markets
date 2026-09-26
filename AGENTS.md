@@ -6,10 +6,11 @@ Read `spec/` and this file before editing calculations, evidence or UI. A UI dis
 
 Read `docs/planning/README.md`, `docs/planning/CURRENT_STATE_AUDIT.md` and the relevant work package before continuing this project. The planning directory records proposed work; it does not replace canonical specs or assert that future fields, APIs or safeguards already exist.
 
-- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. WP-01 (P0-02 and P0-01) and P0-03 are complete; read `reports/wp-01-validation.md`, `reports/p0-03-contract-validation.md` and `docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md`. The next task is P0-04, the two-time selector. `docs/planning/CONTRACT_V2_PROPOSAL.yaml` is a design contract; the running engine still uses v1.
+- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. WP-01 and P0-03/P0-04 are complete; read their validation reports and `docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md`. The next task is P0-05, scope-aware calculation. The v2 temporal selector is a separate read-only route; v1 financial calculation/snapshots remain legacy and have no point-in-time guarantee.
 - A task becomes DONE only with its implementation/research evidence, tests or reconciliation, commit and changelog. Keep discovered defects visible until fixed.
 - Planning source notes are not canonical observations. Verify, archive, classify and review evidence before research publication; do not promote an official proposal into realized economics.
 - Preserve v1 snapshots and fixture regressions during any v2 migration. Never invent historical publication or first-seen timestamps.
+- For v2 historical queries explicitly specify economic cutoff, knowledge cutoff, valuation time, scope and either system-as-known or public reconstruction. Validate all v2 files with the strict loader; filter evidence by knowledge time before supersession. Never feed legacy v1 records with missing times into a historical selection or pretend a public reconstruction was an actual earlier system decision.
 - Calculation correctness, forecast quality and profitable execution require separate evidence. Thesis states remain research states. Future capital use requires the user's concrete investment policy and authorization; this plan authorizes no trading.
 
 ## Canonical principles

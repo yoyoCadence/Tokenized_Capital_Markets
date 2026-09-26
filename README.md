@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-26 已完成 **WP-01：研究資料隔離與嚴格輸入驗證**，軟體版本 0.1.1，**67 項測試通過**，詳見 [驗收紀錄](reports/wp-01-validation.md)。也已完成 **P0-03 的 v2 資料契約設計**，詳見 [ADR](docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；此設計尚未在引擎執行。真實 observation 仍為 0；歷史可知時間、混合頻率與完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-04：雙時間 selector 與歷史重述重播**，依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-26 已完成 **WP-01、P0-03 與 P0-04**。軟體版本 0.1.2，**79 項測試通過**，見 [P0-04 驗收](reports/p0-04-validation.md)。v2 目前提供獨立、唯讀的雙時間證據選值；v1 財務計算與既有快照仍沿用原路徑。真實 observation 仍為 0，v2 尚未進入公式、thesis 與 Dashboard；混合頻率和完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-05：已實現與情境 scope 分流**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -44,6 +44,21 @@ For a sourced LIVE/COMPLETED event, add its immutable record and source to the r
 - 測試與隔離資料包可指定根目錄：`python -m engine.cli --root /path/to/project validate`。`--root` 放在子命令前。
 
 這些檢查驗證已宣告的結構、來源引用與模式邊界；它們不會自動查證來源內容是否真實，也無法辨識刻意冒充真資料的未標記數字。新增真實 OBSERVED 仍須人工核對原始證據。未保存的 sensitivity overrides 不可直接存為 canonical snapshot。
+
+## v2 雙時間證據查詢 / P0-04
+
+`spec/v2/` 存概念與輸入角色，`sources/v2/` 存來源版本，`data/v2/observed/` 分開存 RESEARCH 與 DEMO。新查詢只讀這些檔案，**不呼叫 v1 `calculate(as_of=...)` 或寫 snapshot**。目前研究 ledger 為空，因此下例回傳 `value: null`：
+
+```bash
+python -m engine.cli temporal-select \
+  --role secz_quarterly_revenue --economic-cutoff 2026-03-31 \
+  --knowledge-cutoff 2026-09-26T05:00:00Z --valuation-at 2026-09-26T05:00:00Z \
+  --scope REALIZED --policy AS_KNOWN_BY_SYSTEM
+```
+
+`AS_KNOWN_BY_SYSTEM` 同時要求當時已公開、已取得及已入庫；`PUBLIC_INFORMATION_RECONSTRUCTION` 可用事後取得但當時已公開且有發布存證的來源，輸出 `reconstructed: true`。兩種模式不得合併成一個歷史樣本。日期精度只能用有時區的隔日零點；未知發布或首次取得時間維持 unknown。同期間不同值回傳 `CONFLICT`；同值的不同來源保留全部 ID。報價使用原時區日期及明確最大資料齡。
+
+CLI 的 `--demo` 讀取 `data/v2/observed/demo.yaml`，目前也是空的；新增回歸案例僅在測試的暫存資料包執行。P0-05 才會把 scope/role 納入財務公式；P0-06 處理 thesis cadence。v1 `snapshot`／`compare` 不提供 point-in-time 保證，不能當事前決策紀錄使用。
 
 ## Architecture
 

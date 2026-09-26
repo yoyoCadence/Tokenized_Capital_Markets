@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.2 / P0-04 temporal selection — 2026-09-26
+
+- Added a separate read-only v2 ledger, strict loader/validator, and `temporal-select` CLI. Queries require economic cutoff, knowledge cutoff, valuation time, scope and explicit system-as-known or public-reconstruction policy; selection filters availability before applying revisions. No provider SDK or data key is required.
+- Preserve equal-value evidence leaves, expose unresolved source conflicts, reject malformed/unknown publication times, apply date-only availability at next local midnight with IANA time zone, require source-version and acquisition evidence for system replay, and cap quote age using original venue date. Revision chains remain append-only.
+- Updated design contract to `2.0-proposal.2` to specify `as_of_precision` and local quote dates; no v1 formula version, sources, historical observations, scenario or snapshots changed. v2 source/observation ledgers start empty; tests only use synthetic temporary ledgers.
+- New regression cases cover original/restated Q1 across two knowledge policies, equal/conflicting sources, unknown times, DST/day boundaries, quote freshness, revision chains, CLI read-only and fixture isolation. v2 financial formulas, thesis cadence and replayable snapshots remain P0-05/06/07.
+
 ## P0-03 v2 contract design — 2026-09-26
 
 - Added machine-readable time/scope/record contract proposal, v1/v2 compatibility matrix covering all 30 formula IDs, and ADR-0001 for append-only migration and two knowledge policies. No v2 runtime or source evidence was introduced.
