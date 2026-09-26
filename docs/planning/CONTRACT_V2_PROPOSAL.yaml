@@ -1,0 +1,140 @@
+# P0-03 design contract, NOT loaded by the v1 engine. Implementation is P0-04/05/06.
+contract_version: '2.0-proposal.1'
+status: PROPOSED
+baseline_schema: spec/canonical-schema.yaml
+canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
+orthogonal_dimensions:
+  fixture: boolean
+  economic_scope: [REALIZED, RUN_RATE, MODELED_HORIZON, REVERSE_REQUIREMENT]
+  knowledge_policy: [AS_KNOWN_BY_SYSTEM, PUBLIC_INFORMATION_RECONSTRUCTION]
+  publication_precision: [INSTANT, DATE, UNKNOWN]
+  period_basis: [SPOT, QUARTER, ANNUAL, TTM]
+  missing_reason: [NOT_DISCLOSED, NOT_YET_RETRIEVED, NOT_APPLICABLE, STALE, CONFLICT, INCOMPATIBLE_PERIOD, MODEL_NOT_IDENTIFIED, LEGACY_TIME_UNKNOWN]
+
+metric_concept:
+  required: [concept_id, description, unit, measure_kind, permitted_scopes]
+  fields:
+    concept_id: stable_semantic_identifier
+    measure_kind: [STOCK, FLOW, RATIO, PRICE, COUNT]
+    permitted_scopes: nonempty_subset_of_economic_scope
+    entity_type: optional_entity_or_security_type
+  rule: 'A concept is a quantity, not an evidence class. Never mutate a record classification to make it fit a role.'
+
+input_role:
+  required: [role_id, concept_id, allowed_classifications, allowed_scopes, selection_policy]
+  fields:
+    role_id: stable_formula_or_rule_input_identifier
+    selection_policy: [LATEST_ELIGIBLE_UNAMBIGUOUS, EXACT_RECORD_ID]
+    required_period_basis: optional_period_basis
+    max_age: optional_duration_or_null
+  rule: 'Filter by role, scope, period, knowledge cutoff, source, and evidence before supersession. Same-number evidence remains visible.'
+
+economic_period:
+  required: [basis, start, end]
+  fields:
+    basis: period_basis
+    start: ISO_8601_calendar_date
+    end: ISO_8601_calendar_date
+    fiscal_year: optional_integer
+    fiscal_quarter: optional_integer_1_to_4
+    period_label: optional_original_reporting_label
+  invariants:
+    - 'start <= end; SPOT requires start == end.'
+    - 'FLOW values need an explicit interval; STOCK and PRICE need an as_of_at or documented date-only precision.'
+    - 'Fiscal dates and calendar dates are not interchangeable; TTM needs a defined trailing interval.'
+
+knowledge_time:
+  required: [publication_precision, published_at, published_on, publication_timezone, first_seen_at, ingested_at, publication_evidence]
+  fields:
+    published_at: timezone_aware_ISO_8601_instant_or_null
+    published_on: ISO_8601_calendar_date_or_null
+    publication_timezone: IANA_timezone_or_null
+    first_seen_at: timezone_aware_ISO_8601_instant_or_null
+    ingested_at: timezone_aware_ISO_8601_instant_or_null
+    publication_evidence: {source_id: nullable_source_id, locator: nullable_locator, verification: [VERIFIED, UNVERIFIED, UNKNOWN]}
+  invariants:
+    - 'INSTANT requires published_at, verified evidence; DATE requires published_on and timezone for cutoff eligibility.'
+    - 'UNKNOWN publication is never eligible for historical public reconstruction.'
+    - 'DATE availability starts at the next local midnight after published_on, converted to UTC; never invent a time within the source date.'
+    - 'If publication timezone is unknown, historical availability is unknown until corroborated.'
+    - 'first_seen_at is the actual first system acquisition of this evidence version, never the economic as-of or later ingestion timestamp by inference.'
+    - 'ingested_at records actual canonical acceptance, never an assumed historical timestamp.'
+    - 'For system replay both publication and first_seen must be verified and <= knowledge_cutoff; ingestion must also have occurred by cutoff for an actual decision replay.'
+    - 'For public reconstruction verified publication must be <= cutoff; later first_seen/ingested is allowed and marked reconstructed, not an actual prior decision.'
+
+valuation_time:
+  required: [knowledge_cutoff, valuation_at, market_cutoff_policy]
+  fields:
+    knowledge_cutoff: timezone_aware_ISO_8601_instant
+    valuation_at: timezone_aware_ISO_8601_instant
+    market_cutoff_policy: [AT_OR_BEFORE_VALUATION_AND_KNOWLEDGE, NO_PRICE]
+    venue: optional_venue_or_null
+    quote_max_age: optional_positive_duration
+  invariants:
+    - 'valuation_at cannot exceed knowledge_cutoff for an actual-decision replay.'
+    - 'Market quotes require a venue, quote timestamp <= valuation_at and their own knowledge eligibility.'
+    - 'A quote is never silently carried beyond quote_max_age; unknown price forbids current-price reverse underwriting.'
+
+record:
+  required: [schema_version, id, concept_id, classification, economic_scope, value, unit, fixture, economic_period, knowledge_time]
+  common_optional: [entity_id, security_id, supersedes_id, as_of_at, missing_reason, source_ids, input_role_id]
+  value_rule: 'Exactly one of finite numeric value and missing_reason; missing is never encoded as zero.'
+  observed_required: [source_ids, as_of_at]
+  observed_constraints:
+    - 'economic_scope must be REALIZED; a price or spot stock remains REALIZED as an observation of a moment.'
+    - 'All source IDs must resolve to immutable source versions; verified time refers to the exact version used.'
+    - 'Date-only stock may set as_of_at null with explicit date precision; historical intraday eligibility is then blocked.'
+  assumption_required: [rationale, effective_from]
+  scenario_required: [scenario_name, effective_from]
+  derived_required: [formula_id, formula_version, formula_signature, dependencies, selected_record_ids, computed_at]
+  derived_constraints:
+    - 'Formula dependency graph, input roles, economic scope and all leaves must be preserved.'
+    - 'A derived REALIZED economic measure cannot depend on forward scenario or modeled-horizon economic inputs.'
+    - 'A derived scope is determined by formula/context, never by DERIVED classification alone.'
+  supersession_identity: [concept_id, entity_id, security_id, classification, economic_scope, unit, economic_period]
+  supersession_rule: 'Append a new ID; for a restatement retain supersession identity, compare eligibility before superseding, retain unrelated conflicts.'
+
+query_context:
+  required: [mode, economic_cutoff, knowledge_cutoff, valuation_time, required_scope, knowledge_policy]
+  fields:
+    mode: [DEMO, RESEARCH]
+    economic_cutoff: ISO_8601_calendar_date
+    knowledge_cutoff: timezone_aware_ISO_8601_instant
+    valuation_time: valuation_time
+    required_scope: economic_scope
+    knowledge_policy: knowledge_policy
+  reject_if:
+    - 'RESEARCH contains a fixture evidence leaf.'
+    - 'A selected record has unknown historical availability for a historical query.'
+    - 'A role has multiple unresolved eligible conflicting records.'
+    - 'The economic period, unit or economic scope does not match the role.'
+
+role_examples:
+  - role_id: uni_realized_protocol_fee
+    concept_id: uni_effective_protocol_fee
+    allowed_classifications: [OBSERVED]
+    allowed_scopes: [REALIZED]
+    selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS
+    required_period_basis: QUARTER
+  - role_id: uni_forward_protocol_fee
+    concept_id: uni_effective_protocol_fee
+    allowed_classifications: [ASSUMPTION, SCENARIO]
+    allowed_scopes: [MODELED_HORIZON]
+    selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS
+    required_period_basis: ANNUAL
+  - role_id: uni_current_market_cap
+    concept_id: uni_market_cap
+    allowed_classifications: [OBSERVED]
+    allowed_scopes: [REALIZED]
+    selection_policy: LATEST_ELIGIBLE_UNAMBIGUOUS
+    required_period_basis: SPOT
+
+legacy_policy:
+  original_record_immutable: true
+  original_snapshot_immutable: true
+  unproven_published_at: null
+  unproven_first_seen_at: null
+  unproven_ingested_at: null
+  legacy_economic_scope: UNKNOWN_PENDING_MAPPING
+  historical_replay_eligible_without_verified_time: false
+  v1_fixture_remains_fixture: true

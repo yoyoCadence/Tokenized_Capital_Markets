@@ -13,7 +13,7 @@
 | A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
 | 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
 
-證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。現有 67 tests 通過，真實 observation 仍為 0。下一項為 P0-03。
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03 已完成[設計契約和遷移 ADR](../../reports/p0-03-contract-validation.md)，尚未修復下述 runtime 風險。真實 observation 仍為 0；下一項為 P0-04。
 
 ## 1. 已具備的基礎
 

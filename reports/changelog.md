@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## P0-03 v2 contract design — 2026-09-26
+
+- Added machine-readable time/scope/record contract proposal, v1/v2 compatibility matrix covering all 30 formula IDs, and ADR-0001 for append-only migration and two knowledge policies. No v2 runtime or source evidence was introduced.
+- Defined period, publication precision, first-seen/ingestion, valuation time, role/classification/scope selection and missing-data policies. V1 demo fixtures and two historical snapshots remain unchanged; unknown legacy publication/acquisition times stay null. The next task is P0-04 (time-aware selector); P0-05/06 remain planned.
+- Acceptance evidence: [P0-03 validation](p0-03-contract-validation.md). No formulas, market records, thesis rules or derived financial outputs changed.
+
 ## Software 0.1.1 / WP-01 — 2026-09-26
 
 - Completed P0-02 and P0-01 in implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`; detailed evidence: [WP-01 validation](wp-01-validation.md).
