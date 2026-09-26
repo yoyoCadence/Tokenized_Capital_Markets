@@ -2,7 +2,18 @@
 
 **審查日期：2026-09-25｜基準 commit：68f19531cfd77bc2c70006921a6402e7a10f04f6**
 
-本文件記錄已執行的檢查與程式碼推論。它不是修復報告；下列缺口在本次文件提交後仍存在。
+本文件保留 2026-09-25 的檢查與程式碼推論。下列探針與缺口描述屬於原始基線；後續修復以這裡的進度表與獨立驗收報告為準。
+
+## 修復進度（2026-09-26）
+
+| 原始發現 | WP-01 後狀態 |
+| --- | --- |
+| A-01：fixture 模式隔離 | P0-01 完成：計算、CLI、HTTP、event、snapshot 拒絕 synthetic 研究輸入；共享 demo 配置依明示政策排除 |
+| A-07：輸入／公式驗證 | P0-02 完成 strict YAML、型別、唯一 ID、版本鏈與 formula DAG；完整量綱與 normalization 仍屬 P1-03 |
+| A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
+| 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
+
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。現有 67 tests 通過，真實 observation 仍為 0。下一項為 P0-03。
 
 ## 1. 已具備的基礎
 

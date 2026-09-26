@@ -4,9 +4,9 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 ## 後續發展規劃 / Development plan
 
-已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。所有未來功能均標示 **PROPOSED / PLANNED**。
+已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-目前 26 項測試通過，但真實 observation 為 0；稽核亦確認模式隔離、歷史可知時間與混合頻率的缺口。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 [WP-01：研究資料隔離與嚴格輸入驗證](docs/planning/FIRST_IMPLEMENTATION_PACKAGE.md)，工作依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-26 已完成 **WP-01：研究資料隔離與嚴格輸入驗證**，軟體版本 0.1.1，**67 項測試通過**，詳見 [驗收紀錄](reports/wp-01-validation.md)。真實 observation 仍為 0；歷史可知時間、混合頻率與完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-03：v2 時間、scope 與 record 契約及遷移 ADR**，依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -34,6 +34,16 @@ python -m engine.cli apply-event --demo --id event_demo_dtcc_planned
 ```
 
 For a sourced LIVE/COMPLETED event, add its immutable record and source to the registries, then run `python -m engine.cli apply-event --id EVENT_ID --observations new-observations.yaml`. The batch must use fresh IDs, match the event's source IDs and classification, and pass full validation before its observations are appended. The command recalculates, applies thesis rules, writes a snapshot and records the event in `reports/changelog.md`. Planned/announced events cannot ingest live observations. The demo command above has no new observations and only records graph propagation; avoid running it when you want the default two-version comparison unchanged.
+
+## Input validation / WP-01
+
+- 所有計算、CLI、HTTP、事件與 snapshot 入口先驗證輸入。重複 YAML key、aliases／merge、NaN／Infinity、錯誤型別、未知欄位、重複 ID、非法 supersession 與 formula cycle 會被拒絕。日期使用引號包住的 `YYYY-MM-DD`；`fixture` 使用真正的 boolean，不接受字串 `"false"`。
+- RESEARCH 不載入 demo ledger。共享設定中明確 `fixture: true` 的 assumptions／scenarios／graph edges 可依政策排除；排除清單由 API 的 `loading_policy` 提供。未引用的 fixture source 可以保留。
+- 放錯到 research ledger 的 fixture observation／event 直接報錯，使用 `--demo` 也不能繞過；`fixture: false` 但引用 fixture source 同樣拒絕。來源相同數值的多筆證據全部保留，任何 synthetic dependency 都會傳到衍生結果。
+- 輸入驗證失敗：CLI 以 exit code 1 及 stderr JSON issues 回覆；HTTP state／sensitivity 回傳 422 與 `issues`。issue 包含 `level`、`code`、`message`、`path`；例：`RESEARCH_FIXTURE`、`YAML_DUPLICATE_KEY`。失敗不發布 snapshot 或寫入 ledger／changelog。
+- 測試與隔離資料包可指定根目錄：`python -m engine.cli --root /path/to/project validate`。`--root` 放在子命令前。
+
+這些檢查驗證已宣告的結構、來源引用與模式邊界；它們不會自動查證來源內容是否真實，也無法辨識刻意冒充真資料的未標記數字。新增真實 OBSERVED 仍須人工核對原始證據。未保存的 sensitivity overrides 不可直接存為 canonical snapshot。
 
 ## Architecture
 

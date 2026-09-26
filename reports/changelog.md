@@ -1,5 +1,15 @@
 # Research/software changelog
 
+## Software 0.1.1 / WP-01 — 2026-09-26
+
+- Completed P0-02 and P0-01 in implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`; detailed evidence: [WP-01 validation](wp-01-validation.md).
+- Added strict YAML parsing, v1 shape/type checks, unique identities, supersession checks and formula-cycle preflight. Errors include stable codes and file/record/field locations; CLI returns exit 1 and HTTP validation returns 422.
+- Enforced research fixture isolation before calculation, event ingestion, snapshot creation/save/read and HTTP state/sensitivity. Explicit shared fixture exclusions remain visible; misplaced research rows are rejected even in DEMO. Embedded synthetic evidence and false fixture flags cannot bypass source checks.
+- Preserved all equal-value corroborating evidence leaves and propagated fixture status; prevented unsaved sensitivity previews from being saved as canonical snapshots. Added an explicit global CLI `--root` for isolated projects.
+- Added 41 tests: all 67 pass. DEMO and RESEARCH each validate 94 metrics with zero issues. Integration tests cover CLI, real loopback HTTP, event and snapshot boundaries, with unchanged-file checks on rejection.
+- Financial specs, formula versions/locks, sources, observations, assumptions, scenarios, events, dashboard and both original demo snapshots are unchanged. Repeat demo bootstrap against a temporary copy found the existing snapshots and changed no files. No financial snapshot or live evidence was added.
+- Compatibility: aliases/merge keys, unknown schema fields, unquoted dates and loosely typed values that previously slipped through are now rejected. Time/scope v2, mixed-frequency rules, snapshot replay/digest verification and crash/concurrency-safe publication remain planned. Next task: P0-03.
+
 ## Development planning v1.0 — 2026-09-25
 
 - Added `docs/planning/`: detailed Chinese roadmap, current-state audit, proposed data/model contracts, edge validation and risk protocol, structured implementation backlog, first work package and primary-source research notes.

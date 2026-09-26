@@ -1,8 +1,10 @@
 # WP-01：研究資料隔離與嚴格輸入驗證
 
-**狀態：PLANNED｜下一次實作的建議任務，不代表本次已完成**
+**狀態：DONE｜完成日期：2026-09-26｜軟體版本：0.1.1**
 
-對應 backlog：**P0-02 → P0-01**。其他工作包不包含在本次建議範圍。
+對應 backlog：**P0-02 → P0-01**。Implementation commit：[`e8b4d55520ea71f1d626a9286fa64a30cd745f3d`](https://github.com/yoyoCadence/Tokenized_Capital_Markets/commit/e8b4d55520ea71f1d626a9286fa64a30cd745f3d)。[驗收紀錄](../../reports/wp-01-validation.md)：67 tests 通過、兩種模式 validation 通過、原金融資料與快照保留。下一項為 **P0-03**，其他工作包仍未完成。
+
+以下保留原始工作包的問題陳述與驗收要求，描述的是實作前基線；目前行為以驗收紀錄和程式為準。
 
 ## 1. 為什麼先做這一項
 
@@ -82,8 +84,8 @@ python -m engine.cli validate
 - 新的安全邊界寫入文件；沒有宣称其已解決 bitemporal、scope 或其他未包含風險。
 - commit 與 changelog 連到 P0-01/P0-02，backlog 附 completion evidence 才可改 DONE。
 
-## 7. 給下一次實作的可直接使用任務
+## 7. 原始實作任務（已執行，保留歷史）
 
 > 請實作 docs/planning/FIRST_IMPLEMENTATION_PACKAGE.md 的 WP-01。先讀 AGENTS.md 與現況稽核，完成 P0-02、P0-01 的驗收，不改金融公式與歷史資料。使用 temporary fixtures 重現研究模式污染和重複 YAML key，修正後執行完整現有測試與新增邊界測試，記錄測試輸出、changelog、backlog 完成證據，再依使用者當次授權提交。
 
-這段是後續任務模板；本規劃提交沒有執行它。
+上述任務於 2026-09-26 完成；勿再依此模板重做 WP-01。下一項 P0-03 的依賴與驗收見 structured backlog。

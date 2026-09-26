@@ -1,12 +1,14 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.0'
-status: PROPOSED
+version: '1.1'
+status: ACTIVE
 planning_date: '2026-09-25'
+updated_on: '2026-09-26'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
-scope: planning_only
+scope: roadmap_with_completion_evidence
 first_work_package: WP-01
+next_task: P0-03
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -48,7 +50,7 @@ tasks:
     title: RESEARCH 與 fixture 的完整隔離
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 3
     depends_on: [P0-02]
@@ -58,11 +60,19 @@ tasks:
       - RESEARCH 使用到的 source、graph evidence、derived lineage 均無 fixture；未使用的全域 fixture registry 記錄不誤擋空研究模式。
       - CLI/API/snapshot 發布入口行為一致，DEMO 正常且明示 synthetic。
     audit_refs: [A-01]
+    completion:
+      completed_on: '2026-09-26'
+      implementation_commit: e8b4d55520ea71f1d626a9286fa64a30cd745f3d
+      evidence: reports/wp-01-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_boundaries.py, tests/lineage/test_lineage.py, tests/schema/test_preflight.py]
+      full_suite_tests_passed: 67
+      result: CLI/API/calculation/event/snapshot 邊界拒絕 synthetic 研究輸入；DEMO 與空 RESEARCH 保留可用，失敗不寫入。
   - id: P0-02
     title: 嚴格 YAML、唯一 ID 與版本鏈 preflight
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 3
     depends_on: []
@@ -72,6 +82,14 @@ tasks:
       - supersession 自循環、多節點循環、dangling parent、跨語義替換有明確錯誤。
       - 錯誤包含檔案與欄位或 record；formula DAG 循環在發布前被識別。
     audit_refs: [A-07]
+    completion:
+      completed_on: '2026-09-26'
+      implementation_commit: e8b4d55520ea71f1d626a9286fa64a30cd745f3d
+      evidence: reports/wp-01-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/schema/test_preflight.py, tests/integration/test_boundaries.py]
+      full_suite_tests_passed: 67
+      result: strict YAML、record 型別、唯一 ID、supersession 與 formula DAG preflight 通過負向驗收；原 26 項測試保留。
   - id: P0-03
     title: v2 時間、scope 與 record 契約及遷移 ADR
     phase: P0

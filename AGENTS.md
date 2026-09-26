@@ -6,7 +6,7 @@ Read `spec/` and this file before editing calculations, evidence or UI. A UI dis
 
 Read `docs/planning/README.md`, `docs/planning/CURRENT_STATE_AUDIT.md` and the relevant work package before continuing this project. The planning directory records proposed work; it does not replace canonical specs or assert that future fields, APIs or safeguards already exist.
 
-- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. The recommended first package is WP-01, covering P0-02 then P0-01.
+- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. WP-01 (P0-02 and P0-01) is complete; read `reports/wp-01-validation.md`. The next task is P0-03, the v2 time/scope/record contract and migration ADR.
 - A task becomes DONE only with its implementation/research evidence, tests or reconciliation, commit and changelog. Keep discovered defects visible until fixed.
 - Planning source notes are not canonical observations. Verify, archive, classify and review evidence before research publication; do not promote an official proposal into realized economics.
 - Preserve v1 snapshots and fixture regressions during any v2 migration. Never invent historical publication or first-seen timestamps.
@@ -32,6 +32,8 @@ Prefer Tier 1 filings, regulators, exchanges, audited accounts, DTCC and onchain
 
 - Run `python -m engine.cli validate --demo` and `python -m unittest discover -s tests -p 'test_*.py'` after code/spec changes. Run `python -m engine.cli validate` for research mode.
 - Reject schema, classification, unit, source, date, period, formula-lock and lineage errors; do not silently coerce bad inputs. Division by zero is an error; required UNI share above 100% is a warning.
+- Use the strict loader and shared project validation before calculation, ingestion or publication. Do not bypass them with `yaml.safe_load` or ad hoc dictionary conversion. YAML duplicate keys, aliases, merges, nonfinite numbers, unknown fields and incorrect types are errors; v2 fields require an explicit contract migration.
+- Reject fixtures misplaced in research ledgers, including when running DEMO. Shared fixture assumptions/scenarios/edges may be explicitly excluded by the recorded loading policy; unused fixture sources may remain. Never silently drop polluted research rows. Preserve all corroborating evidence leaves and propagate any fixture dependency.
 - Snapshot only after validation. Content-addressed snapshots are write-once; compare prior vs current and report whether an observation, source, assumption, scenario or formula changed. Do not save a sensitivity override as research evidence.
 - Event propagation must distinguish graph dependencies from economic-transmission hypotheses. Thesis states are HEALTHY, WATCH, STRESS, BREAK_CANDIDATE, INVALIDATED; incomplete evidence yields an *unknown* display, never a fabricated state. These are not recommendations.
 - Before admitting a new observed number, verify the original primary source and accounting period. If there is no trustworthy source, leave the field unknown and open a research task.
