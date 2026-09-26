@@ -1,0 +1,2 @@
+schema_version: '2.0'
+units: [USD, XLM, UNI, COUNT, FRACTION, BP, MULTIPLE, YEARS, USD_PER_XLM, USD_PER_UNI]

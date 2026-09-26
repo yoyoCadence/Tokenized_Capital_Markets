@@ -10,6 +10,7 @@ from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.storage import ROOT, load_project, read_records
 from engine.thesis.rules import evaluate_theses
+from engine.temporal import load_temporal_project, select_temporal
 from engine.validation.checks import require_valid_project
 from engine.validation.errors import ValidationError, issue, reject_errors
 from engine.validation.lineage import validate_lineage
@@ -41,6 +42,15 @@ def _main(argv=None):
             child.add_argument("--observations", help="YAML file with new observations to append")
     sub.add_parser("bootstrap-demo")
     sub.add_parser("compare").add_argument("--demo", action="store_true")
+    temporal = sub.add_parser("temporal-select", help="Read-only v2 point-in-time evidence query")
+    temporal.add_argument("--demo", action="store_true")
+    temporal.add_argument("--role", required=True)
+    temporal.add_argument("--economic-cutoff", required=True)
+    temporal.add_argument("--knowledge-cutoff", required=True)
+    temporal.add_argument("--valuation-at", required=True)
+    temporal.add_argument("--scope", required=True)
+    temporal.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    temporal.add_argument("--record-id")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -75,6 +85,12 @@ def _main(argv=None):
         result = commit_event(project, event, rows, observation_path=args.observations)
         print(json.dumps({"snapshot_id": result["snapshot"]["id"], "created": result["created"],
                           "propagation": result["propagation"]}, ensure_ascii=False, indent=2))
+    elif args.command == "temporal-select":
+        project = load_temporal_project(root=args.root, demo=args.demo)
+        result = select_temporal(project, role_id=args.role, economic_cutoff=args.economic_cutoff,
+                                 knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                                 required_scope=args.scope, knowledge_policy=args.policy, record_id=args.record_id)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 def main(argv=None):

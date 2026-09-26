@@ -1,5 +1,5 @@
-# P0-03 design contract, NOT loaded by the v1 engine. Implementation is P0-04/05/06.
-contract_version: '2.0-proposal.1'
+# P0-03 design contract; P0-04 selector uses its temporal rules. v1 engine is unchanged.
+contract_version: '2.0-proposal.2'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -59,6 +59,7 @@ knowledge_time:
     - 'If publication timezone is unknown, historical availability is unknown until corroborated.'
     - 'first_seen_at is the actual first system acquisition of this evidence version, never the economic as-of or later ingestion timestamp by inference.'
     - 'ingested_at records actual canonical acceptance, never an assumed historical timestamp.'
+    - 'An exact cited source version must already have been retrieved by the record first_seen_at and ingested_at; later corroboration needs a new record and source ID.'
     - 'For system replay both publication and first_seen must be verified and <= knowledge_cutoff; ingestion must also have occurred by cutoff for an actual decision replay.'
     - 'For public reconstruction verified publication must be <= cutoff; later first_seen/ingested is allowed and marked reconstructed, not an actual prior decision.'
 
@@ -77,13 +78,14 @@ valuation_time:
 
 record:
   required: [schema_version, id, concept_id, classification, economic_scope, value, unit, fixture, economic_period, knowledge_time]
-  common_optional: [entity_id, security_id, supersedes_id, as_of_at, missing_reason, source_ids, input_role_id]
+  common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, legacy_record_id]
   value_rule: 'Exactly one of finite numeric value and missing_reason; missing is never encoded as zero.'
-  observed_required: [source_ids, as_of_at]
+  observed_required: [source_ids, as_of_at, as_of_precision]
   observed_constraints:
     - 'economic_scope must be REALIZED; a price or spot stock remains REALIZED as an observation of a moment.'
     - 'All source IDs must resolve to immutable source versions; verified time refers to the exact version used.'
     - 'Date-only stock may set as_of_at null with explicit date precision; historical intraday eligibility is then blocked.'
+    - 'The local calendar date of an instant quote, including its original UTC offset, must match the reported SPOT period end.'
   assumption_required: [rationale, effective_from]
   scenario_required: [scenario_name, effective_from]
   derived_required: [formula_id, formula_version, formula_signature, dependencies, selected_record_ids, computed_at]

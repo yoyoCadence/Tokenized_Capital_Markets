@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.1'
+version: '1.2'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-26'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-04
+next_task: P0-05
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -116,7 +116,7 @@ tasks:
     title: 雙時間 selector 與歷史重述重播
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 5
     depends_on: [P0-03]
@@ -126,6 +126,12 @@ tasks:
       - 晚發布修正版不污染早期 cutoff；同期間衝突不被任意選一筆。
       - 日期精度/timezone/available-time 不明的限制可見。
     audit_refs: [A-02]
+    completion:
+      completed_on: '2026-09-26'
+      evidence: reports/p0-04-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_temporal_v2.py]
+      result: 獨立唯讀 v2 selector、strict v2 讀取與公開/系統可知政策；v1 runtime 和兩個 snapshots 保留。
   - id: P0-05
     title: 已實現收益、run rate、forward 與 reverse 分流
     phase: P0
