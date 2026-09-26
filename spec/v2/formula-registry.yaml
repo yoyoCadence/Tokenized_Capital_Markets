@@ -1,0 +1,20 @@
+schema_version: '2.0'
+formulas:
+  uni_spot_market_cap:
+    {version: '2.0', scope: REALIZED, unit: USD, period_basis: SPOT, inputs: [uni_current_supply, uni_current_price], expression: 'uni_current_supply * uni_current_price'}
+  uni_realized_net_burn_value:
+    {version: '2.0', scope: REALIZED, unit: USD, period_basis: QUARTER, inputs: [uni_realized_burn_value, uni_realized_distribution_value, uni_realized_dilution_value], expression: 'uni_realized_burn_value - uni_realized_distribution_value - uni_realized_dilution_value'}
+  uni_realized_net_burn_yield:
+    {version: '2.0', scope: REALIZED, unit: FRACTION, period_basis: QUARTER, inputs: [uni_realized_net_burn_value, uni_spot_market_cap], expression: 'uni_realized_net_burn_value / uni_spot_market_cap'}
+  uni_annualized_net_burn_run_rate:
+    {version: '2.0', scope: RUN_RATE, unit: USD, period_basis: ANNUAL, inputs: [uni_realized_net_burn_value], expression: 'uni_realized_net_burn_value * 4'}
+  uni_annualized_net_burn_yield_run_rate:
+    {version: '2.0', scope: RUN_RATE, unit: FRACTION, period_basis: ANNUAL, inputs: [uni_annualized_net_burn_run_rate, uni_spot_market_cap], expression: 'uni_annualized_net_burn_run_rate / uni_spot_market_cap'}
+  uni_modeled_protocol_revenue:
+    {version: '2.0', scope: MODELED_HORIZON, unit: USD, period_basis: ANNUAL, inputs: [uni_forward_tam, uni_forward_penetration, uni_forward_turnover, uni_forward_onchain_share, uni_forward_amm_share, uni_forward_market_share, uni_forward_protocol_fee], expression: 'uni_forward_tam * uni_forward_penetration * uni_forward_turnover * uni_forward_onchain_share * uni_forward_amm_share * uni_forward_market_share * uni_forward_protocol_fee / 10000'}
+  uni_modeled_net_accrual:
+    {version: '2.0', scope: MODELED_HORIZON, unit: USD, period_basis: ANNUAL, inputs: [uni_modeled_protocol_revenue, uni_forward_distribution_value], expression: 'uni_modeled_protocol_revenue - uni_forward_distribution_value'}
+  uni_modeled_net_yield:
+    {version: '2.0', scope: MODELED_HORIZON, unit: FRACTION, period_basis: ANNUAL, inputs: [uni_modeled_net_accrual, uni_spot_market_cap], expression: 'uni_modeled_net_accrual / uni_spot_market_cap'}
+  uni_required_market_share:
+    {version: '2.0', scope: REVERSE_REQUIREMENT, unit: FRACTION, period_basis: ANNUAL, inputs: [uni_spot_market_cap, uni_forward_required_yield, uni_forward_distribution_value, uni_forward_tam, uni_forward_penetration, uni_forward_turnover, uni_forward_onchain_share, uni_forward_amm_share, uni_forward_protocol_fee], expression: '(uni_spot_market_cap * uni_forward_required_yield + uni_forward_distribution_value) / (uni_forward_tam * uni_forward_penetration * uni_forward_turnover * uni_forward_onchain_share * uni_forward_amm_share * uni_forward_protocol_fee / 10000)'}

@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-26 已完成 **WP-01、P0-03 與 P0-04**。軟體版本 0.1.2，**79 項測試通過**，見 [P0-04 驗收](reports/p0-04-validation.md)。v2 目前提供獨立、唯讀的雙時間證據選值；v1 財務計算與既有快照仍沿用原路徑。真實 observation 仍為 0，v2 尚未進入公式、thesis 與 Dashboard；混合頻率和完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-05：已實現與情境 scope 分流**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-26 已完成 **WP-01、P0-03、P0-04 與 P0-05**。軟體版本 0.1.3，**90 項測試通過**，見 [P0-05 驗收](reports/p0-05-validation.md)。v2 現有獨立唯讀雙時間選值與 UNI scope-aware 公式／Dashboard 分流；v1 財務數字與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 尚未接入 thesis cadence、其他資產公式或可重播 snapshot。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-06：資產／規則的期間與 freshness**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -58,7 +58,20 @@ python -m engine.cli temporal-select \
 
 `AS_KNOWN_BY_SYSTEM` 同時要求當時已公開、已取得及已入庫；`PUBLIC_INFORMATION_RECONSTRUCTION` 可用事後取得但當時已公開且有發布存證的來源，輸出 `reconstructed: true`。兩種模式不得合併成一個歷史樣本。日期精度只能用有時區的隔日零點；未知發布或首次取得時間維持 unknown。同期間不同值回傳 `CONFLICT`；同值的不同來源保留全部 ID。報價使用原時區日期及明確最大資料齡。
 
-CLI 的 `--demo` 讀取 `data/v2/observed/demo.yaml`，目前也是空的；新增回歸案例僅在測試的暫存資料包執行。P0-05 才會把 scope/role 納入財務公式；P0-06 處理 thesis cadence。v1 `snapshot`／`compare` 不提供 point-in-time 保證，不能當事前決策紀錄使用。
+CLI 的 `--demo` 讀取 `data/v2/observed/demo.yaml`，目前也是空的；新增回歸案例僅在測試的暫存資料包執行。v1 `snapshot`／`compare` 不提供 point-in-time 保證，不能當事前決策紀錄使用。
+
+## V2 UNI economic scopes / P0-05
+
+`scope-report` 經 v2 雙時間 selector 選擇輸入，再用 `spec/v2/formula-registry.yaml` 的獨立鎖版公式計算；只讀、不覆寫 v1 公式與快照。`REALIZED` 要求同一已完成季度的實際 burn、已分配價值與其他稀釋，以及同日供給量／即期價；費用收入不是自動等於 burn。`RUN_RATE` 只是季度淨值乘四。`MODELED_HORIZON` 依未來同一年度的 TAM 情境與明示假設；`REVERSE_REQUIREMENT` 使用當下市值與同年度費率／分配／目標收益率。輸出保留公式簽章、角色依賴、所有 record/source IDs 和 fixture 標記，缺任一必要值保持 Unknown。這不是 token 總報酬或承諾的持續燒毀率。
+
+```bash
+python -m engine.cli scope-report \
+  --realized-quarter-end 2026-06-30 --horizon-end 2027-12-31 \
+  --knowledge-cutoff 2026-09-26T12:00:00Z --valuation-at 2026-09-26T12:00:00Z \
+  --policy AS_KNOWN_BY_SYSTEM
+```
+
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；90 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。P0-06 才改建各資產／規則的時間和 freshness；P0-07 才處理完整重播。
 
 ## Architecture
 

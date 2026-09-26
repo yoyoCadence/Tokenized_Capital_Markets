@@ -1,6 +1,6 @@
 # P0-03：v1／v2 相容矩陣與對應政策
 
-**設計狀態：PROPOSED；v1 程式與 2 份 demo snapshot 仍是唯一執行版本。** 以 v1 `spec/canonical-schema.yaml` 的 94 metric（47 OBSERVED、30 DERIVED、16 ASSUMPTION、1 SCENARIO）、`engine/formulas/runtime.py` 和 `engine/snapshots.py` 核對。v2 實作不在本任務內。
+**原設計狀態：PROPOSED；P0-04／05 已另行實作 v2 唯讀 selector 與 UNI 四 scope 公式。** 下表仍是以 v1 `spec/canonical-schema.yaml` 的 94 metric（47 OBSERVED、30 DERIVED、16 ASSUMPTION、1 SCENARIO）、`engine/formulas/runtime.py` 和 `engine/snapshots.py` 核對的原始映射。v1 的 2 份 demo snapshot 未改；其他資產的 v2 公式與 thesis cadence 仍待實作。詳見 [P0-05 驗收](../../reports/p0-05-validation.md)。
 
 ## 1. 資料與 API 邊界
 
@@ -56,4 +56,4 @@ UNI 的已實現 fee、burn、realized supply、distribution 及 scenario fee �
 
 ## 5. 驗收與遷移防線
 
-P0-03 通過代表規則和例子**可供實作**，不代表現有 engine 已有歷史可知性。P0-04 的必測條件在 [ADR](ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；P0-05 必須對本表所有 LEGACY_MIXED 公式在 demo／research 做 scope gate，保留既有 regression。任何一個真實 observation 的來源公開時點未知時，可以在 staging 保留 `null`，但不能用零或估算時間令歷史查詢通過。
+P0-03 通過代表規則和例子**可供實作**，不代表 v1 engine 已有歷史可知性。P0-04 的必測條件在 [ADR](ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；P0-05 已在 v1 demo／research API 對全部 LEGACY_MIXED 指標提供明示 scope 標籤，兩條引用混合或情境值的 UNI 當期 thesis 規則報資料不足，且另建 v2 唯讀 scope 公式並保留既有 regression。其他資產 v2 公式仍缺；不可把 v1 混合值重標成已實現。真實 observation 的來源公開時點未知時，可以在 staging 保留 `null`，不能用零或估算時間令歷史查詢通過。

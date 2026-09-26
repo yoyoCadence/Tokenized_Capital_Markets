@@ -3,3 +3,14 @@ concepts:
   - {concept_id: secz_revenue, description: 'Securitize quarterly revenue evidence', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
   - {concept_id: uni_price, description: 'UNI venue quote', unit: USD_PER_UNI, measure_kind: PRICE, permitted_scopes: [REALIZED]}
   - {concept_id: uni_effective_protocol_fee, description: 'Effective protocol fee', unit: BP, measure_kind: RATIO, permitted_scopes: [REALIZED, MODELED_HORIZON]}
+  - {concept_id: uni_burn_value, description: 'Actually executed UNI burns valued in USD; not merely fees collected', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: uni_distribution_value, description: 'Actually distributed UNI valued in USD, distinct from projected growth budget', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED, MODELED_HORIZON]}
+  - {concept_id: uni_dilution_value, description: 'Actual other dilution valued in USD', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: uni_circulating_supply, description: 'Observed circulating UNI supply', unit: UNI, measure_kind: STOCK, permitted_scopes: [REALIZED]}
+  - {concept_id: uni_equity_tam, description: 'Scenario annual horizon equity addressable market', unit: USD, measure_kind: STOCK, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_tokenization_penetration, description: 'Scenario penetration of equity TAM', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_turnover, description: 'Annual scenario turnover', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_onchain_share, description: 'Scenario onchain share', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_amm_share, description: 'Scenario AMM share', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_market_share, description: 'Scenario Uniswap market share', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: uni_required_yield, description: 'Analyst hurdle, not an observed return', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}

@@ -5,6 +5,9 @@ from engine.formulas.runtime import calculate
 from engine.validation.checks import iso_date
 
 SEVERITY = {"HEALTHY": 0, "WATCH": 1, "STRESS": 2, "BREAK_CANDIDATE": 3, "INVALIDATED": 4}
+# V1 burn yield includes TAM and hypothetical distributions; the legacy
+# reverse-share metric also depends on TAM. Neither belongs in current rules.
+LEGACY_MIXED_CURRENT_INPUTS = {"net_burn_yield", "required_uniswap_market_share"}
 
 
 def _live_material_dtcc(project, cutoff):
@@ -34,6 +37,9 @@ def evaluate_theses(project, current, overrides=None):
                 insufficient.append({"rule_id": rule["id"], "reason": "Insufficient consecutive quarterly periods"})
                 continue
             deps = names(rule["expression"]) - set(rule["thresholds"])
+            if deps & LEGACY_MIXED_CURRENT_INPUTS:
+                insufficient.append({"rule_id": rule["id"], "reason": "V1_SCOPE_UNFIT: legacy modeled or mixed-scope input excluded from current thesis"})
+                continue
             evidence = []
             for day in samples:
                 state = history[day]

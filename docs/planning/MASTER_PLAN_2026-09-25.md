@@ -2,7 +2,7 @@
 
 **2026-09-25｜PROPOSED v1.0｜本文件是未來實作計畫**
 
-**2026-09-26 進度註記：** WP-01、P0-03 與 P0-04 唯讀雙時間 selector 已完成，詳見[契約驗收](../../reports/p0-03-contract-validation.md)及[時間選值驗收](../../reports/p0-04-validation.md)。目前下一項為 P0-05；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。v2 金融計算與 dashboard 尚未實作。
+**2026-09-26 進度註記：** WP-01、P0-03、P0-04 唯讀雙時間 selector 與 P0-05 UNI scope-aware 計算已完成，詳見[契約驗收](../../reports/p0-03-contract-validation.md)、[時間選值驗收](../../reports/p0-04-validation.md)及[經濟分流驗收](../../reports/p0-05-validation.md)。目前下一項為 P0-06；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。其他資產 v2 公式、thesis cadence 與完整重播尚未實作。
 
 ## 1. 最終目標與成功定義
 

@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.3 / P0-05 scope-aware UNI economics — 2026-09-26
+
+- Introduced locked v2 UNI formulas using explicit roles and economic/knowledge/valuation times: actual-quarter realized net burn, arithmetic annualized run rate, future annual protocol revenue and standalone reverse-required market share. A forward scenario may cover a future period but must be known by the query cutoff; completed realized quarters cannot come from the future.
+- No actual burn is inferred from fees. All missing inputs remain Unknown; bounds, period alignment, quote freshness, zero denominator, sources, formula signatures and transitive record IDs are checked. No real observations were added; new numeric regression data live only in disposable test packs.
+- Exposed a read-only `scope-report` CLI and `/api/economics`/Dashboard scope display. Flagged mixed v1 UNI/XLM metrics as legacy; v1 current UNI thesis rules that consume modeled/legacy-mixed metrics now explicitly report insufficient evidence, not Healthy or realized burn. V1 numeric formula signatures, original 42.2% regression and both historical demo snapshots are unchanged. Remaining P0-06 rule cadence and P0-07 replay/publication are not implemented.
+- Acceptance evidence: [P0-05 validation](p0-05-validation.md). Full suite: 90 tests; v1 DEMO/RESEARCH validation: 94 metrics, zero issues each.
+
 ## Software 0.1.2 / P0-04 temporal selection — 2026-09-26
 
 - Added a separate read-only v2 ledger, strict loader/validator, and `temporal-select` CLI. Queries require economic cutoff, knowledge cutoff, valuation time, scope and explicit system-as-known or public-reconstruction policy; selection filters availability before applying revisions. No provider SDK or data key is required.

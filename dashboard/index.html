@@ -21,12 +21,22 @@
 
     <nav class="navigation" aria-label="Sections">
       <a href="#market">Market</a><a href="#uni">UNI</a><a href="#secz">SECZ</a><a href="#xlm">XLM</a>
-      <a href="#sensitivity">Sensitivity</a><a href="#graph">Dependencies</a>
+      <a href="#scope-v2">V2 scopes</a><a href="#sensitivity">Sensitivity</a><a href="#graph">Dependencies</a>
       <a href="#thesis">Thesis</a><a href="#comparison">Versions</a><a href="#inspector">Inspector</a>
     </nav>
 
     <section id="market" class="panel"><div class="section-head"><div><p class="eyebrow">01 / MARKET</p><h2>Observed footprint · modeled addressable market</h2></div><p>Current observations and hypothetical scenarios are separate records.</p></div><div id="market-grid" class="metric-grid"></div></section>
-    <section id="uni" class="panel"><div class="section-head"><div><p class="eyebrow">02 / UNI</p><h2>Net holder accrual</h2></div><p>The standalone required-share hurdle is separate from the incremental hurdle after other revenue.</p></div><div id="uni-grid" class="metric-grid"></div></section>
+    <section id="uni" class="panel"><div class="section-head"><div><p class="eyebrow">02 / UNI · V1 LEGACY</p><h2>Illustrative mixed-scope economics</h2></div><p>The v1 net burn yield mixes TAM scenarios and assumptions, and is not a realized return. The 42.2% share is a standalone legacy demonstration.</p></div><div id="uni-grid" class="metric-grid"></div></section>
+    <section id="scope-v2" class="panel"><div class="section-head"><div><p class="eyebrow">V2 / UNI · READ ONLY</p><h2>Realized · annualized · forward · reverse</h2></div><p>Actual burns are distinct from collected fees. Unknown evidence stays Unknown; an annualized quarter is not a forecast.</p></div>
+      <form id="scope-form" class="input-grid">
+        <label>Completed quarter end <input name="realized_quarter_end" placeholder="2026-06-30" required></label>
+        <label>Annual horizon end <input name="horizon_end" placeholder="2027-12-31" required></label>
+        <label>Knowledge cutoff (ISO UTC) <input name="knowledge_cutoff" placeholder="2026-09-26T12:00:00Z" required></label>
+        <label>Valuation time (ISO UTC) <input name="valuation_at" placeholder="2026-09-26T12:00:00Z" required></label>
+        <label>Knowledge policy <select name="policy"><option>AS_KNOWN_BY_SYSTEM</option><option>PUBLIC_INFORMATION_RECONSTRUCTION</option></select></label>
+        <button type="submit">Calculate v2 scopes</button>
+      </form><p id="scope-status" role="status">Set explicit clocks to query the v2 evidence ledger.</p><div id="scope-results" class="metric-grid"></div>
+    </section>
     <section id="secz" class="panel"><div class="section-head"><div><p class="eyebrow">03 / SECZ</p><h2>Monetization and reverse economics</h2></div><p>Six revenue streams, operating leverage and required free cash flow.</p></div><div id="secz-grid" class="metric-grid"></div></section>
     <section id="xlm" class="panel"><div class="section-head"><div><p class="eyebrow">04 / XLM</p><h2>Network activity / native asset demand</h2></div><p>Network fees are diagnostic. This is not a fee based XLM valuation.</p></div><div id="xlm-grid" class="metric-grid"></div></section>
 
