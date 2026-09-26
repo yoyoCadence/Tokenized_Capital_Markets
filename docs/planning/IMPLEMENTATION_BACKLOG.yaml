@@ -149,7 +149,7 @@ tasks:
     audit_refs: [A-04, A-09]
     completion:
       completed_on: '2026-09-26'
-      implementation_commit: f5dcdd6276d66c44f13f0c490e558b6a0bca877e
+      implementation_commit: 56b9169bfaccb2ee4a0bc84883ff9a145c7b790c
       evidence: reports/p0-05-validation.md
       changelog: reports/changelog.md
       tests: [tests/regression/test_scope_economics_v2.py, tests/thesis/test_thesis.py]
