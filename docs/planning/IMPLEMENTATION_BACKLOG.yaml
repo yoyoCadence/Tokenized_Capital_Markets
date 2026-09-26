@@ -128,6 +128,7 @@ tasks:
     audit_refs: [A-02]
     completion:
       completed_on: '2026-09-26'
+      implementation_commit: 30036560549a1db9923a03647e1645b02268b3ee
       evidence: reports/p0-04-validation.md
       changelog: reports/changelog.md
       tests: [tests/regression/test_temporal_v2.py]

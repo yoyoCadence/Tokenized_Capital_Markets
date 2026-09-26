@@ -2,6 +2,8 @@
 
 **2026-09-26｜軟體 0.1.2｜P0-04 DONE｜P0-05／06／07 未完成**
 
+Implementation commit：[`30036560549a1db9923a03647e1645b02268b3ee`](https://github.com/yoyoCadence/Tokenized_Capital_Markets/commit/30036560549a1db9923a03647e1645b02268b3ee)。
+
 ## 1. 交付範圍
 
 新增 `engine/temporal/` 的獨立、唯讀 v2 evidence selector，並以 `python -m engine.cli temporal-select` 對外提供。`spec/v2/` 保存 unit registry、metric concept 與 input role，`sources/v2/` 保存來源版本，`data/v2/observed/` 分離研究與 demo ledger。所有 v2 YAML 走既有 strict loader、再走 v2 semantic validation；直接傳入記憶體 project 的選值亦先驗證。
