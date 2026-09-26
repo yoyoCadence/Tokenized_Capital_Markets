@@ -6,7 +6,7 @@ Read `spec/` and this file before editing calculations, evidence or UI. A UI dis
 
 Read `docs/planning/README.md`, `docs/planning/CURRENT_STATE_AUDIT.md` and the relevant work package before continuing this project. The planning directory records proposed work; it does not replace canonical specs or assert that future fields, APIs or safeguards already exist.
 
-- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. WP-01 (P0-02 and P0-01) is complete; read `reports/wp-01-validation.md`. The next task is P0-03, the v2 time/scope/record contract and migration ADR.
+- Use `docs/planning/IMPLEMENTATION_BACKLOG.yaml` for task dependencies and acceptance evidence. WP-01 (P0-02 and P0-01) and P0-03 are complete; read `reports/wp-01-validation.md`, `reports/p0-03-contract-validation.md` and `docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md`. The next task is P0-04, the two-time selector. `docs/planning/CONTRACT_V2_PROPOSAL.yaml` is a design contract; the running engine still uses v1.
 - A task becomes DONE only with its implementation/research evidence, tests or reconciliation, commit and changelog. Keep discovered defects visible until fixed.
 - Planning source notes are not canonical observations. Verify, archive, classify and review evidence before research publication; do not promote an official proposal into realized economics.
 - Preserve v1 snapshots and fixture regressions during any v2 migration. Never invent historical publication or first-seen timestamps.

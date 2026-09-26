@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-03
+next_task: P0-04
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -94,7 +94,7 @@ tasks:
     title: v2 時間、scope 與 record 契約及遷移 ADR
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P0-01]
@@ -104,6 +104,14 @@ tasks:
       - legacy 資料缺失資訊不回填成虛構歷史；v1 snapshots 保留。
       - metric concept/input role/record classification 的選用政策清楚。
     audit_refs: [A-02, A-04, A-09]
+    completion:
+      completed_on: '2026-09-26'
+      contract_version: '2.0-proposal.1'
+      implementation_commit: 9a372104ecca3a70aef1afa8ae6936f0d0d6a19c
+      evidence: reports/p0-03-contract-validation.md
+      deliverables: [docs/planning/CONTRACT_V2_PROPOSAL.yaml, docs/planning/V1_V2_COMPATIBILITY.md, docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md]
+      changelog: reports/changelog.md
+      result: 設計契約、v1 兼容矩陣與遷移 ADR 定稿；runtime v1、observations、spec 與 snapshots 未改。
   - id: P0-04
     title: 雙時間 selector 與歷史重述重播
     phase: P0

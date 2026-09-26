@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-26 已完成 **WP-01：研究資料隔離與嚴格輸入驗證**，軟體版本 0.1.1，**67 項測試通過**，詳見 [驗收紀錄](reports/wp-01-validation.md)。真實 observation 仍為 0；歷史可知時間、混合頻率與完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-03：v2 時間、scope 與 record 契約及遷移 ADR**，依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-26 已完成 **WP-01：研究資料隔離與嚴格輸入驗證**，軟體版本 0.1.1，**67 項測試通過**，詳見 [驗收紀錄](reports/wp-01-validation.md)。也已完成 **P0-03 的 v2 資料契約設計**，詳見 [ADR](docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；此設計尚未在引擎執行。真實 observation 仍為 0；歷史可知時間、混合頻率與完整快照重播仍待實作。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步為 **P0-04：雙時間 selector 與歷史重述重播**，依賴與驗收見 [structured backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
