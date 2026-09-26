@@ -1,0 +1,11 @@
+schema_version: '2.0'
+formulas:
+  uni_spot_market_cap: {version: '2.0', scope: REALIZED, unit: USD, period_basis: SPOT, signature: ec18e2249057bc8e71a2a7850775eacc3aa6cfbfad4ab2efc1d84393db48517b}
+  uni_realized_net_burn_value: {version: '2.0', scope: REALIZED, unit: USD, period_basis: QUARTER, signature: 392a9701b2e6585dfb7ffb835fb74187031a00c55ce6949c56f2ab1a6628ad82}
+  uni_realized_net_burn_yield: {version: '2.0', scope: REALIZED, unit: FRACTION, period_basis: QUARTER, signature: 4736d03f0441c008cb098cb5f01569c20b4471c02f4b551c065e20760096b331}
+  uni_annualized_net_burn_run_rate: {version: '2.0', scope: RUN_RATE, unit: USD, period_basis: ANNUAL, signature: c1e26711c74461eea636676ff22432b898bcc8631120f4f61eca796596ae1283}
+  uni_annualized_net_burn_yield_run_rate: {version: '2.0', scope: RUN_RATE, unit: FRACTION, period_basis: ANNUAL, signature: 2f0e148c3cc3944250ec3284fbc3f6b1b1be7df7d52ead723c657e5bbdca736f}
+  uni_modeled_protocol_revenue: {version: '2.0', scope: MODELED_HORIZON, unit: USD, period_basis: ANNUAL, signature: f1ece4741ea5c59802a08d32504195e5036e18207eb9ceb69a7f00228fd62473}
+  uni_modeled_net_accrual: {version: '2.0', scope: MODELED_HORIZON, unit: USD, period_basis: ANNUAL, signature: 2dcb6fccc8e55884f9e5b6814369a3676173649bd32f5592e30aff80c6329691}
+  uni_modeled_net_yield: {version: '2.0', scope: MODELED_HORIZON, unit: FRACTION, period_basis: ANNUAL, signature: fbe7abd02efbfc1abdf59f180cc7b04f8bf0483690f6a2ffdba5f28ac1a86faf}
+  uni_required_market_share: {version: '2.0', scope: REVERSE_REQUIREMENT, unit: FRACTION, period_basis: ANNUAL, signature: 0c89b9efb173dddc9f1ed9ac143948d16cbab2cf3d1f3f5f9331d7402730007b}

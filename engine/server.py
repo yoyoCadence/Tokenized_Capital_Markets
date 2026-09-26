@@ -2,12 +2,15 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 from engine.formulas.runtime import calculate
 from engine.sensitivity.analysis import matrix, run
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.storage import load_project, ROOT
 from engine.thesis.rules import evaluate_theses
+from engine.temporal import calculate_economics, load_temporal_project
+from engine.temporal.economics import LEGACY_V1_SCOPES
 from engine.validation.checks import require_valid_project
 from engine.validation.errors import ValidationError, reject_errors
 from engine.validation.lineage import validate_lineage
@@ -25,7 +28,8 @@ def payload(project, overrides=None, persist=False):
         save_snapshot(project, state)
     history = read_snapshots(project["root"], state["mode"])
     comparison = compare(history[-2], history[-1]) if len(history) >= 2 else None
-    return {**state, "issues": problems, "graph": project["graph"], "events": project["events"],
+    return {**state, "issues": problems, "legacy_scopes": LEGACY_V1_SCOPES,
+            "graph": project["graph"], "events": project["events"],
             "loading_policy": project.get("loading_policy", {}),
             "assets": project["assets"]["assets"], "comparison": comparison,
             "snapshots": [{"id": x["id"], "as_of_date": x["as_of_date"], "created_at": x["created_at"]} for x in history],
@@ -49,6 +53,25 @@ def handler_factory(root, demo):
             self.wfile.write(data)
 
         def do_GET(self):
+            if urlsplit(self.path).path == "/api/economics":
+                try:
+                    query = parse_qs(urlsplit(self.path).query, strict_parsing=True)
+                    required = {"realized_quarter_end", "horizon_end", "knowledge_cutoff", "valuation_at", "policy"}
+                    if set(query) != required or any(len(v) != 1 for v in query.values()):
+                        raise ValueError("Expected exactly five scope-report query parameters")
+                    args = {key: query[key][0] for key in required}
+                    result = calculate_economics(load_temporal_project(root, demo=demo),
+                                                 realized_quarter_end=args["realized_quarter_end"],
+                                                 horizon_end=args["horizon_end"],
+                                                 knowledge_cutoff=args["knowledge_cutoff"],
+                                                 valuation_at=args["valuation_at"],
+                                                 knowledge_policy=args["policy"], root=root)
+                    self._json(200, result)
+                except ValidationError as exc:
+                    self._json(422, {"error": str(exc), "issues": exc.issues})
+                except (ValueError, KeyError) as exc:
+                    self._json(422, {"error": str(exc)})
+                return
             if self.path == "/api/state":
                 try:
                     self._json(200, payload(load_project(root, demo), persist=True))

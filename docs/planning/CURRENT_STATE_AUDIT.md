@@ -13,7 +13,7 @@
 | A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
 | 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
 
-證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03 [設計契約](../../reports/p0-03-contract-validation.md)及 P0-04 [唯讀 v2 selector](../../reports/p0-04-validation.md)已完成；**下述 v1 `_select` 及財務計算行為仍如原始稽核**，不得當作已修復。真實 observation 仍為 0；下一項為 P0-05。
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03 [設計契約](../../reports/p0-03-contract-validation.md)、P0-04 [唯讀 v2 selector](../../reports/p0-04-validation.md)及 P0-05 [UNI scope 分流](../../reports/p0-05-validation.md)已完成；**下述 v1 `_select` 與原公式仍如原始稽核**，但兩條受 v1 混合 scope 影響的當期 UNI thesis 規則現已封鎖。真實 observation 仍為 0；下一項為 P0-06。
 
 ## 1. 已具備的基礎
 

@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-05
+next_task: P0-06
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -137,7 +137,7 @@ tasks:
     title: 已實現收益、run rate、forward 與 reverse 分流
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P0-03]
@@ -147,6 +147,14 @@ tasks:
       - 同一語義的實測與情境 fee 使用不同 role/record，不升級舊 assumption。
       - 現有 42.2% fixture 保持原版本意義，新結果另有驗收。
     audit_refs: [A-04, A-09]
+    completion:
+      completed_on: '2026-09-26'
+      implementation_commit: f5dcdd6276d66c44f13f0c490e558b6a0bca877e
+      evidence: reports/p0-05-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_scope_economics_v2.py, tests/thesis/test_thesis.py]
+      full_suite_tests_passed: 90
+      result: UNI 的 REALIZED、RUN_RATE、MODELED_HORIZON 與 REVERSE_REQUIREMENT v2 公式及唯讀查詢分流；v1 混合指標標明口徑並禁止進入當期 UNI 規則，舊 42.2% 回歸保留。
   - id: P0-06
     title: 資產與規則各自的期間和 freshness
     phase: P0

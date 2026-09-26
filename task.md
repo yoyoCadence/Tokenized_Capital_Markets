@@ -2,7 +2,7 @@
 
 更新：2026-09-26。詳細順序與驗收以 [IMPLEMENTATION_BACKLOG.yaml](docs/planning/IMPLEMENTATION_BACKLOG.yaml) 為準。未完成規劃不代表現有功能。
 
-## CURRENT — MVP 基礎、WP-01 與 P0-03／04 已完成
+## CURRENT — MVP 基礎、WP-01 與 P0-03／04／05 已完成
 
 - [x] Canonical dictionary、formulas/source registries、graph、events、四種 classification。
 - [x] UNI／SECZ／XLM demo economic models、reverse underwriting、sensitivity、thesis rules。
@@ -14,13 +14,13 @@
 - [x] **WP-01 / P0-02 → P0-01**：strict YAML、唯一性與版本鏈、formula DAG、各入口的 RESEARCH fixture 隔離；保留全部相同數值的支持證據。軟體 0.1.1；67 tests 通過，兩種 validation 各 94 metrics／0 issues，原快照未變。[驗收證據](reports/wp-01-validation.md)；implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。
 - [x] **P0-03：v2 時間／scope／record 設計契約。** [契約提案](docs/planning/CONTRACT_V2_PROPOSAL.yaml)、[相容矩陣](docs/planning/V1_V2_COMPATIBILITY.md)、[遷移 ADR](docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；runtime 尚未切換 v2，[驗收證據](reports/p0-03-contract-validation.md)。
 - [x] **P0-04：v2 雙時間 selector。** 唯讀 CLI 與程序入口，分別重播「當時系統已知」和「當時公開可知」；晚發布重述、來源衝突、日期精度、DST、報價資料齡與原快照保留有回歸。[驗收證據](reports/p0-04-validation.md)。
+- [x] **P0-05：v2 UNI 四種經濟 scope。** role/時間選值接入獨立金融公式、鎖版、lineage 與唯讀 Dashboard；封鎖 v1 TAM/混合收益進入當期 UNI 規則，42.2% demo regression 保留。[驗收證據](reports/p0-05-validation.md)。
 
-已修復 WP-01 範圍內的 fixture 隔離與 YAML／輸入邊界問題。歷史可知時間、scope、混合頻率、完整重播與發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
+已修復 WP-01 fixture 隔離、v2 時間與 UNI scope 分流；其他資產的 v2 公式、混合頻率、完整重播與發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
 
 ## NEXT — 先做到可信、再做到日常可用
 
-1. [ ] **P0-05：已實現與情境 scope 分流。** 把 v2 role/時間選值正式接進新的金融公式，保留 v1 回歸。
-2. [ ] P0-06：資產／規則各自的 cadence 與 freshness。
+1. [ ] **P0-06：資產／規則各自的 cadence 與 freshness。** 修正季度規則的頻率／歷史證據對齊。
 3. [ ] P0-07～P0-10：可重播 snapshot、read-only API、發布復原、品質傳播與 G0 驗收。
 4. [ ] P1：primary-source research pack、entity/security master、價量／股本／EV、UNI／SECZ／XLM 資料對帳與第一份真實快照。
 5. [ ] Source freshness monitoring、stale-data detection、conflict queue；缺值保持 unknown。

@@ -1,7 +1,7 @@
 """Fail-closed, read-only v2 evidence selector with separate economic and knowledge clocks.
 
-This is intentionally independent of the v1 `calculate(as_of=...)` path. Scope-aware
-formula evaluation, thesis cadence and v2 snapshot publication are later work packages.
+This is intentionally independent of the v1 `calculate(as_of=...)` path. V2 formulas
+consume its selected inputs; thesis cadence and snapshot publication remain separate.
 """
 from datetime import date, datetime, time, timedelta, timezone
 import math
@@ -177,7 +177,7 @@ def validate_temporal_project(project):
         records[record["id"]] = record
         concept = concepts.get(record["concept_id"])
         if record["schema_version"] != "2.0" or concept is None or record["classification"] not in CLASSES - {"DERIVED"} or record["economic_scope"] not in SCOPES or (concept and record["economic_scope"] not in concept["permitted_scopes"]) or (concept and record["unit"] != concept["unit"]):
-            _error("V2_RECORD", "Invalid version, concept, class, scope or unit; DERIVED requires P0-05", path)
+            _error("V2_RECORD", "Invalid version, concept, class, scope or unit; DERIVED outputs belong to the formula engine, not input ledgers", path)
         if record["classification"] == "OBSERVED" and record["economic_scope"] != "REALIZED":
             _error("SCOPE", "Observed evidence may only describe REALIZED measurements", path)
         try:
@@ -322,11 +322,13 @@ def select_temporal(project, *, role_id, economic_cutoff, knowledge_cutoff, valu
         if period_end > economic:
             excluded[record["id"]] = "FUTURE_ECONOMIC_PERIOD"
             continue
-        if period_end > known.date() or (period_end == known.date() and
-                (record["economic_period"]["basis"] != "SPOT" or record.get("as_of_precision") == "DATE")):
+        # A published forward scenario can describe a future horizon. Only realized
+        # evidence must already have completed by the historical knowledge cutoff.
+        if required_scope == "REALIZED" and (period_end > known.date() or (period_end == known.date() and
+                (record["economic_period"]["basis"] != "SPOT" or record.get("as_of_precision") == "DATE"))):
             excluded[record["id"]] = "FUTURE_ECONOMIC_PERIOD"
             continue
-        if record["classification"] in {"ASSUMPTION", "SCENARIO"} and _day(record["effective_from"], "record.effective_from") > economic:
+        if record["classification"] in {"ASSUMPTION", "SCENARIO"} and _day(record["effective_from"], "record.effective_from") > min(economic, known.date()):
             excluded[record["id"]] = "NOT_YET_EFFECTIVE"
             continue
         publication = _publication(record["knowledge_time"], "record.knowledge_time")

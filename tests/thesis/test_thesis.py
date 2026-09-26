@@ -16,8 +16,19 @@ class ThesisAndEventTests(unittest.TestCase):
 
     def test_demo_rules_have_four_quarter_coverage(self):
         states = self._state(self.project)
-        self.assertEqual({k: v["state"] for k, v in states.items()}, {"UNI": "HEALTHY", "SECZ": "HEALTHY", "XLM": "HEALTHY"})
-        self.assertFalse(any(v["insufficient_rules"] for v in states.values()))
+        self.assertEqual({k: v["state"] for k, v in states.items()}, {"UNI": None, "SECZ": "HEALTHY", "XLM": "HEALTHY"})
+        self.assertEqual([x["rule_id"] for x in states["UNI"]["insufficient_rules"]], ["uni_low_net_burn", "uni_fee_share_stress"])
+        self.assertFalse(states["SECZ"]["insufficient_rules"] or states["XLM"]["insufficient_rules"])
+
+    def test_synthetic_scenario_cannot_trigger_realized_burn_rule(self):
+        p = copy.deepcopy(self.project)
+        for row in p["scenarios"]:
+            if row["metric_id"] == "tokenized_equity_tam":
+                row["value"] = 0
+        state = self._state(p)["UNI"]
+        self.assertNotIn("uni_low_net_burn", {r["rule_id"] for r in state["triggered_rules"]})
+        self.assertIn("V1_SCOPE_UNFIT", next(r["reason"] for r in state["insufficient_rules"] if r["rule_id"] == "uni_low_net_burn"))
+        self.assertIn("uni_fee_share_stress", {r["rule_id"] for r in state["insufficient_rules"]})
 
     def test_higher_severity_wins_but_all_rules_remain(self):
         p = copy.deepcopy(self.project)
