@@ -107,6 +107,7 @@ tasks:
     completion:
       completed_on: '2026-09-26'
       contract_version: '2.0-proposal.1'
+      implementation_commit: 9a372104ecca3a70aef1afa8ae6936f0d0d6a19c
       evidence: reports/p0-03-contract-validation.md
       deliverables: [docs/planning/CONTRACT_V2_PROPOSAL.yaml, docs/planning/V1_V2_COMPATIBILITY.md, docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md]
       changelog: reports/changelog.md

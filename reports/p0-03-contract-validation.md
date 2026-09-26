@@ -2,6 +2,8 @@
 
 **2026-09-26｜設計版本 `2.0-proposal.1`｜任務 P0-03 DONE｜軟體仍為 0.1.1**
 
+設計交付 commit：[`9a372104ecca3a70aef1afa8ae6936f0d0d6a19c`](https://github.com/yoyoCadence/Tokenized_Capital_Markets/commit/9a372104ecca3a70aef1afa8ae6936f0d0d6a19c)；backlog 完成證據由緊隨的文件提交補上。
+
 ## 產物與核對
 
 | Backlog 驗收 | 產物與具體約束 |
