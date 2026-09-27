@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-26 已完成 **WP-01、P0-03、P0-04 與 P0-05**。軟體版本 0.1.3，**90 項測試通過**，見 [P0-05 驗收](reports/p0-05-validation.md)。v2 現有獨立唯讀雙時間選值與 UNI scope-aware 公式／Dashboard 分流；v1 財務數字與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 尚未接入 thesis cadence、其他資產公式或可重播 snapshot。現有 MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-06：資產／規則的期間與 freshness**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-27 已完成 **WP-01、P0-03～P0-06**。軟體版本 0.1.4，**102 項測試通過**，見 [P0-06 驗收](reports/p0-06-validation.md)。v2 有獨立唯讀的雙時間選值、UNI scope-aware 公式與分資產／規則季度證據路徑；v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 目前只有 UNI 已實現 burn 規則可評估，SECZ 財年與其他八條規則輸入仍未知，沒有可重播 snapshot。MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-07：可重播 snapshot**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -71,7 +71,20 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；90 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。P0-06 才改建各資產／規則的時間和 freshness；P0-07 才處理完整重播。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；102 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。P0-07 才處理完整重播。
+
+## V2 rule cadence / P0-06
+
+每條規則由自己的 OBSERVED/REALIZED 季度錨點建立期間窗口，不使用全域資料日期；窗口和資產 calendar／reporting grace／新鮮度政策有獨立版本與簽章。歷史估值須逐季指定，資訊須在該季估值時已符合所選 knowledge policy；每日 UNI 報價不會製造 SECZ/XLM 新季度。沒有季報、財年未知、TTM 期間錯位或報價過期都明示未評估。九條舊規則均可檢視，唯有使用 P0-05 實現公式的 UNI 低 burn 規則可於來源齊備時評估；其他八條缺 v2 對應資料，**不能用 v1 fixture 自動填補**。
+
+```bash
+python -m engine.cli thesis-cadence \
+  --economic-cutoff 2026-09-26 --knowledge-cutoff 2026-09-26T12:00:00Z \
+  --policy AS_KNOWN_BY_SYSTEM --valuations '{}'
+# 若有具證據的逐季估值，格式例：--valuations '{"2026-06-30":"2026-07-06T10:05:00Z"}'
+```
+
+Dashboard 的「V2 cadence」和唯讀 `/api/thesis-cadence` 提供相同查詢。SECZ 發行人 fiscal year-end 尚未驗證，政策填 null；v1 Thesis 區特別標 LEGACY V1，仍有全域日期缺陷，不可當 point-in-time 判斷或實盤訊號。詳見 [P0-06 驗收](reports/p0-06-validation.md)。
 
 ## Architecture
 

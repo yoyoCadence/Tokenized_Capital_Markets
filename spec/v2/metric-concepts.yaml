@@ -14,3 +14,4 @@ concepts:
   - {concept_id: uni_amm_share, description: 'Scenario AMM share', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
   - {concept_id: uni_market_share, description: 'Scenario Uniswap market share', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
   - {concept_id: uni_required_yield, description: 'Analyst hurdle, not an observed return', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [MODELED_HORIZON]}
+  - {concept_id: xlm_network_operations, description: 'Quarterly network operations; activity is not holder capture', unit: COUNT, measure_kind: COUNT, permitted_scopes: [REALIZED]}

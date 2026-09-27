@@ -1,0 +1,17 @@
+schema_version: '2.0'
+# Calendar month for UNI/XLM is an analyst policy, not an issuer fiscal claim.
+# SECZ issuer fiscal calendar is unverified; no inferred year-end is allowed.
+calendars:
+  UNI: {version: '2.0', year_end_month: 12, max_reporting_lag_days: 45, max_period_age_days: 180, max_spot_age_days: 7}
+  SECZ: {version: '2.0', year_end_month: null, max_reporting_lag_days: 120, max_period_age_days: 240, max_spot_age_days: 7}
+  XLM: {version: '2.0', year_end_month: 12, max_reporting_lag_days: 45, max_period_age_days: 180, max_spot_age_days: 7}
+rules:
+  - {id: uni_low_net_burn, version: '2.0', asset: UNI, state: WATCH, cadence: QUARTER, periods: 2, anchor_role: uni_realized_burn_value, evaluation: ACTIVE, scope: REALIZED, expression: 'uni_realized_net_burn_yield < low_yield', thresholds: {low_yield: 0.02}, inputs: {uni_realized_net_burn_yield: {formula_id: uni_realized_net_burn_yield}}, rationale: 'Analyst-defined realized-burn threshold; historical period-specific quote required.'}
+  - {id: uni_fee_share_stress, version: '2.0', asset: UNI, state: STRESS, cadence: QUARTER, periods: 1, anchor_role: uni_realized_burn_value, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'V1 reverse/forward-share input is not a realized quarterly rule.'}
+  - {id: uni_supply_break, version: '2.0', asset: UNI, state: BREAK_CANDIDATE, cadence: QUARTER, periods: 4, anchor_role: uni_realized_burn_value, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Supply and activity series need separately verified v2 quarterly roles.'}
+  - {id: secz_growth_watch, version: '2.0', asset: SECZ, state: WATCH, cadence: QUARTER, periods: 1, anchor_role: secz_quarterly_revenue, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Issuer fiscal calendar and comparable AUM/revenue growth v2 roles unverified.'}
+  - {id: secz_growth_stress, version: '2.0', asset: SECZ, state: STRESS, cadence: QUARTER, periods: 2, anchor_role: secz_quarterly_revenue, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Issuer fiscal calendar and comparable AUM/revenue growth v2 roles unverified.'}
+  - {id: secz_volume_break, version: '2.0', asset: SECZ, state: BREAK_CANDIDATE, cadence: QUARTER, periods: 4, anchor_role: secz_quarterly_revenue, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Issuer fiscal calendar and comparable volume/margin v2 roles unverified.'}
+  - {id: xlm_native_demand_watch, version: '2.0', asset: XLM, state: WATCH, cadence: QUARTER, periods: 1, anchor_role: xlm_quarterly_operations, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Native economic capture v2 role is not yet verified.'}
+  - {id: xlm_capture_stress, version: '2.0', asset: XLM, state: STRESS, cadence: QUARTER, periods: 4, anchor_role: xlm_quarterly_operations, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Institutional asset and native capture v2 roles are not yet verified.'}
+  - {id: xlm_dtcc_break, version: '2.0', asset: XLM, state: BREAK_CANDIDATE, cadence: QUARTER, periods: 4, anchor_role: xlm_quarterly_operations, evaluation: UNMIGRATED_INPUT, scope: REALIZED, reason: 'Verified LIVE/material event evidence and economic demand roles are not yet available.'}

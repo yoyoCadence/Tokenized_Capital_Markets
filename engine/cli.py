@@ -10,6 +10,7 @@ from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.storage import ROOT, load_project, read_records
 from engine.thesis.rules import evaluate_theses
+from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.temporal import calculate_economics, load_temporal_project, select_temporal
 from engine.validation.checks import require_valid_project
 from engine.validation.errors import ValidationError, issue, reject_errors
@@ -58,6 +59,12 @@ def _main(argv=None):
     economics.add_argument("--knowledge-cutoff", required=True)
     economics.add_argument("--valuation-at", required=True)
     economics.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    cadence = sub.add_parser("thesis-cadence", help="Read-only v2 period-specific thesis evidence")
+    cadence.add_argument("--demo", action="store_true")
+    cadence.add_argument("--economic-cutoff", required=True)
+    cadence.add_argument("--knowledge-cutoff", required=True)
+    cadence.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    cadence.add_argument("--valuations", default="{}", help="JSON mapping quarter end to historical quote valuation instant")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -103,6 +110,13 @@ def _main(argv=None):
         result = calculate_economics(project, realized_quarter_end=args.realized_quarter_end,
                                      horizon_end=args.horizon_end, knowledge_cutoff=args.knowledge_cutoff,
                                      valuation_at=args.valuation_at, knowledge_policy=args.policy, root=args.root)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "thesis-cadence":
+        project = load_temporal_project(root=args.root, demo=args.demo)
+        valuations = json.loads(args.valuations)
+        result = evaluate_cadence_v2(project, economic_cutoff=args.economic_cutoff,
+                                     knowledge_cutoff=args.knowledge_cutoff, knowledge_policy=args.policy,
+                                     valuation_by_period=valuations, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

@@ -1,0 +1,15 @@
+schema_version: '2.0'
+calendars:
+  UNI: {version: '2.0', signature: 150bc1f7dab0a9fb1df2873c4b72948a4a40f71fab9ff0f4e3c706e4b02f52c3}
+  SECZ: {version: '2.0', signature: f416608375e758c636b729fbd24c673cff7ac401e38819dea7071eec81f83155}
+  XLM: {version: '2.0', signature: 150bc1f7dab0a9fb1df2873c4b72948a4a40f71fab9ff0f4e3c706e4b02f52c3}
+rules:
+  uni_low_net_burn: {version: '2.0', signature: cb980a5803ad6e9e1a45a6bdbd299e02f891c87791009d1bb2014eeb3dbbc1ce}
+  uni_fee_share_stress: {version: '2.0', signature: 4b0cd1c2dffeda56aeb61f1016dc4d54165f340f60d271f09d5760079c9fe74f}
+  uni_supply_break: {version: '2.0', signature: 888bc3d8060e1679deeff2b0eded1615353c5520a34f5df4c7a427d4bf896e16}
+  secz_growth_watch: {version: '2.0', signature: 45637fa450477d2b5a725a13b274f8ee988eb26bcc98c7ef4ce749428e17da45}
+  secz_growth_stress: {version: '2.0', signature: b4ca36ca35a58d2a58e5f799f8774626d08c99f5ea42be2e702114a798355e12}
+  secz_volume_break: {version: '2.0', signature: 8fb1f9627bb5221cc11d72a98520aeced0a26afa874c6b00789499ff9d9991f2}
+  xlm_native_demand_watch: {version: '2.0', signature: d1ed2c03991fab5049ff6f90fd332e802b6b88e342445884af32a1d9a3183575}
+  xlm_capture_stress: {version: '2.0', signature: 8dd3debd122fc404a6b80bb2212e4c0c79815315faa00b8141e3bf8a184b2d7e}
+  xlm_dtcc_break: {version: '2.0', signature: 4f86b2625ed342c1d127888746829b65f4895717e6c6c4832d420a82f6c8702d}
