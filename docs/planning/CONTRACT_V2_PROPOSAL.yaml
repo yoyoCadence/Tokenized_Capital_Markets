@@ -1,4 +1,4 @@
-# P0-03 design contract; P0-04/05/06 use separate v2 read-only paths. v1 engine is unchanged.
+# P0-03 design contract; P0-04/05/06/07 use separate v2 paths. v1 engine is unchanged.
 contract_version: '2.0-proposal.2'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml

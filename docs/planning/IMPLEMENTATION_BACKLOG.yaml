@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-07
+next_task: P0-08
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -181,7 +181,7 @@ tasks:
     title: 自包含 compute manifest 與 snapshot 完整性
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 5
     depends_on: [P0-04, P0-05, P0-06]
@@ -191,6 +191,14 @@ tasks:
       - 乾淨環境重播一致，修改一個 byte/內容欄位可被驗證拒絕。
       - selected evidence 不含 cutoff 之後資料；current/historical tracks 分開。
     audit_refs: [A-05]
+    completion:
+      completed_on: '2026-09-27'
+      implementation_commit: 9663b286690953cb85db67099c15909574a72b23
+      evidence: reports/p0-07-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_snapshots_v2.py, tests/regression/test_temporal_v2.py, tests/thesis/test_cadence_v2.py]
+      full_suite_tests_passed: 108
+      result: 獨立 v2 audit-only 快照封存程式／runtime／公式／規則／字典／graph／來源與輸入，逐位元組完整性與乾淨環境離線重播通過；選用證據受 cutoff 限制、current/historical 分軌，v1 快照維持 legacy。
   - id: P0-08
     title: 純讀 API 與可恢復的發布事務
     phase: P0

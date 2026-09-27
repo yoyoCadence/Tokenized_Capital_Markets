@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.5 / P0-07 replayable v2 compute bundles — 2026-09-27
+
+- Added separate v2 `snapshot-v2`/`replay-v2` CLI commands. Deterministic, content-addressed audit bundles freeze the runtime lock, all engine code, formula/rule/dictionary/graph definitions, exact evidence ledgers and source metadata, query cutoffs, selected record/source hashes and both v2 economics/cadence outputs. Replay compares installed code byte-for-byte and recomputes from extracted frozen inputs without the original checkout.
+- Explicit HISTORICAL and CURRENT tracks stay separate: historical clocks and knowledge policy are required; current captures UTC now and uses system-as-known. A selected record with knowledge after its cutoff is refused, incomplete results remain Unknown, and artifacts are marked AUDIT_ONLY. V1 snapshots stay byte-identical and cannot be promoted to v2 historical replay.
+- [P0-07 validation and migration report](p0-07-validation.md): 108 tests including disposable clean-environment replay, byte/semantic/code/runtime tampering, system/public restatement split, track isolation and CLI idempotence. V1 DEMO/RESEARCH validation remains 94 metrics with zero issues. P0-08 GET purity and cross-file crash-safe publication remain pending.
+
 ## Software 0.1.4 / P0-06 independent v2 rule cadence — 2026-09-27
 
 - Introduced locked v2 asset/rule calendars and a read-only quarterly scheduler: explicit economic/knowledge cutoffs and period-specific valuations; fiscal-quarter labels, missing-quarter and reporting grace, period age, TTM endpoint and quote freshness all fail closed with per-rule period/source evidence.
