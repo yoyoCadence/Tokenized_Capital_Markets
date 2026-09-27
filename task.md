@@ -2,7 +2,7 @@
 
 更新：2026-09-27。詳細順序與驗收以 [IMPLEMENTATION_BACKLOG.yaml](docs/planning/IMPLEMENTATION_BACKLOG.yaml) 為準。未完成規劃不代表現有功能。
 
-## CURRENT — MVP 基礎、WP-01 與 P0-03～06 已完成
+## CURRENT — MVP 基礎、WP-01 與 P0-03～07 已完成
 
 - [x] Canonical dictionary、formulas/source registries、graph、events、四種 classification。
 - [x] UNI／SECZ／XLM demo economic models、reverse underwriting、sensitivity、thesis rules。
@@ -16,13 +16,14 @@
 - [x] **P0-04：v2 雙時間 selector。** 唯讀 CLI 與程序入口，分別重播「當時系統已知」和「當時公開可知」；晚發布重述、來源衝突、日期精度、DST、報價資料齡與原快照保留有回歸。[驗收證據](reports/p0-04-validation.md)。
 - [x] **P0-05：v2 UNI 四種經濟 scope。** role/時間選值接入獨立金融公式、鎖版、lineage 與唯讀 Dashboard；封鎖 v1 TAM/混合收益進入當期 UNI 規則，42.2% demo regression 保留。[驗收證據](reports/p0-05-validation.md)。
 - [x] **P0-06：分資產／規則的 v2 季度時點與資料期限。** 九條規則逐一保留、UNI realized burn 可用足夠證據評估，其餘缺證據明示 Unknown；獨立 CLI／API／UI 查詢，舊 v1 thesis 保留 legacy 標籤。[驗收證據](reports/p0-06-validation.md)。
+- [x] **P0-07：自包含 v2 compute bundle 與完整性重播。** 封存程式、runtime、spec、source metadata／ledger、選用證據與結果；逐位元組雜湊及乾淨環境重播，CURRENT／HISTORICAL 分軌，舊 v1 快照不升格。[驗收與遷移報告](reports/p0-07-validation.md)。
 
-已修復 WP-01 fixture 隔離、v2 時間、UNI scope 與規則排程；其他資產的 v2 財務輸入、完整重播與發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
+已修復 WP-01 fixture 隔離、v2 時間、UNI scope、規則排程與離線計算重播；其他資產的 v2 財務輸入、可恢復的發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
 
 ## NEXT — 先做到可信、再做到日常可用
 
-1. [ ] **P0-07：自包含 compute manifest 與 snapshot 完整性。** 完整重播與竄改檢查。
-2. [ ] P0-08～P0-10：read-only API、發布復原、品質傳播與 G0 驗收。
+1. [ ] **P0-08：純讀 API 與可恢復的發布事務。** GET 不寫 ledger/snapshot，鎖與故障回復驗收。
+2. [ ] P0-09～P0-10：品質傳播與 G0 整合驗收。
 3. [ ] P1：primary-source research pack、entity/security master、價量／股本／EV、UNI／SECZ／XLM 資料對帳與第一份真實快照。
 4. [ ] Source freshness monitoring、stale-data detection、conflict queue；缺值保持 unknown。
 5. [ ] P2：三資產模型 v2、better bottom-up TAM engine、完整 reverse／joint sensitivity、決策研究包。

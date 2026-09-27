@@ -2,7 +2,7 @@
 
 **2026-09-25｜PROPOSED v1.0｜本文件是未來實作計畫**
 
-**2026-09-27 進度註記：** WP-01、P0-03、P0-04 唯讀雙時間 selector、P0-05 UNI scope-aware 計算及 P0-06 的[逐資產規則期間](../../reports/p0-06-validation.md)已完成。目前下一項為 P0-07；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。SECZ/XLM v2 金融規則大多尚未遷移，完整重播尚未實作。
+**2026-09-27 進度註記：** WP-01、P0-03、P0-04 唯讀雙時間 selector、P0-05 UNI scope-aware 計算、P0-06 [逐資產規則期間](../../reports/p0-06-validation.md)及 P0-07 [離線重播與遷移報告](../../reports/p0-07-validation.md)已完成。目前下一項為 P0-08；以下保留原始階段設計與起始順序，最新任務狀態以 [backlog](IMPLEMENTATION_BACKLOG.yaml) 為準。SECZ/XLM v2 金融規則大多尚未遷移，發布事務尚未實作。
 
 ## 1. 最終目標與成功定義
 

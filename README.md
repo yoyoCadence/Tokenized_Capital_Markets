@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-27 已完成 **WP-01、P0-03～P0-06**。軟體版本 0.1.4，**102 項測試通過**，見 [P0-06 驗收](reports/p0-06-validation.md)。v2 有獨立唯讀的雙時間選值、UNI scope-aware 公式與分資產／規則季度證據路徑；v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 目前只有 UNI 已實現 burn 規則可評估，SECZ 財年與其他八條規則輸入仍未知，沒有可重播 snapshot。MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-07：可重播 snapshot**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-27 已完成 **WP-01、P0-03～P0-07**。軟體版本 0.1.5，**108 項測試通過**，見 [P0-07 驗收與遷移報告](reports/p0-07-validation.md)。v2 有獨立的雙時間選值、UNI scope-aware 公式、分資產／規則季度證據及可離線重播的 audit bundle；v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 目前只有 UNI 已實現 burn 規則可評估，SECZ 財年與其他八條規則輸入仍未知。MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-08：純讀 API 與可恢復發布**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -71,7 +71,7 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；102 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。P0-07 才處理完整重播。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；108 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
 
 ## V2 rule cadence / P0-06
 
@@ -85,6 +85,20 @@ python -m engine.cli thesis-cadence \
 ```
 
 Dashboard 的「V2 cadence」和唯讀 `/api/thesis-cadence` 提供相同查詢。SECZ 發行人 fiscal year-end 尚未驗證，政策填 null；v1 Thesis 區特別標 LEGACY V1，仍有全域日期缺陷，不可當 point-in-time 判斷或實盤訊號。詳見 [P0-06 驗收](reports/p0-06-validation.md)。
+
+## V2 replayable audit bundle / P0-07
+
+`snapshot-v2` 明示兩個 track：`HISTORICAL` 指定知識與估值截止、資訊政策；`CURRENT` 捕捉呼叫當下的 UTC 系統時間，固定使用 system-as-known。每份 audit bundle 封存 v2 資料與來源版本、公式／規則／字典／graph、程式碼和 runtime lock、選用證據的 record/source 雜湊與完整計算結果。檔名是整份檔案的 SHA-256；`replay-v2` 先驗每個位元組與執行版本，再從封存的資料重算。結果是 `AUDIT_ONLY`；真實研究 ledger 仍空，不會由此產生可投資的結論。
+
+```bash
+python -m engine.cli snapshot-v2 --track HISTORICAL \
+  --economic-cutoff 2026-09-26 --realized-quarter-end 2026-06-30 \
+  --horizon-end 2027-12-31 --knowledge-cutoff 2026-09-26T12:00:00Z \
+  --valuation-at 2026-09-26T12:00:00Z --policy AS_KNOWN_BY_SYSTEM
+python -m engine.cli replay-v2 /path/from/previous/output.json
+```
+
+第一個指令會明確寫入 `data/snapshots/v2/research/historical/`；先用 `--root /path/to/disposable/project` 在隔離專案試跑。相同內容重試會回報 `created: false`。`CURRENT` 不接受手填 knowledge／valuation 時鐘；歷史逐季報價另以 `--valuations` 明示。此命令不修改 v1 快照，既有 `snapshot`／`compare` 仍只代表 legacy v1。封存 source URL 及 metadata 並不等於已封存外部來源原文，也不構成真實性或作者身分認證。見 [驗收與舊版遷移報告](reports/p0-07-validation.md)。P0-08 才處理 GET 純讀及跨檔案事務。
 
 ## Architecture
 

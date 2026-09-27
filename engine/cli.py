@@ -8,6 +8,7 @@ from engine.formulas.runtime import calculate
 from engine.propagation.ingest import commit_event
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
+from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snapshot_v2
 from engine.storage import ROOT, load_project, read_records
 from engine.thesis.rules import evaluate_theses
 from engine.thesis.cadence_v2 import evaluate_cadence_v2
@@ -65,6 +66,18 @@ def _main(argv=None):
     cadence.add_argument("--knowledge-cutoff", required=True)
     cadence.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
     cadence.add_argument("--valuations", default="{}", help="JSON mapping quarter end to historical quote valuation instant")
+    bundle = sub.add_parser("snapshot-v2", help="Write an audit-only, self-contained v2 compute bundle")
+    bundle.add_argument("--demo", action="store_true")
+    bundle.add_argument("--track", required=True, choices=("HISTORICAL", "CURRENT"))
+    bundle.add_argument("--economic-cutoff", required=True)
+    bundle.add_argument("--realized-quarter-end", required=True)
+    bundle.add_argument("--horizon-end", required=True)
+    bundle.add_argument("--knowledge-cutoff", help="HISTORICAL: explicit timezone-aware cutoff")
+    bundle.add_argument("--valuation-at", help="HISTORICAL: explicit timezone-aware market valuation")
+    bundle.add_argument("--policy", choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    bundle.add_argument("--valuations", default="{}", help="JSON mapping quarter end to historical quote valuation instant")
+    replay = sub.add_parser("replay-v2", help="Verify v2 digest and recompute offline from frozen inputs")
+    replay.add_argument("file", type=Path)
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -118,6 +131,20 @@ def _main(argv=None):
                                      knowledge_cutoff=args.knowledge_cutoff, knowledge_policy=args.policy,
                                      valuation_by_period=valuations, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "snapshot-v2":
+        bundle = make_snapshot_v2(root=args.root, demo=args.demo, track=args.track,
+                                  economic_cutoff=args.economic_cutoff,
+                                  realized_quarter_end=args.realized_quarter_end,
+                                  horizon_end=args.horizon_end,
+                                  knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                                  knowledge_policy=args.policy,
+                                  valuation_by_period=json.loads(args.valuations))
+        path, created = save_snapshot_v2(bundle, root=args.root)
+        print(json.dumps({"id": path.stem, "path": str(path), "created": created,
+                          "mode": bundle["mode"], "track": bundle["track"], "purpose": bundle["purpose"]},
+                         ensure_ascii=False, indent=2))
+    elif args.command == "replay-v2":
+        print(json.dumps(replay_snapshot_v2(args.file), ensure_ascii=False, indent=2))
 
 
 def main(argv=None):
