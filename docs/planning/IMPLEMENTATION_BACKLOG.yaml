@@ -2,13 +2,13 @@ plan_id: TCM-PLAN-2026-09-25
 version: '1.2'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-09-26'
+updated_on: '2026-09-27'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-06
+next_task: P0-07
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -159,7 +159,7 @@ tasks:
     title: 資產與規則各自的期間和 freshness
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 5
     depends_on: [P0-04, P0-05]
@@ -169,6 +169,14 @@ tasks:
       - 缺季度、不同 fiscal year、TTM 與 daily price 混合有明示政策。
       - 所有觸發和未評估規則保留；incomplete 不變成 HEALTHY。
     audit_refs: [A-03]
+    completion:
+      completed_on: '2026-09-27'
+      implementation_commit: dfbb69dfec73cf6ab3073a81bb7c91c4d4c378c5
+      evidence: reports/p0-06-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/thesis/test_cadence_v2.py, tests/regression/test_scope_economics_v2.py, tests/thesis/test_thesis.py]
+      full_suite_tests_passed: 102
+      result: 逐資產／規則季度與歷史 valuation 的唯讀 v2 路徑保留九條規則；只啟用具已實現公式的 UNI 規則，SECZ 財年及其他八條未驗證輸入維持 Unknown；不改 v1 快照。
   - id: P0-07
     title: 自包含 compute manifest 與 snapshot 完整性
     phase: P0
