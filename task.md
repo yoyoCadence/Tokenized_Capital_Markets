@@ -1,8 +1,8 @@
 # Task backlog / 專案路線圖
 
-更新：2026-09-26。詳細順序與驗收以 [IMPLEMENTATION_BACKLOG.yaml](docs/planning/IMPLEMENTATION_BACKLOG.yaml) 為準。未完成規劃不代表現有功能。
+更新：2026-09-27。詳細順序與驗收以 [IMPLEMENTATION_BACKLOG.yaml](docs/planning/IMPLEMENTATION_BACKLOG.yaml) 為準。未完成規劃不代表現有功能。
 
-## CURRENT — MVP 基礎、WP-01 與 P0-03／04／05 已完成
+## CURRENT — MVP 基礎、WP-01 與 P0-03～06 已完成
 
 - [x] Canonical dictionary、formulas/source registries、graph、events、四種 classification。
 - [x] UNI／SECZ／XLM demo economic models、reverse underwriting、sensitivity、thesis rules。
@@ -15,20 +15,21 @@
 - [x] **P0-03：v2 時間／scope／record 設計契約。** [契約提案](docs/planning/CONTRACT_V2_PROPOSAL.yaml)、[相容矩陣](docs/planning/V1_V2_COMPATIBILITY.md)、[遷移 ADR](docs/planning/ADR-0001-V2-TIME-SCOPE-MIGRATION.md)；runtime 尚未切換 v2，[驗收證據](reports/p0-03-contract-validation.md)。
 - [x] **P0-04：v2 雙時間 selector。** 唯讀 CLI 與程序入口，分別重播「當時系統已知」和「當時公開可知」；晚發布重述、來源衝突、日期精度、DST、報價資料齡與原快照保留有回歸。[驗收證據](reports/p0-04-validation.md)。
 - [x] **P0-05：v2 UNI 四種經濟 scope。** role/時間選值接入獨立金融公式、鎖版、lineage 與唯讀 Dashboard；封鎖 v1 TAM/混合收益進入當期 UNI 規則，42.2% demo regression 保留。[驗收證據](reports/p0-05-validation.md)。
+- [x] **P0-06：分資產／規則的 v2 季度時點與資料期限。** 九條規則逐一保留、UNI realized burn 可用足夠證據評估，其餘缺證據明示 Unknown；獨立 CLI／API／UI 查詢，舊 v1 thesis 保留 legacy 標籤。[驗收證據](reports/p0-06-validation.md)。
 
-已修復 WP-01 fixture 隔離、v2 時間與 UNI scope 分流；其他資產的 v2 公式、混合頻率、完整重播與發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
+已修復 WP-01 fixture 隔離、v2 時間、UNI scope 與規則排程；其他資產的 v2 財務輸入、完整重播與發布事務仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
 
 ## NEXT — 先做到可信、再做到日常可用
 
-1. [ ] **P0-06：資產／規則各自的 cadence 與 freshness。** 修正季度規則的頻率／歷史證據對齊。
-3. [ ] P0-07～P0-10：可重播 snapshot、read-only API、發布復原、品質傳播與 G0 驗收。
-4. [ ] P1：primary-source research pack、entity/security master、價量／股本／EV、UNI／SECZ／XLM 資料對帳與第一份真實快照。
-5. [ ] Source freshness monitoring、stale-data detection、conflict queue；缺值保持 unknown。
-6. [ ] P2：三資產模型 v2、better bottom-up TAM engine、完整 reverse／joint sensitivity、決策研究包。
-7. [ ] Automated research refresh workflow，先有 staging 與審閱。
-8. [ ] Event-driven recalculation 的里程碑／經濟傳導與可恢復發布。
-9. [ ] Quarterly earnings ingestion 與 protocol governance monitoring。
-10. [ ] Additional asset models 的候選與資料可得性評估；先不擴大專用模型，正式擴張依 P5-01 的證據門檻。
+1. [ ] **P0-07：自包含 compute manifest 與 snapshot 完整性。** 完整重播與竄改檢查。
+2. [ ] P0-08～P0-10：read-only API、發布復原、品質傳播與 G0 驗收。
+3. [ ] P1：primary-source research pack、entity/security master、價量／股本／EV、UNI／SECZ／XLM 資料對帳與第一份真實快照。
+4. [ ] Source freshness monitoring、stale-data detection、conflict queue；缺值保持 unknown。
+5. [ ] P2：三資產模型 v2、better bottom-up TAM engine、完整 reverse／joint sensitivity、決策研究包。
+6. [ ] Automated research refresh workflow，先有 staging 與審閱。
+7. [ ] Event-driven recalculation 的里程碑／經濟傳導與可恢復發布。
+8. [ ] Quarterly earnings ingestion 與 protocol governance monitoring。
+9. [ ] Additional asset models 的候選與資料可得性評估；先不擴大專用模型，正式擴張依 P5-01 的證據門檻。
 
 原先「先直接導入真實研究包」調整為「先修 P0 邊界再發布」；理由與重現證據見現況稽核。來源查找可先進行，不能跳過發布門檻。
 

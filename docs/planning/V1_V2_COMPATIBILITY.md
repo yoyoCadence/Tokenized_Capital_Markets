@@ -1,6 +1,6 @@
 # P0-03：v1／v2 相容矩陣與對應政策
 
-**原設計狀態：PROPOSED；P0-04／05 已另行實作 v2 唯讀 selector 與 UNI 四 scope 公式。** 下表仍是以 v1 `spec/canonical-schema.yaml` 的 94 metric（47 OBSERVED、30 DERIVED、16 ASSUMPTION、1 SCENARIO）、`engine/formulas/runtime.py` 和 `engine/snapshots.py` 核對的原始映射。v1 的 2 份 demo snapshot 未改；其他資產的 v2 公式與 thesis cadence 仍待實作。詳見 [P0-05 驗收](../../reports/p0-05-validation.md)。
+**原設計狀態：PROPOSED；P0-04／05／06 已另行實作 v2 唯讀 selector、UNI 四 scope 公式及逐規則 cadence。** 下表仍是以 v1 `spec/canonical-schema.yaml` 的 94 metric（47 OBSERVED、30 DERIVED、16 ASSUMPTION、1 SCENARIO）、`engine/formulas/runtime.py` 和 `engine/snapshots.py` 核對的原始映射。v1 的 2 份 demo snapshot 未改；其他資產的 v2 公式及八條經濟規則仍待實作。詳見 [P0-06 驗收](../../reports/p0-06-validation.md)。
 
 ## 1. 資料與 API 邊界
 
@@ -16,7 +16,7 @@
 | `calculate(as_of=...)` | economic、knowledge、valuation 各自的 cutoff 與政策 | 舊 API 僅允許 LEGACY_V1 語義；v2 需顯式 query context，不承諾隱式推定 |
 | `--demo`／RESEARCH | 模式仍分離，fixture transitive propagation | 研究 ledger 中 fixture 依 WP-01 繼續拒絕；v2 歷史資料還受時間門檻約束 |
 | v1 `snapshot.id`, `created_at`, selected metrics | v2 snapshot 有 schema/context/selected evidence/knowledge policy/runtime manifest | v1 JSON 不移動、不修改；read adapter 明示 legacy，禁止進 v2 as-known 樣本 |
-| v1 rule `cadence: QUARTER` + 全域日期 | 每資產／每條 rule 期間、freshness、valuation cutoff | P0-06 實作；本次契約不修復 v1 規則 |
+| v1 rule `cadence: QUARTER` + 全域日期 | 每資產／每條 rule 期間、freshness、valuation cutoff | P0-06 已實作獨立 v2 唯讀路徑；不回溯修復 v1 規則 |
 
 ## 2. v1 公式到 v2 scope 的研究映射
 

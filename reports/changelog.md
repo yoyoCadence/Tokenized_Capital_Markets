@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.4 / P0-06 independent v2 rule cadence — 2026-09-27
+
+- Introduced locked v2 asset/rule calendars and a read-only quarterly scheduler: explicit economic/knowledge cutoffs and period-specific valuations; fiscal-quarter labels, missing-quarter and reporting grace, period age, TTM endpoint and quote freshness all fail closed with per-rule period/source evidence.
+- Kept all nine legacy rule identities visible: only the source-backed v2 UNI realized burn rule is currently evaluable; the eight unmigrated rules and SECZ unverified issuer calendar remain unevaluated rather than silently claiming Healthy. Daily UNI quotes no longer perturb v2 SECZ/XLM quarterly selection. Legacy v1 thesis and two demo snapshots are unchanged and explicitly labeled not point-in-time.
+- Added `thesis-cadence` CLI, `/api/thesis-cadence` and a separate v2 dashboard inspector. New tests cover synthetic trigger, cross-asset daily quote, missing/fiscal/TTM periods, stale quote, historical restatement policies, rule-lock tampering, fixture isolation and read-only boundaries. [P0-06 validation](p0-06-validation.md): 102 tests; v1 DEMO/RESEARCH validation each 94 metrics, zero issues. No real market observation or canonical snapshot added.
+
 ## Software 0.1.3 / P0-05 scope-aware UNI economics — 2026-09-26
 
 - Introduced locked v2 UNI formulas using explicit roles and economic/knowledge/valuation times: actual-quarter realized net burn, arithmetic annualized run rate, future annual protocol revenue and standalone reverse-required market share. A forward scenario may cover a future period but must be known by the query cutoff; completed realized quarters cannot come from the future.

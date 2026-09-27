@@ -1,8 +1,8 @@
 # ADR-0001：時間、經濟 scope 與 v1→v2 遷移
 
-**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04／05 完成、P0-06 尚未開始**
+**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04～06 完成、P0-07 尚未開始**
 
-**實作進度：** P0-04 已完成獨立唯讀[雙時間選值](../../reports/p0-04-validation.md)，P0-05 已完成獨立唯讀 [UNI scope-aware 公式與 UI](../../reports/p0-05-validation.md)；P0-06 仍未實作。契約補列 `as_of_precision` 與報價原時區日期，版本為 `2.0-proposal.2`。以下保留原設計決議與步驟。
+**實作進度：** P0-04 已完成獨立唯讀[雙時間選值](../../reports/p0-04-validation.md)，P0-05 已完成獨立唯讀 [UNI scope-aware 公式與 UI](../../reports/p0-05-validation.md)，P0-06 已完成[每條規則／資產的 v2 期間路徑](../../reports/p0-06-validation.md)。契約版本仍為 `2.0-proposal.2`；下方原決議與遷移步驟保留。v1 thesis 仍為 legacy，P0-07 snapshot 尚未實作。
 
 ## 背景與決策
 
@@ -17,7 +17,7 @@ v1 的 `_select` 用 `as_of_date`／`effective_date` 選取；研究事件何時
 3. `AS_KNOWN_BY_SYSTEM` 用有存證的公開可用時點和實際 `first_seen_at`、`ingested_at`；三者均不晚於 cutoff。當時尚未入庫的資料不得被稱為系統當時的決策證據。`PUBLIC_INFORMATION_RECONSTRUCTION` 可事後取得有可靠原始發布時點的資料，只能聲稱當時*公開可知*，不能冒稱當時已有本系統的研究或交易。
 4. 只有 publication 日期時，且可證明時區，使用該時區所記日期**隔日零點**作保守可用時點。精度或時區不明則拒絕歷史 point-in-time 使用。所有 instant 需帶 timezone，計算轉 UTC；保留原表述與精度。
 5. 修正／重述資料必須用**該修正版**的公開與取得時間；先篩資格再處理 supersession。不同來源若衝突，保留所有 evidence 並回傳 CONFLICT，不靠來源層級或最大日期偷選值。同值多來源保留全部被選中的支持 ID。
-6. 以 `valuation_at` 限定市場報價，不讓季度研究的時點被之後的價格代換；價格時間和股本時間各自可見。未來 P0-06 再實作各資產／規則 cadence 與 freshness。
+6. 以 `valuation_at` 限定市場報價，不讓季度研究的時點被之後的價格代換；價格時間和股本時間各自可見。P0-06 已在獨立 v2 唯讀路徑實作各資產／規則 cadence 與 freshness，原 v1 路徑未改。
 
 ### 實例：相同 Q1 經濟期間、不同公開時間
 

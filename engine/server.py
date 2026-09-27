@@ -9,6 +9,7 @@ from engine.sensitivity.analysis import matrix, run
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.storage import load_project, ROOT
 from engine.thesis.rules import evaluate_theses
+from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.temporal import calculate_economics, load_temporal_project
 from engine.temporal.economics import LEGACY_V1_SCOPES
 from engine.validation.checks import require_valid_project
@@ -53,6 +54,23 @@ def handler_factory(root, demo):
             self.wfile.write(data)
 
         def do_GET(self):
+            if urlsplit(self.path).path == "/api/thesis-cadence":
+                try:
+                    query = parse_qs(urlsplit(self.path).query, strict_parsing=True)
+                    required = {"economic_cutoff", "knowledge_cutoff", "policy"}
+                    if not required <= set(query) or set(query) - required - {"valuations"} or any(len(v) != 1 for v in query.values()):
+                        raise ValueError("Expected economic_cutoff, knowledge_cutoff, policy and optional valuations JSON")
+                    valuations = json.loads(query["valuations"][0]) if "valuations" in query else {}
+                    self._json(200, evaluate_cadence_v2(load_temporal_project(root, demo=demo),
+                                                         economic_cutoff=query["economic_cutoff"][0],
+                                                         knowledge_cutoff=query["knowledge_cutoff"][0],
+                                                         knowledge_policy=query["policy"][0],
+                                                         valuation_by_period=valuations, root=root))
+                except ValidationError as exc:
+                    self._json(422, {"error": str(exc), "issues": exc.issues})
+                except (ValueError, KeyError, json.JSONDecodeError) as exc:
+                    self._json(422, {"error": str(exc)})
+                return
             if urlsplit(self.path).path == "/api/economics":
                 try:
                     query = parse_qs(urlsplit(self.path).query, strict_parsing=True)

@@ -101,7 +101,7 @@ def load_formulas(root=ROOT):
 
 
 def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge_cutoff,
-                        valuation_at, knowledge_policy, root=ROOT):
+                        valuation_at, knowledge_policy, root=ROOT, requested_metrics=None):
     """Explicit clocks and annual horizon; missing evidence propagates as Unknown."""
     validate_temporal_project(project)
     formulas = load_formulas(root)
@@ -112,14 +112,33 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
         if (role is None or role["concept_id"] != concept_id or role.get("entity_id") != "UNI" or
                 concepts[concept_id]["unit"] != ROLE_UNITS[role_id]):
             _fail("ROLE_CONTRACT", "Role identity or unit differs from released UNI formula contract", role_id)
+    if requested_metrics is not None:
+        if type(requested_metrics) not in (tuple, list) or not requested_metrics or any(
+                type(name) is not str or name not in FORMULAS for name in requested_metrics):
+            _fail("FORMULA_REQUEST", "Requested metrics must be known nonempty formula IDs", "query.requested_metrics")
+        needed = set(requested_metrics)
+        def add_deps(name):
+            for dep in formulas[name]["inputs"]:
+                if dep in formulas and dep not in needed:
+                    needed.add(dep)
+                    add_deps(dep)
+        for name in tuple(needed):
+            add_deps(name)
+        active_formulas = [name for name in FORMULAS if name in needed]
+        active_roles = {dep for name in active_formulas for dep in formulas[name]["inputs"] if dep in ROLE_SCOPES}
+    else:
+        active_formulas, active_roles = FORMULAS, set(ROLE_SCOPES)
     quarter = _day(realized_quarter_end, "query.realized_quarter_end")
-    horizon = _day(horizon_end, "query.horizon_end")
+    forward_needed = bool(active_roles - QUARTER - SPOT)
+    horizon = _day(horizon_end, "query.horizon_end") if forward_needed else None
     known = _instant(knowledge_cutoff, "query.knowledge_cutoff")
     valued = _instant(valuation_at, "query.valuation_at")
-    if valued > known or horizon < known.date() or quarter >= known.date() or quarter >= horizon:
+    if valued > known or quarter >= known.date() or (forward_needed and (horizon < known.date() or quarter >= horizon)):
         _fail("QUERY_TIME", "Require completed quarter, future annual horizon and valuation no later than knowledge", "query")
     selected, results = {}, {}
     for role_id, scope in ROLE_SCOPES.items():
+        if role_id not in active_roles:
+            continue
         cutoff = realized_quarter_end if role_id in QUARTER else valued.date().isoformat() if role_id in SPOT else horizon_end
         selected[role_id] = select_temporal(project, role_id=role_id, economic_cutoff=cutoff,
                                             knowledge_cutoff=knowledge_cutoff, valuation_at=valuation_at,
@@ -156,7 +175,7 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
     if all(selected[id_]["value"] is not None for id_ in SPOT) and len({selected[id_]["economic_period"]["end"] for id_ in SPOT}) > 1:
         selected["uni_current_supply"]["value"] = None
         selected["uni_current_supply"]["reason"] = "INCOMPATIBLE_PERIOD"
-    for id_ in FORMULAS:
+    for id_ in active_formulas:
         f = formulas[id_]
         deps = {dep: selected[dep] if dep in selected else results[dep] for dep in f["inputs"]}
         missing = [dep for dep, item in deps.items() if item["value"] is None]
@@ -183,4 +202,4 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
             "knowledge_cutoff": knowledge_cutoff, "valuation_at": valuation_at,
             "realized_quarter_end": realized_quarter_end, "horizon_end": horizon_end,
             "inputs": selected, "metrics": results,
-            "warnings": (["REQUIRED_SHARE_OVER_100_PERCENT"] if results["uni_required_market_share"]["value"] is not None and results["uni_required_market_share"]["value"] > 1 else [])}
+            "warnings": (["REQUIRED_SHARE_OVER_100_PERCENT"] if "uni_required_market_share" in results and results["uni_required_market_share"]["value"] is not None and results["uni_required_market_share"]["value"] > 1 else [])}
