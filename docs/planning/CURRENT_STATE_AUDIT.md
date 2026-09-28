@@ -13,7 +13,7 @@
 | A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
 | 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
 
-證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～07 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P0-08。
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～08 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，[P0-08](../../reports/p0-08-validation.md) 修復下述 A-06；**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P0-09。
 
 ## 1. 已具備的基礎
 
@@ -103,6 +103,8 @@ publication 探針的 published_at 是測試用 metadata；現有正式 schema �
 - 任務：P0-07。
 
 ### A-06 / P0：讀 API 寫入，發布缺少完整事務（程式審查）
+
+**2026-09-28 狀態：已修復 API 唯讀與 v1 事件三檔恢復**。`GET /api/state` 不再寫快照，明確發布有跨行程鎖、redo journal、CLI `recover` 及逐步故障注入；[驗收](../../reports/p0-08-validation.md)。下方保留當時發現的基線，外部程式忽略 advisory 鎖直接寫檔仍不在事務保證內。
 
 - 位置：engine/server.py 的 GET /api/state、payload；engine/propagation/ingest.py 的 commit_event。
 - GET 可以產生 snapshot；ThreadingHTTPServer 允許同時請求。YAML、snapshot、changelog 分次寫入，沒有跨程序鎖與完整 crash recovery journal。

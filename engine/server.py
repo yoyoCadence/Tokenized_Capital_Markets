@@ -6,27 +6,24 @@ from urllib.parse import parse_qs, urlsplit
 
 from engine.formulas.runtime import calculate
 from engine.sensitivity.analysis import matrix, run
-from engine.snapshots import compare, read_snapshots, save_snapshot
+from engine.publication import read_lock
+from engine.snapshots import compare, read_snapshots
 from engine.storage import load_project, ROOT
 from engine.thesis.rules import evaluate_theses
 from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.temporal import calculate_economics, load_temporal_project
 from engine.temporal.economics import LEGACY_V1_SCOPES
 from engine.validation.checks import require_valid_project
-from engine.validation.errors import ValidationError, reject_errors
+from engine.validation.errors import ValidationError
 from engine.validation.lineage import validate_lineage
 
 
-def payload(project, overrides=None, persist=False):
+def payload(project, overrides=None):
     problems = require_valid_project(project)
     state = run(project, overrides) if overrides else calculate(project)
     if not overrides:
         state["thesis"] = evaluate_theses(project, state)
     problems += state["issues"] + validate_lineage(project, state)
-    if persist:
-        reject_errors(problems)
-    if persist and (project["demo"] or any(x["classification"] == "OBSERVED" and x["value"] is not None for x in state["metrics"].values())):
-        save_snapshot(project, state)
     history = read_snapshots(project["root"], state["mode"])
     comparison = compare(history[-2], history[-1]) if len(history) >= 2 else None
     return {**state, "issues": problems, "legacy_scopes": LEGACY_V1_SCOPES,
@@ -54,6 +51,13 @@ def handler_factory(root, demo):
             self.wfile.write(data)
 
         def do_GET(self):
+            try:
+                with read_lock(root):
+                    self._get_locked()
+            except ValidationError as exc:
+                self._json(503, {"error": str(exc), "issues": exc.issues})
+
+        def _get_locked(self):
             if urlsplit(self.path).path == "/api/thesis-cadence":
                 try:
                     query = parse_qs(urlsplit(self.path).query, strict_parsing=True)
@@ -92,7 +96,7 @@ def handler_factory(root, demo):
                 return
             if self.path == "/api/state":
                 try:
-                    self._json(200, payload(load_project(root, demo), persist=True))
+                    self._json(200, payload(load_project(root, demo)))
                 except ValidationError as exc:
                     self._json(422, {"error": str(exc), "issues": exc.issues})
                 except (ValueError, KeyError) as exc:
@@ -113,6 +117,13 @@ def handler_factory(root, demo):
             self.wfile.write(data)
 
         def do_POST(self):
+            try:
+                with read_lock(root):
+                    self._post_locked()
+            except ValidationError as exc:
+                self._json(503, {"error": str(exc), "issues": exc.issues})
+
+        def _post_locked(self):
             if self.path != "/api/sensitivity":
                 self.send_error(404)
                 return
@@ -123,7 +134,7 @@ def handler_factory(root, demo):
                 body = json.loads(self.rfile.read(length))
                 if not isinstance(body, dict) or not isinstance(body.get("overrides"), dict):
                     raise ValueError("Expected {'overrides': {...}}")
-                result = payload(load_project(root, demo), overrides=body["overrides"], persist=False)
+                result = payload(load_project(root, demo), overrides=body["overrides"])
                 errors = [x for x in result["issues"] if x["level"] == "ERROR"]
                 self._json(422 if errors else 200, result)
             except ValidationError as exc:

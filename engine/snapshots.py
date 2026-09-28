@@ -3,7 +3,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 import hashlib
 import json
+import os
+import tempfile
 
+from engine.publication import write_lock, _sync_dir, _ensure_dir
 from engine.validation.checks import signature, require_valid_project
 from engine.validation.errors import ValidationError, issue, reject_errors
 from engine.validation.isolation import synthetic_paths
@@ -94,14 +97,13 @@ def make_snapshot(project, state, event=None):
     return snapshot
 
 
-def save_snapshot(project, state, event=None):
+def prepare_snapshot(project, state, event=None):
     # Guard before mkdir, mutating thesis metadata or reading/writing history.
     validate_snapshot_input(project, state)
     if not project["demo"] and event:
         reject_errors([issue("ERROR", "RESEARCH_FIXTURE", "Synthetic event evidence", path)
                        for path in synthetic_paths(event, "event", {s["id"] for s in project["sources"] if s["kind"] == "FIXTURE"})])
     directory = Path(project["root"]) / "data/snapshots" / state["mode"].lower()
-    directory.mkdir(parents=True, exist_ok=True)
     history = read_snapshots(project["root"], state["mode"])
     for asset, thesis in state["thesis"].items():
         previous = history[-1]["thesis"].get(asset) if history else None
@@ -120,11 +122,34 @@ def save_snapshot(project, state, event=None):
                 raise ValueError(f"Formula {key} changed without a version increment")
     path = directory / f"{current['id']}.json"
     if path.exists():
-        return json.loads(path.read_text(encoding="utf-8")), False
+        return json.loads(path.read_text(encoding="utf-8")), path, False
     current["created_at"] = datetime.now(timezone.utc).isoformat(timespec="microseconds")
-    with path.open("x", encoding="utf-8") as handle:
-        json.dump(current, handle, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
-    return current, True
+    return current, path, True
+
+
+def snapshot_bytes(snapshot):
+    return json.dumps(snapshot, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False).encode("utf-8")
+
+
+def save_snapshot(project, state, event=None):
+    validate_snapshot_input(project, state)
+    with write_lock(project["root"]):
+        snapshot, path, created = prepare_snapshot(project, state, event)
+        if not created:
+            return snapshot, False
+        _ensure_dir(path.parent)
+        fd, temporary = tempfile.mkstemp(prefix=".snapshot-", dir=path.parent)
+        try:
+            with os.fdopen(fd, "wb") as out:
+                out.write(snapshot_bytes(snapshot))
+                out.flush()
+                os.fsync(out.fileno())
+            # Exclusive link preserves immutable content even with another writer.
+            os.link(temporary, path)
+            _sync_dir(path.parent)
+        finally:
+            Path(temporary).unlink(missing_ok=True)
+        return snapshot, True
 
 
 def compare(previous, current):

@@ -296,7 +296,13 @@ def replay_snapshot_v2(path, *, code_root=ROOT):
 
 
 def save_snapshot_v2(bundle, *, root=ROOT):
-    """Write one complete file exclusively; multi-file transactions belong to P0-08."""
+    """Write one complete file exclusively under the shared publication lock."""
+    from engine.publication import write_lock
+    with write_lock(root):
+        return _save_snapshot_v2_locked(bundle, root=root)
+
+
+def _save_snapshot_v2_locked(bundle, *, root=ROOT):
     if (type(bundle) is not dict or bundle.get("schema_version") != SCHEMA or
             type(bundle.get("track")) is not str or bundle["track"] not in TRACKS or
             type(bundle.get("mode")) is not str or bundle["mode"] not in {"DEMO", "RESEARCH"}):
@@ -304,7 +310,8 @@ def save_snapshot_v2(bundle, *, root=ROOT):
     data = _canonical(bundle)
     digest = _sha(data)
     directory = Path(root) / "data/snapshots/v2" / bundle["mode"].lower() / bundle["track"].lower()
-    directory.mkdir(parents=True, exist_ok=True)
+    from engine.publication import _ensure_dir
+    _ensure_dir(directory)
     path = directory / f"{digest}.json"
     with tempfile.NamedTemporaryFile(dir=directory, prefix=".pending-", delete=False) as out:
         temp = Path(out.name)
@@ -319,6 +326,9 @@ def save_snapshot_v2(bundle, *, root=ROOT):
                 if path.read_bytes() != data:
                     _fail("SNAPSHOT_DIGEST", "Existing snapshot has different bytes", path)
                 created = False
+            if created:
+                from engine.publication import _sync_dir
+                _sync_dir(directory)
         finally:
             temp.unlink(missing_ok=True)
     return path, created

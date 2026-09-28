@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-27 已完成 **WP-01、P0-03～P0-07**。軟體版本 0.1.5，**108 項測試通過**，見 [P0-07 驗收與遷移報告](reports/p0-07-validation.md)。v2 有獨立的雙時間選值、UNI scope-aware 公式、分資產／規則季度證據及可離線重播的 audit bundle；v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 目前只有 UNI 已實現 burn 規則可評估，SECZ 財年與其他八條規則輸入仍未知。MVP 不代表已驗證的投資優勢或實盤系統。下一步 **P0-08：純讀 API 與可恢復發布**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-28 已完成 **WP-01、P0-03～P0-08**。軟體版本 0.1.6，**113 項測試通過**，見 [P0-08 驗收](reports/p0-08-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；讀取 API 純讀，事件以 journal 可恢復發布。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。真實 observation 仍為 0；v2 目前只有 UNI 已實現 burn 規則可評估，SECZ 財年與其他八條規則輸入仍未知。下一步 **P0-09：品質傳播與衝突選取理由**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -31,7 +31,10 @@ python -m engine.cli validate              # validate real research pack (curren
 python -m engine.cli snapshot --demo --as-of 2026-06-30
 python -m engine.cli compare --demo
 python -m engine.cli apply-event --demo --id event_demo_dtcc_planned
+python -m engine.cli recover            # complete a pending explicit event publication, if any
 ```
+
+`GET /api/state` 不建立快照；請以 `snapshot` 明確發布。`apply-event` 逐檔更新前先建立 redo journal；若途中故障，讀取 API 回傳 503，`recover` 補齊完整版本（或下一次明確發布自動補齊）。相同事件與觀察值重試不重複新增；衝突的重用事件 ID 被拒絕。見 [故障注入驗收](reports/p0-08-validation.md)。
 
 For a sourced LIVE/COMPLETED event, add its immutable record and source to the registries, then run `python -m engine.cli apply-event --id EVENT_ID --observations new-observations.yaml`. The batch must use fresh IDs, match the event's source IDs and classification, and pass full validation before its observations are appended. The command recalculates, applies thesis rules, writes a snapshot and records the event in `reports/changelog.md`. Planned/announced events cannot ingest live observations. The demo command above has no new observations and only records graph propagation; avoid running it when you want the default two-version comparison unchanged.
 
@@ -71,7 +74,7 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；108 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；113 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
 
 ## V2 rule cadence / P0-06
 
@@ -98,7 +101,7 @@ python -m engine.cli snapshot-v2 --track HISTORICAL \
 python -m engine.cli replay-v2 /path/from/previous/output.json
 ```
 
-第一個指令會明確寫入 `data/snapshots/v2/research/historical/`；先用 `--root /path/to/disposable/project` 在隔離專案試跑。相同內容重試會回報 `created: false`。`CURRENT` 不接受手填 knowledge／valuation 時鐘；歷史逐季報價另以 `--valuations` 明示。此命令不修改 v1 快照，既有 `snapshot`／`compare` 仍只代表 legacy v1。封存 source URL 及 metadata 並不等於已封存外部來源原文，也不構成真實性或作者身分認證。見 [驗收與舊版遷移報告](reports/p0-07-validation.md)。P0-08 才處理 GET 純讀及跨檔案事務。
+第一個指令會明確寫入 `data/snapshots/v2/research/historical/`；先用 `--root /path/to/disposable/project` 在隔離專案試跑。相同內容重試會回報 `created: false`。`CURRENT` 不接受手填 knowledge／valuation 時鐘；歷史逐季報價另以 `--valuations` 明示。此命令不修改 v1 快照，既有 `snapshot`／`compare` 仍只代表 legacy v1。封存 source URL 及 metadata 並不等於已封存外部來源原文，也不構成真實性或作者身分認證。見 [驗收與舊版遷移報告](reports/p0-07-validation.md)；GET 純讀及 v1 事件跨檔案事務見 [P0-08](reports/p0-08-validation.md)。
 
 ## Architecture
 
