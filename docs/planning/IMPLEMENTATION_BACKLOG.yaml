@@ -2,13 +2,13 @@ plan_id: TCM-PLAN-2026-09-25
 version: '1.2'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-09-27'
+updated_on: '2026-09-28'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-08
+next_task: P0-09
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -203,7 +203,7 @@ tasks:
     title: 純讀 API 與可恢復的發布事務
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 5
     depends_on: [P0-07]
@@ -213,6 +213,14 @@ tasks:
       - 重試與並行發布不遺失資料或重複事件。
       - 在每個寫入步驟故障注入後，可恢復到完整舊版或完整新版。
     audit_refs: [A-06]
+    completion:
+      completed_on: '2026-09-28'
+      implementation_commit: 1af7ff84127de12e923e822f4e56eca620ce8079
+      evidence: reports/p0-08-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_publication.py, tests/integration/test_boundaries.py, tests/thesis/test_event_ingestion.py]
+      full_suite_tests_passed: 113
+      result: 讀取 API 不寫檔；事件發布跨行程鎖、redo journal、故障恢復與重試去重通過，舊版 v1 快照位元組維持不變。
   - id: P0-09
     title: Transitive uncertainty 與衝突選取理由
     phase: P0
