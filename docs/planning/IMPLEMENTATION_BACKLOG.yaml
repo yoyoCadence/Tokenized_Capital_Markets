@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.4'
+version: '1.5'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-29'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-04
+next_task: P1-05
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -334,7 +334,7 @@ tasks:
     title: 價格、供給、股本與 EV bridge
     phase: P1
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: research
     effort_points: 5
     depends_on: [P1-02, P1-03]
@@ -343,6 +343,14 @@ tasks:
       - price/venue/time/currency 與 supply/share basis 配對。
       - equity claims/cash/debt 與 token FDV 語義分開；差額解釋。
       - 假設價格 reverse 與 current-market reverse 明顯區別。
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: 96b3300e3b24f3a5dcd167a8c14eb9b730547b77
+      evidence: reports/p1-04-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_market_bridge_v2.py, tests/integration/test_snapshots_v2.py]
+      full_suite_tests_passed: 156
+      result: 三資產市場輸入契約、五個鎖版公式、報價／結構時點政策與市值對帳已完成；真實市場 observation 仍為 0，下一項 P1-05。
     audit_refs: [A-10]
   - id: P1-05
     title: UNI primary evidence 最小包
