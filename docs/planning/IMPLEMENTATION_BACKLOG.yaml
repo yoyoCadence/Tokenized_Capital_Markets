@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-01
+next_task: P1-02
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -269,7 +269,7 @@ tasks:
     title: Source staging 與原始證據存證
     phase: P1
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P0-03, P0-08]
@@ -278,6 +278,14 @@ tasks:
       - URL/publisher/date/retrieval/tier/metrics/hash/locator 完整。
       - 日期不明或擷取失敗留 staging，不能自動成為 observed。
       - 公開 repo 不含受限全文、credentials 或私有持倉。
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: 7db5fabc44517b976b691b62ec18c945763c5bfa
+      evidence: reports/p1-01-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_source_staging.py, tests/integration/test_snapshots_v2.py, tests/integration/test_publication.py]
+      full_suite_tests_passed: 132
+      result: 手動原文檔留 repo 外 content-addressed store，staging 保存取得／失敗、metadata、hash 和原文定位；核准後兩份來源 metadata ledger 原子發布且 observation 仍空，下一項 P1-02。
   - id: P1-02
     title: Entity/security master 與可交易性查核
     phase: P1
