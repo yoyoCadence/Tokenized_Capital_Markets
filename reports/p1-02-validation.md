@@ -14,7 +14,7 @@
 
 `python -m engine.cli identity --asset SECZ` 顯示研究核心、上市、value capture、資料 readiness、用戶交易資格五個維度；用戶資格為 null／UNKNOWN，發表門檻仍 false。`python -m engine.cli identity --namespace NYSE --symbol SECZ --as-of 2026-07-02` 可依交易所和生效日期定位證券；07-01 為 Unknown。此查詢是 **PUBLIC_RECONSTRUCTION_ONLY**，不聲稱系統在 07-02 已擁有該證據。issuer tokenized form 的有效起始未驗證，因此同日查詢保持 Unknown。CLI 只讀、載入使用 strict YAML、未知欄位或模糊 alias／不一致外鍵會拒絕，不能直接把研究核心或上市狀態改成個人可交易。v2 audit bundle `2.0-compute-bundle.4` 收錄主檔位元組並離線重播；舊 bundle 需其原版本程式環境。
 
-回歸：`python -m unittest discover -s tests -p 'test_*.py' -q` **136 tests OK**；`validate --demo`／`validate` 各 94 metrics、0 issues。測試涵蓋同名跨 venue、合併前後與未知開始時間、沒有個人交易資格、重複 alias／錯誤連結／URL query／直接升級資格拒絕及只讀行為。舊 DEMO snapshots 不重寫；v1 計算和金融來源未修改。
+回歸：`python -m unittest discover -s tests -p 'test_*.py' -q` **136 tests OK**；`validate --demo`／`validate` 各 94 metrics、0 issues；`python -m scripts.g0_gate` 回報工程 **PASS**、研究發布 **BLOCKED**、真實觀察值 **0**。測試涵蓋同名跨 venue、合併前後與未知開始時間、沒有個人交易資格、重複 alias／錯誤連結／URL query／直接升級資格拒絕及只讀行為。舊 DEMO snapshots SHA-256 仍是 `cdd6e94a1297f7fcccab2f8c2d8658493537db7bf9ea6136c10e82a41f0d300e`、`6c74c60034ca958c132ad5a3aa1ab0ee8e9feef4d4ae9e458705b19bcd14d808`；v1 計算和金融來源未修改。
 
 ## 尚待處理
 

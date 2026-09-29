@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.2'
+version: '1.3'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-29'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-02
+next_task: P1-03
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -290,7 +290,7 @@ tasks:
     title: Entity/security master 與可交易性查核
     phase: P1
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: research
     effort_points: 3
     depends_on: [P1-01]
@@ -299,6 +299,14 @@ tasks:
       - company/protocol/network/security 分開，ticker/contract 有有效期間。
       - SECZ 正式 filing 與 exchange evidence 查核，未完成維持 unknown。
       - core research 不等於 investable；dependency nodes 可以無交易工具。
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: fa3fa95432a90f80ddfb82ec3f2baf4182da5e20
+      evidence: reports/p1-02-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_identity.py, tests/integration/test_snapshots_v2.py]
+      full_suite_tests_passed: 136
+      result: 三資產身分與 venue alias 分離，SECZ 依 SEC filings 確認 2026-07-02 NYSE 上市；投資人交易資格 unknown，原文存證與真實財務觀察值仍未完成，下一項 P1-03。
     audit_refs: [A-11]
   - id: P1-03
     title: 財務／鏈上資料字典與 normalization
