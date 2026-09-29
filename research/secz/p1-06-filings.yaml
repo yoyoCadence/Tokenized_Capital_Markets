@@ -1,0 +1,133 @@
+schema_version: '1.0'
+checked_on: '2026-09-29'
+evidence_status: LINK_CHECKED_UNARCHIVED
+unit: USD
+filings:
+  amended_8k:
+    entity: securitize_corp
+    form: 8-K/A
+    accession: 0001628280-26-056811
+    filed_on: '2026-08-13'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/secz-20260708.htm
+  operating_financials:
+    entity: securitize_inc
+    form: 8-K/A Exhibit 99.1
+    accession: 0001628280-26-056811
+    filed_on: '2026-08-13'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit991securitize-q22026.htm
+  operating_mda:
+    entity: securitize_inc
+    form: 8-K/A Exhibit 99.2
+    accession: 0001628280-26-056811
+    filed_on: '2026-08-13'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit992securitizemdaq22.htm
+  hypothetical_pro_forma:
+    entity: securitize_corp
+    form: 8-K/A Exhibit 99.4
+    accession: 0001628280-26-056811
+    filed_on: '2026-08-13'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit994securitizecorppr.htm
+  predecessor_shell_10q:
+    entity: securitize_corp
+    form: 10-Q
+    accession: 0001628280-26-056788
+    filed_on: '2026-08-13'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056788/secz-20260630.htm
+  closing_8k:
+    entity: securitize_corp
+    form: 8-K
+    accession: 0001213900-26-076444
+    filed_on: '2026-07-08'
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000121390026076444/ea0297239-8k_securitize.htm
+scope:
+  historical_operating_entity: securitize_inc
+  pre_merger_shell_entity: securitize_corp
+  merger_close_date: '2026-07-01'
+  operating_financials_source: operating_financials
+  shell_financials_source: predecessor_shell_10q
+  pro_forma_source: hypothetical_pro_forma
+  note: The June 30 10-Q reports the pre-combination nonoperating shell; Exhibit 99.1 reports Old Securitize operating history. The unaudited pro forma assumes a transaction date for illustration and is neither actual June 30 history nor a forecast.
+revenue:
+  source: operating_financials
+  measurement_basis: HISTORICAL_UNAUDITED
+  periods:
+    - {start: '2026-04-01', end: '2026-06-30', basis: QUARTER, entity: securitize_inc, total: 14435845, tokenization: 7839139, asset_servicing: 6596706}
+    - {start: '2025-04-01', end: '2025-06-30', basis: QUARTER, entity: securitize_inc, total: 15262176, tokenization: 8874393, asset_servicing: 6387783}
+    - {start: '2026-01-01', end: '2026-06-30', basis: HALF_YEAR, entity: securitize_inc, total: 33914311, tokenization: 18974344, asset_servicing: 14939967}
+    - {start: '2025-01-01', end: '2025-06-30', basis: HALF_YEAR, entity: securitize_inc, total: 29296195, tokenization: 20136056, asset_servicing: 9160139}
+  analyst_six_buckets:
+    tokenization: null
+    asset_servicing: null
+    transaction: null
+    issuer_saas_maintenance: null
+    fund_administration: null
+    other: null
+  mapping_note: Official Tokenization includes trading, integration, distribution and support; official Asset Servicing includes administration and fund accounting. The official two categories do not uniquely identify the six analytical buckets.
+adjusted_ebitda:
+  source: operating_mda
+  entity: securitize_inc
+  period: {start: '2026-04-01', end: '2026-06-30', basis: QUARTER}
+  measurement_basis: NON_GAAP_RECONCILIATION
+  gaap_net_loss_continuing: -21689202
+  signed_adjustments:
+    depreciation_amortization: 517497
+    expected_credit_losses: 1315134
+    share_based_compensation: 537186
+    income_taxes: 39191
+    interest_income: -176391
+    interest_expense: 1105915
+    dividend_income: -87581
+    digital_asset_investment_loss: 512615
+    other_income_expense_net: -1145805
+    fair_value_safe_derivative_option: 11733000
+    acquisition_transaction_costs: 0
+    one_time_readiness_costs: 1879717
+  reported_adjusted_ebitda: -5458724
+cash_inputs:
+  source: operating_financials
+  entity: securitize_inc
+  period: {start: '2026-01-01', end: '2026-06-30', basis: HALF_YEAR}
+  operating_cash_flow: -13731531
+  equipment_and_long_lived_asset_purchases: 557138
+  cfo_less_reported_equipment_purchases: -14288669
+  balance_sheet_date: '2026-06-30'
+  cash_and_equivalents: 33599243
+  customer_escrow_funds: 18106706
+  customer_escrow_payable: 18103958
+  convertible_notes_payable_net: 74948845
+  safe_liability: 16127000
+  mezzanine_equity: 125984750
+  note: H1 CFO less the stated equipment/long-lived asset purchases is a descriptive cash-flow bridge, not FCFF; do not combine Old Securitize premerger balances with postmerger SECZ equity value.
+pro_forma:
+  source: hypothetical_pro_forma
+  balance_sheet_assumed_date: '2026-06-30'
+  combined_cash_and_equivalents: 352566531
+  combined_common_shares: 163265685
+  note: Unaudited hypothetical transaction adjustments, not actual June 30 operating cash or an independently established postclosing EV input.
+capital:
+  closing_date: '2026-07-01'
+  closing_common_shares:
+    - {source: closing_8k, count: 163218683}
+    - {source: predecessor_shell_10q, count: 163265685}
+  later_10q_reported_outstanding:
+    source: predecessor_shell_10q
+    as_of: '2026-08-13'
+    count: 163265685
+  conflicts:
+    same_closing_date_common_shares_delta: 47002
+    warrant_underlying_shares_delta: 5
+  potential_instruments:
+    original_8k_warrants_outstanding: 835216
+    original_8k_warrant_underlying_shares: 3711653
+    later_10q_warrant_underlying_shares: 3711658
+    exchanged_options_and_rsus_underlying_shares: 3681510
+    conditional_company_earnout_shares: 6250000
+    reserved_incentive_plan_shares: 16321869
+    sponsor_earnout_shares_already_issued: 1800000
+  note: Instrument counts, underlying shares, reserved capacity and already-issued conditional sponsor shares are separate. Do not sum them into diluted shares without vesting, exercise and overlap analysis; premerger notes and SAFEs converted in the combination.
+promotion_gate:
+  staged_original_source_ids: []
+  reviewed_source_ids: []
+  observed_record_ids: []
+  postclose_cash_and_debt_source_ids: []
+  closing_share_conflict_resolution_source_ids: []

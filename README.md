@@ -42,6 +42,8 @@ python -m engine.cli market-report --demo --plan /path/to/market-plan.yaml
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
 
+SECZ 申報研究包可用 `python -m engine.secz_evidence` 唯讀重算兩類收入、非 GAAP 調節、現金橋接與衝突股數。官方 2026 Q2/H1 營運財報屬合併前 Securitize, Inc.，同期 SECZ 10-Q 為未營運控股殼公司；原文待存證人審，結果仍 `BLOCKED`，六分析分項、FCFF、postclose EV cash 和 fully diluted shares 均未知。見 [P1-06 報告](reports/p1-06-validation.md)。
+
 `normalize-report` 需要以 strict YAML 提供 `schema_version: '2.0'`、`context`（`economic_cutoff`、`knowledge_cutoff`、`valuation_at`、`knowledge_policy`）和有序 `steps`。例如：
 
 ```yaml

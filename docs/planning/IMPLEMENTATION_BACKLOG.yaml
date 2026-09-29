@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-05
+next_task: P1-07
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -374,7 +374,7 @@ tasks:
     title: SECZ 官方財務與資本結構包
     phase: P1
     priority: P0
-    status: PLANNED
+    status: BLOCKED
     owner_role: research
     effort_points: 5
     depends_on: [P1-01, P1-02, P1-03]
@@ -383,6 +383,10 @@ tasks:
       - 官方 total revenue 可獨立使用，未披露六分項不虛構。
       - 公司併表範圍、會計期間、EBITDA adjustments 與 cash inputs 明示。
       - 稀釋工具是否存在與數量依正式申報，不作默認。
+    progress:
+      checked_on: '2026-09-29'
+      evidence: reports/p1-06-validation.md
+      result: 8-K/A 營運公司財報、10-Q 合併前殼公司及假設性 pro forma 已分開；四期官方兩類營收、Q2 EBITDA、H1 現金流均可算術對帳，六分析桶為未知。原檔存證與人審、合併後 EV/FCFF 完整輸入及 7/1 同日股數／權證差額尚缺，不能發布真實觀察值。
     audit_refs: [A-10]
   - id: P1-07
     title: XLM 採用與 native demand 證據包
