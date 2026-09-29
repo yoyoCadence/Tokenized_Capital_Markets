@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.8 / P0-10 G0 integration acceptance — 2026-09-29
+
+- Lock the G0 interpreter and dependency version, add pull-request/main CI and a read-only acceptance command covering the full regression suite, both validation modes, backlog blockers and research observation count.
+- Add disposable cross-boundary negative tests for fixture isolation, knowledge-time and scope rejection, digest replay and crash recovery; independently recompute existing UNI/SECZ/XLM synthetic golden values without changing their expectations.
+- [P0-10 validation](p0-10-validation.md): 127 tests; DEMO/RESEARCH 94 metrics and zero issues each; two original v1 DEMO snapshot digests unchanged. Engineering G0 passes, decision-ready research remains blocked by unresolved P0 priorities, absent real observations and incomplete G1. P1-01 is next.
+
 ## Software 0.1.7 / P0-09 quality and reviewed conflict selection — 2026-09-29
 
 - Split v2 source tier, freshness, declared coverage, unverified measurement, mechanism, and conflict into inspectable dimensions. Multi-layer derived metrics and quarterly rules retain upstream assumption/scenario IDs; legacy v1 confidence now follows transitive leaves.

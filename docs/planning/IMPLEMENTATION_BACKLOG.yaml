@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-10
+next_task: P1-01
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -247,7 +247,7 @@ tasks:
     title: G0 整合驗收與可重現測試環境
     phase: P0
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering
     effort_points: 3
     depends_on: [P0-01, P0-02, P0-04, P0-05, P0-06, P0-07, P0-08, P0-09]
@@ -257,6 +257,14 @@ tasks:
       - golden results 以獨立計算或來源支持，不依實作自行更新預期。
       - 所有未解 P0 列出；有 P0 就不發布 decision-ready research。
     audit_refs: [A-01, A-02, A-03, A-04, A-05, A-06, A-07]
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: a5fb46dcc6ea4754709be80a9d15941086814ec2
+      evidence: reports/p0-10-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_g0_gate.py, tests/regression/test_g0_golden.py]
+      full_suite_tests_passed: 127
+      result: 固定 CPython/PyYAML 的 G0 CI 與跨邊界負例通過；獨立合成 golden 算術未改動預期；22 項後續 P0 優先級任務及空真實研究資料阻止決策級發布。
   - id: P1-01
     title: Source staging 與原始證據存證
     phase: P1
