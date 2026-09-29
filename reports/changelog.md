@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.7 / P0-09 quality and reviewed conflict selection — 2026-09-29
+
+- Split v2 source tier, freshness, declared coverage, unverified measurement, mechanism, and conflict into inspectable dimensions. Multi-layer derived metrics and quarterly rules retain upstream assumption/scenario IDs; legacy v1 confidence now follows transitive leaves.
+- Add strict research/DEMO resolution ledgers; a reviewed decision can select only from the exact eligible conflicting candidate set after all candidates were published and ingested. Later candidates invalidate the prior selection; rejected evidence and rationale stay visible.
+- [P0-09 validation](p0-09-validation.md): 119 tests; bundle contract `2.0-compute-bundle.2` archives the new ledger and replays offline, two v1 DEMO snapshots unchanged, DEMO/RESEARCH each 94 metrics and zero issues. P0-10 integration gate remains pending.
+
 ## Software 0.1.6 / P0-08 pure reads and recoverable publication — 2026-09-28
 
 - `/api/state` no longer writes snapshots; HTTP reads and read-only CLI use a project lock and return a pending-publication error instead of a mixed version.

@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from engine.validation.errors import ValidationError, issue
+from .quality import selected_quality
 
 
 CLASSES = {"OBSERVED", "DERIVED", "ASSUMPTION", "SCENARIO"}
@@ -105,7 +106,7 @@ def _publication(knowledge, path):
 def validate_temporal_project(project):
     """Validate before either file-backed or direct in-memory selection."""
     _fields(project, {"mode": str, "concepts": list, "roles": list, "units": "strings",
-                      "sources": list, "records": list}, {}, "project")
+                      "sources": list, "records": list}, {"resolutions": list}, "project")
     if project["mode"] not in {"DEMO", "RESEARCH"}:
         _error("MODE_MISMATCH", "Expected DEMO or RESEARCH", "project.mode")
     if not project["units"] or len(set(project["units"])) != len(project["units"]):
@@ -284,6 +285,43 @@ def validate_temporal_project(project):
                 _error("SUPERSESSION_CYCLE", "Revision cycle", record["id"])
             seen.add(current)
             current = records[current]["supersedes_id"]
+    decisions, keys = set(), set()
+    for n, resolution in enumerate(project.get("resolutions", [])):
+        path = f"resolutions[{n}]"
+        _fields(resolution, {"id": str, "role_id": str, "candidate_record_ids": "strings",
+                             "selected_record_ids": "strings", "reason": str, "reviewer": str,
+                             "reviewed_at": str, "fixture": bool}, {}, path)
+        candidates, chosen = resolution["candidate_record_ids"], resolution["selected_record_ids"]
+        if (resolution["id"] in decisions or len(candidates) < 2 or len(set(candidates)) != len(candidates) or
+                not chosen or len(set(chosen)) != len(chosen) or not set(chosen) <= set(candidates) or
+                resolution["role_id"] not in roles or any(id_ not in records for id_ in candidates)):
+            _error("RESOLUTION_REFERENCE", "Unknown/duplicate ID or invalid candidate and selection set", path)
+        decisions.add(resolution["id"])
+        reviewed = _instant(resolution["reviewed_at"], f"{path}.reviewed_at")
+        role = roles[resolution["role_id"]]
+        rows = [records[id_] for id_ in candidates]
+        if (any(row["concept_id"] != role["concept_id"] or row.get("entity_id") != role.get("entity_id") or
+                row.get("security_id") != role.get("security_id") or row["classification"] not in role["allowed_classifications"] or
+                row["economic_scope"] not in role["allowed_scopes"] or
+                row["economic_period"]["basis"] != role["required_period_basis"] or
+                row["fixture"] != resolution["fixture"] for row in rows) or
+                len({tuple(sorted(row["economic_period"].items())) for row in rows}) != 1):
+            _error("RESOLUTION_SCOPE", "Candidates differ in role, economic period or fixture status", path)
+        if resolution["fixture"] and project["mode"] != "DEMO":
+            _error("RESOLUTION_FIXTURE", "Fixture resolution in research", path)
+        if any(_publication(row["knowledge_time"], path) is None or
+               _publication(row["knowledge_time"], path) > reviewed or
+               (ingested := _optional_instant(row["knowledge_time"]["ingested_at"], path)) is None or
+               ingested > reviewed for row in rows):
+            _error("RESOLUTION_TIME", "Review must follow verified publication and ingestion of all candidates", path)
+        selected = [records[id_] for id_ in chosen]
+        if len({(row["value"], row["classification"]) for row in selected}) != 1 or any(
+                row["value"] is None for row in selected):
+            _error("RESOLUTION_SELECTION", "Chosen records must agree on one nonmissing value and class", path)
+        key = (resolution["role_id"], frozenset(candidates), reviewed)
+        if key in keys:
+            _error("RESOLUTION_DUPLICATE", "Two decisions for the same candidates and instant", path)
+        keys.add(key)
     return project
 
 
@@ -365,7 +403,8 @@ def select_temporal(project, *, role_id, economic_cutoff, knowledge_cutoff, valu
                "mode": project["mode"], "reconstructed": knowledge_policy == "PUBLIC_INFORMATION_RECONSTRUCTION"}
     if not eligible:
         reason = "LEGACY_TIME_UNKNOWN" if "LEGACY_TIME_UNKNOWN" in excluded.values() else "NO_ELIGIBLE_RECORD"
-        return {**context, "value": None, "reason": reason, "record_ids": [], "source_ids": [], "excluded": excluded}
+        return {**context, "value": None, "reason": reason, "record_ids": [], "source_ids": [], "excluded": excluded,
+                "quality": selected_quality(project, [], role, valuation_at, excluded)}
     latest = max(r["economic_period"]["end"] for r in eligible)
     recent = [r for r in eligible if r["economic_period"]["end"] == latest]
     by_id = {r["id"]: r for r in project["records"]}
@@ -376,13 +415,20 @@ def select_temporal(project, *, role_id, economic_cutoff, knowledge_cutoff, valu
             superseded.add(parent)
             parent = by_id[parent].get("supersedes_id")
     active = [r for r in recent if r["id"] not in superseded]
-    if len({(r["value"], r["classification"], r["economic_period"]["start"], r["economic_period"]["basis"]) for r in active}) > 1:
+    resolutions = [r for r in project.get("resolutions", []) if r["role_id"] == role_id and
+                   set(r["candidate_record_ids"]) == {row["id"] for row in active} and
+                   _instant(r["reviewed_at"], "resolution.reviewed_at") <= known]
+    resolution = max(resolutions, key=lambda r: _instant(r["reviewed_at"], "resolution.reviewed_at")) if resolutions else None
+    if len({(r["value"], r["classification"], r["economic_period"]["start"], r["economic_period"]["basis"]) for r in active}) > 1 and not resolution:
         return {**context, "value": None, "reason": "CONFLICT", "record_ids": [r["id"] for r in active],
-                "source_ids": sorted({s for r in active for s in r.get("source_ids", [])}), "excluded": excluded}
-    selected = sorted(active, key=lambda r: r["id"])
+                "source_ids": sorted({s for r in active for s in r.get("source_ids", [])}), "excluded": excluded,
+                "quality": selected_quality(project, [], role, valuation_at, excluded, active)}
+    selected = sorted([r for r in active if r["id"] in resolution["selected_record_ids"]] if resolution else active,
+                      key=lambda r: r["id"])
     return {**context, "value": selected[0]["value"], "unit": selected[0]["unit"],
             "classification": selected[0]["classification"], "economic_period": selected[0]["economic_period"],
             "record_ids": [r["id"] for r in selected],
             "source_ids": sorted({s for r in selected for s in r.get("source_ids", [])}),
             "sources": [s for s in project["sources"] if s["id"] in {sid for r in selected for sid in r.get("source_ids", [])}],
-            "excluded": excluded, "fixture": any(r["fixture"] for r in selected)}
+            "excluded": excluded, "fixture": any(r["fixture"] for r in selected),
+            "quality": selected_quality(project, selected, role, valuation_at, excluded, active, resolution)}

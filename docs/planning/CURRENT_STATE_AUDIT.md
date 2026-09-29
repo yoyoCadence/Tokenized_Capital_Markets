@@ -13,7 +13,7 @@
 | A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
 | 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
 
-證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～08 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，[P0-08](../../reports/p0-08-validation.md) 修復下述 A-06；**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P0-09。
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～09 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，[P0-08](../../reports/p0-08-validation.md) 修復 A-06，[P0-09](../../reports/p0-09-validation.md) 修復下述 A-08 的跨層品質與衝突理由；**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P0-10。
 
 ## 1. 已具備的基礎
 
@@ -121,6 +121,8 @@ publication 探針的 published_at 是測試用 metadata；現有正式 schema �
 - 任務：P0-02、P0-10、P1-03。
 
 ### A-08 / P1：品質標示未充分傳播（程式審查）
+
+**2026-09-29 狀態：P0-09 已處理跨層葉節點、v2 分軸品質與有截止時間的人審衝突選取。** 來源原文量測與經濟機制尚未獨立核實，P1-08 仍需真實來源品質查核；[驗收](../../reports/p0-09-validation.md)。下方為原始稽核描述。
 
 - 位置：engine/formulas/runtime.py 的 _leaf、computed confidence。
 - 葉節點主要依 source tier 決定 confidence；derived 主要看直接 dependencies 的 classification。多層 DERIVED 可能使上游 assumption/scenario 不再反映於 confidence。

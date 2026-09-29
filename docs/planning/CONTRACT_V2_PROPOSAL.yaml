@@ -1,5 +1,5 @@
-# P0-03 design contract; P0-04/05/06/07 use separate v2 paths. v1 engine is unchanged.
-contract_version: '2.0-proposal.2'
+# P0-09 extends the read-only v2 quality and resolution contract; v1 remains legacy.
+contract_version: '2.0-proposal.3'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -95,6 +95,26 @@ record:
     - 'A derived scope is determined by formula/context, never by DERIVED classification alone.'
   supersession_identity: [concept_id, entity_id, security_id, classification, economic_scope, unit, economic_period]
   supersession_rule: 'Append a new ID; for a restatement retain supersession identity, compare eligibility before superseding, retain unrelated conflicts.'
+
+resolution_record:
+  ledger: data/v2/resolutions/{research,demo}.yaml
+  required: [id, role_id, candidate_record_ids, selected_record_ids, reason, reviewer, reviewed_at, fixture]
+  invariants:
+    - 'Candidate IDs refer to distinct records of the same role and economic period; selected IDs are a nonempty agreeing subset.'
+    - 'A reviewed resolution cannot precede verified publication and canonical ingestion of any candidate.'
+    - 'Only a decision with the exact active candidate set and reviewed_at <= knowledge_cutoff can break a conflict.'
+    - 'Later candidate records invalidate a prior decision for the new set; unresolved conflict remains Unknown.'
+    - 'All candidates, chosen and rejected IDs, reviewer, review time and reason remain inspectable; source tier alone is not a decision.'
+
+quality_dimensions:
+  source_tiers: distinct_source_tiers_without_confidence_score
+  freshness: per_role_age_and_limit_or_explicit_unknown
+  coverage: declared_source_metric_coverage_not_measurement_validation
+  measurement: unverified_until_original_measurement_is_reviewed
+  mechanism: assumed_or_not_assessed_separate_from_realized_evidence
+  uncertainty: transitive_assumption_scenario_and_missing_record_ids
+  conflict: all_active_candidates_with_cutoff_eligible_resolution_or_unresolved
+  rule: 'Do not infer measurement correctness, holder capture or research confidence from a high-tier source.'
 
 query_context:
   required: [mode, economic_cutoff, knowledge_cutoff, valuation_time, required_scope, knowledge_policy]

@@ -23,10 +23,10 @@ from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.validation.errors import ValidationError, issue
 
 
-SCHEMA = "2.0-compute-bundle.1"
+SCHEMA = "2.0-compute-bundle.2"
 TRACKS = {"HISTORICAL", "CURRENT"}
 CONFIG = {"requirements.txt", "pyproject.toml"}
-LEDGERS = {"sources/v2/sources.yaml", "data/v2/observed/research.yaml"}
+LEDGERS = {"sources/v2/sources.yaml", "data/v2/observed/research.yaml", "data/v2/resolutions/research.yaml"}
 DICTIONARY = {"spec/canonical-schema.yaml", "spec/v2/units.yaml",
               "spec/v2/metric-concepts.yaml", "spec/v2/input-roles.yaml"}
 GRAPH = {"spec/dependency-graph.yaml"}
@@ -54,7 +54,7 @@ def _runtime():
 def _file_paths(root, code_root, mode):
     code = {p.relative_to(code_root).as_posix() for p in (code_root / "engine").rglob("*.py")}
     specs = {p.relative_to(root).as_posix() for p in (root / "spec").rglob("*.yaml")}
-    inputs = LEDGERS | ({"data/v2/observed/demo.yaml"} if mode == "DEMO" else set())
+    inputs = LEDGERS | ({"data/v2/observed/demo.yaml", "data/v2/resolutions/demo.yaml"} if mode == "DEMO" else set())
     if not code or not (DICTIONARY | GRAPH | FORMULAS | RULES) <= specs:
         _fail("SNAPSHOT_MANIFEST", "Required implementation/specification files are missing", root)
     return code, specs, inputs
@@ -251,7 +251,7 @@ def replay_snapshot_v2(path, *, code_root=ROOT):
     raw = {}
     for name, encoded in archive.items():
         if (type(name) is not str or name.startswith("/") or ".." in Path(name).parts or
-                not (name in CONFIG | LEDGERS | {"data/v2/observed/demo.yaml"} or
+                not (name in CONFIG | LEDGERS | {"data/v2/observed/demo.yaml", "data/v2/resolutions/demo.yaml"} or
                      name.startswith("spec/") and name.endswith(".yaml") or name in code)):
             _fail("SNAPSHOT_PATH", "Unexpected or unsafe archived path", name)
         try:
@@ -267,7 +267,8 @@ def replay_snapshot_v2(path, *, code_root=ROOT):
     required = DICTIONARY | GRAPH | FORMULAS | RULES | LEDGERS | CONFIG
     if payload["mode"] == "DEMO":
         required.add("data/v2/observed/demo.yaml")
-    elif "data/v2/observed/demo.yaml" in raw:
+        required.add("data/v2/resolutions/demo.yaml")
+    elif {"data/v2/observed/demo.yaml", "data/v2/resolutions/demo.yaml"} & set(raw):
         _fail("SNAPSHOT_MODE", "Research bundle cannot contain demo observations", path)
     if not required <= set(raw) or not {p for p in raw if p.startswith("spec/")}:
         _fail("SNAPSHOT_MANIFEST", "Missing required archived inputs", path)
