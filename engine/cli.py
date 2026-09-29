@@ -6,6 +6,7 @@ from pathlib import Path
 
 from engine.formulas.runtime import calculate
 from engine.propagation.ingest import commit_event
+from engine.publication import read_lock, recover, write_lock
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snapshot_v2
@@ -43,6 +44,7 @@ def _main(argv=None):
             child.add_argument("--id", required=True, help="Existing canonical event ID")
             child.add_argument("--observations", help="YAML file with new observations to append")
     sub.add_parser("bootstrap-demo")
+    sub.add_parser("recover", help="Complete an interrupted explicit publication")
     sub.add_parser("compare").add_argument("--demo", action="store_true")
     temporal = sub.add_parser("temporal-select", help="Read-only v2 point-in-time evidence query")
     temporal.add_argument("--demo", action="store_true")
@@ -82,64 +84,74 @@ def _main(argv=None):
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
     elif args.command == "bootstrap-demo":
-        project = load_project(root=args.root, demo=True)
-        for day in ("2026-03-31", "2026-06-30"):
-            _, state, _ = prepare(True, day, root=args.root)
-            snapshot, created = save_snapshot(project, state)
-            print(snapshot["id"], day, "created" if created else "existing")
+        with write_lock(args.root):
+            for day in ("2026-03-31", "2026-06-30"):
+                project, state, _ = prepare(True, day, root=args.root)
+                snapshot, created = save_snapshot(project, state)
+                print(snapshot["id"], day, "created" if created else "existing")
+    elif args.command == "recover":
+        print("recovered" if recover(args.root) else "clean")
     elif args.command == "compare":
-        history = read_snapshots(load_project(root=args.root, demo=args.demo)["root"], "DEMO" if args.demo else "RESEARCH")
+        with read_lock(args.root):
+            history = read_snapshots(load_project(root=args.root, demo=args.demo)["root"], "DEMO" if args.demo else "RESEARCH")
         if len(history) < 2:
             raise SystemExit("At least two snapshots are required")
         print(json.dumps(compare(history[-2], history[-1]), indent=2, ensure_ascii=False))
     elif args.command == "validate":
-        _, state, issues = prepare(args.demo, root=args.root)
+        with read_lock(args.root):
+            _, state, issues = prepare(args.demo, root=args.root)
         print(f"Validated {len(state['metrics'])} metrics, {len(issues)} issues; mode={state['mode']}")
         for item in issues:
             print(f"{item['level']} {item['code']}: {item['message']}")
     elif args.command == "snapshot":
-        project, state, _ = prepare(args.demo, args.as_of, root=args.root)
-        if not args.demo and not any(m["classification"] == "OBSERVED" and m["value"] is not None for m in state["metrics"].values()):
-            raise SystemExit("No sourced research observations; empty snapshot refused")
-        snapshot, created = save_snapshot(project, state)
+        with write_lock(args.root):
+            project, state, _ = prepare(args.demo, args.as_of, root=args.root)
+            if not args.demo and not any(m["classification"] == "OBSERVED" and m["value"] is not None for m in state["metrics"].values()):
+                raise SystemExit("No sourced research observations; empty snapshot refused")
+            snapshot, created = save_snapshot(project, state)
         print(snapshot["id"], "created" if created else "existing")
     elif args.command == "apply-event":
-        project = load_project(root=args.root, demo=args.demo)
-        event = next((e for e in project["events"] if e["id"] == args.id), None)
-        if not event:
-            raise SystemExit(f"Unknown event: {args.id}")
         rows = read_records(args.observations, "observations") if args.observations else []
-        result = commit_event(project, event, rows, observation_path=args.observations)
+        with write_lock(args.root):
+            project = load_project(root=args.root, demo=args.demo)
+            event = next((e for e in project["events"] if e["id"] == args.id), None)
+            if not event:
+                raise SystemExit(f"Unknown event: {args.id}")
+            result = commit_event(project, event, rows, observation_path=args.observations)
         print(json.dumps({"snapshot_id": result["snapshot"]["id"], "created": result["created"],
                           "propagation": result["propagation"]}, ensure_ascii=False, indent=2))
     elif args.command == "temporal-select":
-        project = load_temporal_project(root=args.root, demo=args.demo)
-        result = select_temporal(project, role_id=args.role, economic_cutoff=args.economic_cutoff,
-                                 knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
-                                 required_scope=args.scope, knowledge_policy=args.policy, record_id=args.record_id)
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = select_temporal(project, role_id=args.role, economic_cutoff=args.economic_cutoff,
+                                     knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                                     required_scope=args.scope, knowledge_policy=args.policy, record_id=args.record_id)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "scope-report":
-        project = load_temporal_project(root=args.root, demo=args.demo)
-        result = calculate_economics(project, realized_quarter_end=args.realized_quarter_end,
-                                     horizon_end=args.horizon_end, knowledge_cutoff=args.knowledge_cutoff,
-                                     valuation_at=args.valuation_at, knowledge_policy=args.policy, root=args.root)
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = calculate_economics(project, realized_quarter_end=args.realized_quarter_end,
+                                         horizon_end=args.horizon_end, knowledge_cutoff=args.knowledge_cutoff,
+                                         valuation_at=args.valuation_at, knowledge_policy=args.policy, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "thesis-cadence":
-        project = load_temporal_project(root=args.root, demo=args.demo)
         valuations = json.loads(args.valuations)
-        result = evaluate_cadence_v2(project, economic_cutoff=args.economic_cutoff,
-                                     knowledge_cutoff=args.knowledge_cutoff, knowledge_policy=args.policy,
-                                     valuation_by_period=valuations, root=args.root)
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = evaluate_cadence_v2(project, economic_cutoff=args.economic_cutoff,
+                                         knowledge_cutoff=args.knowledge_cutoff, knowledge_policy=args.policy,
+                                         valuation_by_period=valuations, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "snapshot-v2":
-        bundle = make_snapshot_v2(root=args.root, demo=args.demo, track=args.track,
-                                  economic_cutoff=args.economic_cutoff,
-                                  realized_quarter_end=args.realized_quarter_end,
-                                  horizon_end=args.horizon_end,
-                                  knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
-                                  knowledge_policy=args.policy,
-                                  valuation_by_period=json.loads(args.valuations))
-        path, created = save_snapshot_v2(bundle, root=args.root)
+        with write_lock(args.root):
+            bundle = make_snapshot_v2(root=args.root, demo=args.demo, track=args.track,
+                                      economic_cutoff=args.economic_cutoff,
+                                      realized_quarter_end=args.realized_quarter_end,
+                                      horizon_end=args.horizon_end,
+                                      knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                                      knowledge_policy=args.policy,
+                                      valuation_by_period=json.loads(args.valuations))
+            path, created = save_snapshot_v2(bundle, root=args.root)
         print(json.dumps({"id": path.stem, "path": str(path), "created": created,
                           "mode": bundle["mode"], "track": bundle["track"], "purpose": bundle["purpose"]},
                          ensure_ascii=False, indent=2))

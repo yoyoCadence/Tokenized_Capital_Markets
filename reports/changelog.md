@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.6 / P0-08 pure reads and recoverable publication — 2026-09-28
+
+- `/api/state` no longer writes snapshots; HTTP reads and read-only CLI use a project lock and return a pending-publication error instead of a mixed version.
+- Explicit `apply-event` stages ledger, immutable snapshot and changelog in a synced redo journal under a cross-process lock; `recover` completes interrupted writes. Concurrent publishers rebase and identical retries do not repeat observations or events. V1/v2 single-file snapshots share the lock.
+- [P0-08 validation](p0-08-validation.md): 113 tests, five injected failure boundaries, CLI multi-process retry, GET file fingerprints, external-edit fail-closed recovery; DEMO/RESEARCH validation 94 metrics/0 issues. Original v1 snapshot digests unchanged. P0-09 quality propagation remains pending.
+
 ## Software 0.1.5 / P0-07 replayable v2 compute bundles — 2026-09-27
 
 - Added separate v2 `snapshot-v2`/`replay-v2` CLI commands. Deterministic, content-addressed audit bundles freeze the runtime lock, all engine code, formula/rule/dictionary/graph definitions, exact evidence ledgers and source metadata, query cutoffs, selected record/source hashes and both v2 economics/cadence outputs. Replay compares installed code byte-for-byte and recomputes from extracted frozen inputs without the original checkout.

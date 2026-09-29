@@ -171,6 +171,8 @@ class BoundaryTests(unittest.TestCase):
         self.assertEqual(body["metrics"]["uni_price"]["value"], 7)
         self.assertFalse(body["metrics"]["uni_price"]["fixture"])
         self.assertEqual(body["metrics"]["uni_price"]["source_ids"], [source["id"]])
+        self.assertEqual(len(read_snapshots(self.root)), 0)
+        self.assertEqual(self.cli("snapshot").returncode, 0)
         self.assertEqual(len(read_snapshots(self.root)), 1)
 
     def test_research_events_with_mixed_sources_cannot_hide_fixture(self):
