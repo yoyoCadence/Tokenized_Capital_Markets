@@ -13,7 +13,7 @@
 | A-08：品質／lineage | 修復相同數值的多筆支持證據遺失與 fixture 傳播；完整不確定性／衝突選取理由 P0-09 未完成 |
 | 其他發現 | 保持原有待辦；歷史可知時間、scope、混合頻率、完整重播與發布復原未在 WP-01 解決 |
 
-證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～10 與 P1-01～03 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，[P0-08](../../reports/p0-08-validation.md) 修復 A-06，[P0-09](../../reports/p0-09-validation.md) 修復下述 A-08 的跨層品質與衝突理由，[P0-10](../../reports/p0-10-validation.md) 完成固定環境與 G0 工程整合驗收，[P1-01](../../reports/p1-01-validation.md) 建立 repo 外原文存證與人審後僅發布來源 metadata，[P1-02](../../reports/p1-02-validation.md) 區分 issuer/security/instrument 並依 SEC 文件確認 SECZ NYSE 上市，個人交易資格仍 unknown；[P1-03](../../reports/p1-03-validation.md) 實作唯讀資料字典、量綱與口徑校驗；**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P1-04，決策級研究發布仍 BLOCKED。
+證據：[WP-01 validation](../../reports/wp-01-validation.md)，implementation commit `e8b4d55520ea71f1d626a9286fa64a30cd745f3d`。P0-03～10 與 P1-01～04 已有獨立驗收；[P0-07](../../reports/p0-07-validation.md) 增設自包含 v2 離線重播，[P0-08](../../reports/p0-08-validation.md) 修復 A-06，[P0-09](../../reports/p0-09-validation.md) 修復下述 A-08 的跨層品質與衝突理由，[P0-10](../../reports/p0-10-validation.md) 完成固定環境與 G0 工程整合驗收，[P1-01](../../reports/p1-01-validation.md) 建立 repo 外原文存證與人審後僅發布來源 metadata，[P1-02](../../reports/p1-02-validation.md) 區分 issuer/security/instrument 並依 SEC 文件確認 SECZ NYSE 上市，個人交易資格仍 unknown；[P1-03](../../reports/p1-03-validation.md) 實作唯讀資料字典、量綱與口徑校驗，[P1-04](../../reports/p1-04-validation.md) 實作唯讀報價／股數／EV 橋接；**下述 v1 `_select`、原公式、全域日期 thesis 及舊快照仍如原始稽核**，不能當作已回溯修復。兩條受 v1 混合 scope 影響的當期 UNI thesis 規則維持封鎖。真實 observation 仍為 0；下一項為 P1-05，決策級研究發布仍 BLOCKED。
 
 ## 1. 已具備的基礎
 

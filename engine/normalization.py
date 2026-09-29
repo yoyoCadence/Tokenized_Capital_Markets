@@ -27,7 +27,7 @@ def _fields(obj, required, optional, path):
     if type(obj) is not dict or set(obj) - set(required) - set(optional) or set(required) - set(obj):
         _fail("NORMALIZATION_SCHEMA", f"Expected {sorted(required)}; unknown/missing fields", path)
     for key, kind in {**required, **optional}.items():
-        if key in obj and type(obj[key]) is not kind:
+        if key in obj and type(obj[key]) not in (kind if isinstance(kind, tuple) else (kind,)):
             _fail("NORMALIZATION_SCHEMA", f"Invalid type for {key}", f"{path}.{key}")
 
 

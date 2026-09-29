@@ -1,0 +1,55 @@
+schema_version: '2.0'
+version: '1.0'
+assets:
+  SECZ:
+    entity_id: SECZ
+    security_id: secz_common
+    instrument_id: secz_nyse
+    venue: NYSE
+    price: {concept: secz_nyse_price, unit: USD_PER_SHARE}
+    quantities:
+      basic: {concept: secz_basic_shares, unit: SHARE}
+      diluted: {concept: secz_diluted_shares, unit: SHARE}
+    bridge:
+      debt: secz_interest_bearing_debt
+      preferred: secz_preferred_claims
+      nci: secz_noncontrolling_interest
+      cash: secz_unrestricted_cash
+      nonoperating: secz_nonoperating_assets
+    provider_cap: secz_basic_provider_cap
+    meaning: 'Basic equity and an illustrative as-converted diluted equity value; EV uses basic equity and never treats client/restricted cash as available.'
+  UNI:
+    entity_id: UNI
+    security_id: uni_ethereum
+    instrument_id: uni_eth
+    venue: ETHEREUM
+    price: {concept: uni_price, unit: USD_PER_UNI}
+    quantities:
+      circulating: {concept: uni_circulating_supply, unit: UNI}
+      total: {concept: uni_total_supply, unit: UNI}
+    bridge: {}
+    provider_cap: uni_circulating_provider_cap
+    meaning: 'Circulating token market cap and total-supply FDV; neither is an issuer equity claim or a holder cash flow.'
+  XLM:
+    entity_id: XLM
+    security_id: xlm_native_stellar
+    instrument_id: xlm_stellar
+    venue: STELLAR
+    price: {concept: xlm_price, unit: USD_PER_XLM}
+    quantities:
+      circulating: {concept: xlm_circulating_supply, unit: XLM}
+      total: {concept: xlm_total_supply, unit: XLM}
+    bridge: {}
+    provider_cap: xlm_circulating_provider_cap
+    meaning: 'Native XLM circulating cap and total-supply FDV; no claim on foundation assets or revenue.'
+formulas:
+  secz_basic_equity:
+    {version: '1.0', inputs: [price, basic], output_unit: USD, expression: 'price * basic'}
+  secz_diluted_equity:
+    {version: '1.0', inputs: [price, diluted], output_unit: USD, expression: 'price * diluted'}
+  secz_enterprise_value:
+    {version: '1.0', inputs: [equity, debt, preferred, nci, cash, nonoperating], output_unit: USD, expression: 'equity + debt + preferred + nci - cash - nonoperating'}
+  token_circulating_cap:
+    {version: '1.0', inputs: [price, circulating], output_unit: USD, expression: 'price * circulating'}
+  token_total_fdv:
+    {version: '1.0', inputs: [price, total], output_unit: USD, expression: 'price * total'}

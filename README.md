@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～03**。軟體版本 0.1.11，**145 項測試通過**，見 [normalization 驗收](reports/p1-03-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據、身分主檔、唯讀正規化報告及可離線重播的 audit bundle。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；官方身分連結尚未完成原文存證，也沒有真實財務觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；決策級研究發布維持 BLOCKED。下一步 **P1-04：價格、供給、股本與 EV bridge**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～04**。軟體版本 0.1.12，**156 項測試通過**，見 [市場橋接驗收](reports/p1-04-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據、身分主檔、唯讀正規化與市場橋接報告，以及可離線重播的 audit bundle。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；官方身分連結尚未完成原文存證，也沒有真實財務或市場觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；決策級研究發布維持 BLOCKED。下一步 **P1-05：UNI primary evidence 最小包**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -37,6 +37,7 @@ python -m engine.cli recover            # complete a pending explicit event publ
 python -m engine.cli identity --asset SECZ
 python -m engine.cli identity --namespace NYSE --symbol SECZ --as-of 2026-07-02
 python -m engine.cli normalize-report --demo --plan /path/to/plan.yaml
+python -m engine.cli market-report --demo --plan /path/to/market-plan.yaml
 ```
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
@@ -57,6 +58,25 @@ steps:
 ```
 
 此 ID 是用法佔位符，repo 的 v2 demo/research ledger 目前都沒有該 OBSERVED 紀錄。輸入必須已有查核來源、相符概念／單位／會計口徑及合格時間；結果保留公式鎖版與逐層 lineage，僅為唯讀稽核輸出，不進 canonical ledger、v2 economics 或 thesis。六個支援公式及完整限制見 [P1-03 驗收](reports/p1-03-validation.md)。
+
+`market-report` 使用同樣的已審來源與雙時間政策，另指定 quote／結構最長資料齡。現價模式需 OBSERVED 報價 ID；假設價格模式以 `SCENARIO` 標示，不能作歷史行情。以下為欄位範例，所有 ID 都是**佔位符**，現有 ledger 不含真實價格或股數：
+
+```yaml
+schema_version: '2.0'
+asset: SECZ
+price_mode: CURRENT_MARKET
+context:
+  economic_cutoff: '2026-09-30'
+  knowledge_cutoff: '2026-10-01T12:00:00Z'
+  valuation_at: '2026-09-30T12:00:00Z'
+  knowledge_policy: AS_KNOWN_BY_SYSTEM
+  max_quote_age_seconds: 86400
+  max_structure_age_days: 120
+price_record_id: exact_nyse_quote_id
+inputs: {basic: exact_basic_share_id, diluted: exact_diluted_share_id}
+```
+
+此例可計基本股權價值與示意稀釋價值；沒有債務、優先股權、非控制權益、可扣除現金及非營運資產的來源時，EV 保持 Unknown。UNI／XLM 則要求流通量與總供給，輸出不同語義的流通市值與 FDV。輸入時間、供應商市值差額和完整契約見 [P1-04 驗收](reports/p1-04-validation.md)。
 
 `GET /api/state` 不建立快照；請以 `snapshot` 明確發布。`apply-event` 逐檔更新前先建立 redo journal；若途中故障，讀取 API 回傳 503，`recover` 補齊完整版本（或下一次明確發布自動補齊）。相同事件與觀察值重試不重複新增；衝突的重用事件 ID 被拒絕。見 [故障注入驗收](reports/p0-08-validation.md)。
 
@@ -130,7 +150,7 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；145 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；156 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
 
 ## V2 rule cadence / P0-06
 

@@ -1,5 +1,5 @@
-# P1-03 adds an audit-only normalization registry; no real financial observations are ingested.
-contract_version: '2.0-proposal.6'
+# P1-04 adds a read-only market bridge; no real prices or financial observations are ingested.
+contract_version: '2.0-proposal.7'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -44,6 +44,21 @@ normalization:
     - 'EUR flow uses a positive USD/EUR average rate for the exact interval; the source and availability of the rate must be verified.'
     - 'No automatic selection of conflicting or superseded exact input IDs. A manual conflict resolution is outside this audit plan.'
     - 'Normalization outputs are not yet input roles in v2 economics or thesis; later promotion needs a reviewed append-only integration.'
+
+market_bridge:
+  registry: spec/v2/market-bridge.yaml
+  signature_lock: spec/v2/market-bridge-lock.yaml
+  mode: read_only_exact_observed_ids_or_explicit_assumed_price_scenario
+  assets: [SECZ, UNI, XLM]
+  context: [economic_cutoff, knowledge_cutoff, valuation_at, knowledge_policy, max_quote_age_seconds, max_structure_age_days]
+  invariants:
+    - 'A current-market reverse input requires an observed positive quote with exact security, instrument, venue, USD unit and timestamp; an assumed-price reverse input is labeled SCENARIO and is not historical evidence.'
+    - 'Basic and illustrative as-converted diluted SECZ equity values use distinct share counts; EV uses basic equity plus debt, preferred and noncontrolling claims less unrestricted cash and nonoperating assets.'
+    - 'Restricted or customer cash cannot substitute for unrestricted cash; missing balance-sheet components keep EV Unknown instead of defaulting to zero.'
+    - 'Native token circulating cap and total-supply FDV use distinct quantities. FDV is not equity value, EV or holder cash flow.'
+    - 'Date-only stock is unavailable on its as-of day for intraday pricing; all stock and financial inputs expose their age at the quote, and quote/structure maximum ages are explicit.'
+    - 'A provider cap is separate observed evidence. Difference, tolerance, timestamps and analyst explanation are retained; explanation is ASSUMPTION rather than a verified reconciliation.'
+    - 'All outputs have formula IDs, versions, signatures and transitive source IDs and remain audit-only, outside canonical ledgers and v2 economics.'
 
 source_archive:
   staging_ledger: sources/staging.yaml
@@ -115,7 +130,7 @@ valuation_time:
 
 record:
   required: [schema_version, id, concept_id, classification, economic_scope, value, unit, fixture, economic_period, knowledge_time]
-  common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, legacy_record_id, measurement_basis]
+  common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, instrument_id, legacy_record_id, measurement_basis]
   measurement_basis: {definition_id: semantic_dictionary_id, accounting_basis: 'GAAP|IFRS|ADJUSTED|NOT_APPLICABLE', presentation: 'GROSS|NET|NOT_APPLICABLE', consolidation: 'CONSOLIDATED|SEGMENT|NOT_APPLICABLE', operations_basis: 'ALL|CONTINUING|NOT_APPLICABLE', fiscal_calendar_id: explicit_id_or_UNKNOWN, comparability: 'STANDARD|FISCAL_CHANGE|FIFTY_THREE_WEEK|PRE_POST_COMBINATION'}
   value_rule: 'Exactly one of finite numeric value and missing_reason; missing is never encoded as zero.'
   observed_required: [source_ids, as_of_at, as_of_precision]

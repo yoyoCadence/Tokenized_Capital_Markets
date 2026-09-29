@@ -193,7 +193,7 @@ def validate_temporal_project(project):
                 {"entity_id": str, "security_id": str, "supersedes_id": str,
                  "as_of_at": (str, type(None)), "as_of_precision": str, "missing_reason": str,
                  "source_ids": "strings", "rationale": str, "scenario_name": str,
-                 "effective_from": str, "venue": str, "legacy_record_id": str,
+                 "effective_from": str, "venue": str, "instrument_id": str, "legacy_record_id": str,
                  "measurement_basis": dict}, path)
         if record["id"] in records:
             _error("DUPLICATE_ID", record["id"], path)
