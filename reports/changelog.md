@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.9 / P1-01 source staging and review — 2026-09-29
+
+- Add strict manual source capture into an append-only staging ledger with actual acquisition time, SHA-256/size, locator, rights and explicit failure/unknown-date states. Raw bytes are content-addressed outside the checkout; URL credentials and raw checkout paths are refused.
+- Add human review and atomic metadata promotion into the v2 source registry under the existing publication journal. Approved sources retain artifact digest and review ID, while observations remain empty. V2 audit bundles now archive the staging/review trail under `2.0-compute-bundle.3` without copying raw restricted bytes.
+- [P1-01 validation](p1-01-validation.md): 132 tests, both validation modes 94 metrics/0 issues, original v1 snapshot digests unchanged. No real artifact/source/observation was ingested; P1-02 identity and investability is next.
+
 ## Software 0.1.8 / P0-10 G0 integration acceptance — 2026-09-29
 
 - Lock the G0 interpreter and dependency version, add pull-request/main CI and a read-only acceptance command covering the full regression suite, both validation modes, backlog blockers and research observation count.

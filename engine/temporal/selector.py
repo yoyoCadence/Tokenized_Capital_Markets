@@ -5,6 +5,7 @@ consume its selected inputs; thesis cadence and snapshot publication remain sepa
 """
 from datetime import date, datetime, time, timedelta, timezone
 import math
+import re
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -141,7 +142,9 @@ def validate_temporal_project(project):
         path = f"sources[{n}]"
         _fields(source, {"id": str, "url": str, "publisher": str, "title": str, "date": str,
                          "retrieved_at": str, "tier": (int, str), "kind": str,
-                         "covered_metrics": "strings"}, {"supersedes_id": str}, path)
+                         "covered_metrics": "strings"}, {"supersedes_id": str, "document_kind": str,
+                         "artifact_sha256": str, "artifact_bytes": int, "artifact_media_type": str,
+                         "artifact_locator": str, "review_id": str}, path)
         if source["id"] in sources:
             _error("DUPLICATE_ID", source["id"], path)
         _day(source["date"], f"{path}.date")
@@ -153,6 +156,17 @@ def validate_temporal_project(project):
               source["tier"] not in range(1, 6) or urlparse(source["url"]).scheme != "https" or
               not urlparse(source["url"]).netloc):
             _error("SOURCE_KIND", "External source needs HTTPS and tier 1–5", path)
+        if "document_kind" in source and source["document_kind"] not in {
+                "FILING", "REGULATORY_ORDER", "CONTRACT_EVENT", "OFFICIAL_RELEASE",
+                "GOVERNANCE_PROPOSAL", "ANALYTICS", "MARKET_QUOTE", "OTHER"}:
+            _error("SOURCE_KIND", "Unknown document kind", path)
+        archive_fields = {"artifact_sha256", "artifact_bytes", "artifact_media_type", "artifact_locator", "review_id"}
+        if archive_fields & source.keys():
+            if (source["kind"] != "EXTERNAL" or not archive_fields <= source.keys() or
+                    not re.fullmatch(r"[0-9a-f]{64}", source["artifact_sha256"]) or
+                    source["artifact_bytes"] < 0 or not source["artifact_media_type"] or
+                    not source["artifact_locator"] or not source["review_id"]):
+                _error("SOURCE_ARTIFACT", "Archived source needs full digest, size, MIME, locator and review ID", path)
         sources[source["id"]] = source
     for source in sources.values():
         seen, cursor = set(), source["id"]

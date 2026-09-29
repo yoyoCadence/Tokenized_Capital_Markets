@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-29 已完成 **WP-01、P0-03～P0-10**。軟體版本 0.1.8，**127 項測試通過**，見 [G0 整合驗收](reports/p0-10-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；讀取 API 純讀，事件以 journal 可恢復發布。v2 品質各軸分開呈現，衝突需有當時有效的人審決定才能選值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；未完成的 P0 優先級任務使決策級研究發布維持 BLOCKED。下一步 **P1-01：Source staging 與原始證據存證**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01**。軟體版本 0.1.9，**132 項測試通過**，見 [來源暫存驗收](reports/p1-01-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；讀取 API 純讀，事件以 journal 可恢復發布。來源原文在 repo 外以雜湊存證，經人工審閱才將 metadata 放入 v2 source registry；核准來源並不建立觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；未完成的 P0 優先級任務使決策級研究發布維持 BLOCKED。下一步 **P1-02：Entity/security master 與可交易性查核**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -39,6 +39,38 @@ python -m engine.cli recover            # complete a pending explicit event publ
 `GET /api/state` 不建立快照；請以 `snapshot` 明確發布。`apply-event` 逐檔更新前先建立 redo journal；若途中故障，讀取 API 回傳 503，`recover` 補齊完整版本（或下一次明確發布自動補齊）。相同事件與觀察值重試不重複新增；衝突的重用事件 ID 被拒絕。見 [故障注入驗收](reports/p0-08-validation.md)。
 
 For a sourced LIVE/COMPLETED event, add its immutable record and source to the registries, then run `python -m engine.cli apply-event --id EVENT_ID --observations new-observations.yaml`. The batch must use fresh IDs, match the event's source IDs and classification, and pass full validation before its observations are appended. The command recalculates, applies thesis rules, writes a snapshot and records the event in `reports/changelog.md`. Planned/announced events cannot ingest live observations. The demo command above has no new observations and only records graph propagation; avoid running it when you want the default two-version comparison unchanged.
+
+## Source staging / P1-01
+
+先在 repo 外準備原始檔與 metadata YAML。必填欄位為 `url`、`publisher`、`title`、`document_kind`、`source_date`（無法查證則設 `null`）、`tier`、`covered_metrics`（明確的 v2 concept IDs）、`locator`、`rights`、`media_type`；可選 `supersedes_id`。`source-stage` 只讀本機提供的檔案，將位元組存到 repo 外指定的絕對路徑，並把 digest／大小／實際取得時間記入 `sources/staging.yaml`。無法取得檔案或日期不明時不會自動成為 canonical source，更不會變成 OBSERVED。
+
+例如，repo 外的 `source-metadata.yaml` 可採以下**純示意**格式，日期與欄位必須以實際原文查核後填寫：
+
+```yaml
+url: https://example.invalid/test-only
+publisher: Example issuer
+title: Example release
+document_kind: OFFICIAL_RELEASE
+source_date: '2026-09-28'
+tier: 2
+covered_metrics: [uni_burn_value]
+locator: page 1, table A
+rights: RESTRICTED
+media_type: application/pdf
+```
+
+```bash
+python -m engine.cli source-stage --id candidate_001 \
+  --metadata /private/source-metadata.yaml --file /private/source.pdf \
+  --store-dir /private/source-artifacts
+python -m engine.cli source-verify --id candidate_001 --store-dir /private/source-artifacts
+python -m engine.cli source-review --id candidate_001 --review-id review_001 \
+  --decision APPROVED --reviewer 'Research reviewer' \
+  --reason 'Original document, date and rights checked' --store-dir /private/source-artifacts
+python -m engine.cli source-status
+```
+
+審閱可選 `HOLD`、`REJECTED` 或 `APPROVED`；核准需要原文 digest 核對、來源日期與權利狀態，僅原子發布 source metadata。舊來源版本不改寫，新版需新 ID 與 `supersedes_id`。API 不自動擷取外部網址，沒有把任何真實原文或數值加入本 repo。`snapshot-v2` 封存審閱 ledger 和 metadata hash，外部原文須另行保管並以 `source-verify` 查核；詳見 [驗收與限制](reports/p1-01-validation.md)。
 
 ## Input validation / WP-01
 
@@ -76,7 +108,7 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；127 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；132 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
 
 ## V2 rule cadence / P0-06
 

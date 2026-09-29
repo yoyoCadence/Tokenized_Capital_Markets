@@ -182,6 +182,8 @@ def recover_locked(root):
             label = entry["label"]
             relative = entry["path"]
             allowed = ((label == "ledger" and relative in ("data/observed/demo.yaml", "data/observed/research.yaml")) or
+                       (label == "source_staging" and relative == "sources/staging.yaml") or
+                       (label == "source_registry_v2" and relative == "sources/v2/sources.yaml") or
                        (label == "changelog" and relative == "reports/changelog.md") or
                        (label == "snapshot" and path.parent in (root / "data/snapshots/demo", root / "data/snapshots/research")
                         and len(path.stem) == 20 and all(c in "0123456789abcdef" for c in path.stem) and path.suffix == ".json"))
