@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.3'
+version: '1.4'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-29'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-03
+next_task: P1-04
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -312,7 +312,7 @@ tasks:
     title: 財務／鏈上資料字典與 normalization
     phase: P1
     priority: P0
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P0-03, P1-01]
@@ -321,6 +321,14 @@ tasks:
       - raw observed 與縮放/FX/TTM derived 分開，變換可追溯。
       - stock/flow、GAAP/adjusted、gross/net、fiscal period 定義明確。
       - 量綱、負基期 CAGR、近零分母與 incompatible scope 有測試。
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: a3b1737b72072176f6aba5eac6758ef0b57e74de
+      evidence: reports/p1-03-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_normalization_v2.py, tests/integration/test_snapshots_v2.py]
+      full_suite_tests_passed: 145
+      result: 六個鎖版唯讀變換和語義量綱校驗已完成，原始 OBSERVED／衍生 DERIVED 分開；真實財務 observation 仍為 0，下一項 P1-04。
     audit_refs: [A-07, A-09]
   - id: P1-04
     title: 價格、供給、股本與 EV bridge
