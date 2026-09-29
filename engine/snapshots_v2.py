@@ -23,12 +23,12 @@ from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.validation.errors import ValidationError, issue
 
 
-SCHEMA = "2.0-compute-bundle.3"
+SCHEMA = "2.0-compute-bundle.4"
 TRACKS = {"HISTORICAL", "CURRENT"}
 CONFIG = {"requirements.txt", "pyproject.toml"}
 LEDGERS = {"sources/v2/sources.yaml", "sources/staging.yaml", "data/v2/observed/research.yaml", "data/v2/resolutions/research.yaml"}
 DICTIONARY = {"spec/canonical-schema.yaml", "spec/v2/units.yaml",
-              "spec/v2/metric-concepts.yaml", "spec/v2/input-roles.yaml"}
+              "spec/v2/metric-concepts.yaml", "spec/v2/input-roles.yaml", "spec/v2/identity-master.yaml"}
 GRAPH = {"spec/dependency-graph.yaml"}
 FORMULAS = {"spec/v2/formula-registry.yaml", "spec/v2/formula-lock.yaml"}
 RULES = {"spec/thesis-rules.yaml", "spec/v2/rule-cadence.yaml", "spec/v2/rule-cadence-lock.yaml"}

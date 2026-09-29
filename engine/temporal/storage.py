@@ -7,7 +7,9 @@ from .selector import validate_temporal_project
 
 
 def load_temporal_project(root=ROOT, demo=False):
+    from engine.identity import load_identity
     root = Path(root)
+    load_identity(root)
     documents = {
         "concepts": root / "spec/v2/metric-concepts.yaml",
         "roles": root / "spec/v2/input-roles.yaml",

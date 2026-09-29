@@ -36,7 +36,9 @@
 
 **不能由此單獨支持**：正式收盤股價、最終稀釋股數、完整 EV、收入分項、broker 可交易性或後續持續上市。
 
-下一次依 AGENTS.md 的 completion 標準，核對相關 SEC completion filing／exchange security master、CIK、share class、資本結構與最近正式財報。repo 的 SECZ listing/investability 仍是 unverified；此筆是優先查核線索，不是 registry 更新。
+2026-09-25 當時下一次仍需依 AGENTS.md 的 completion 標準，核對相關 SEC completion filing／exchange security master、CIK、share class、資本結構與最近正式財報。下方為後續更新，保留本段原始查核狀態。
+
+**2026-09-29 更新：** [CEPT 正式 8-K](https://www.sec.gov/Archives/edgar/data/2034269/000121390026076435/ea0297280-8k_cantor2.htm) 證明 07-01 交易完成、07-02 SECZ NYSE 開始交易；[Securitize Corp. 正式 8-K/A](https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/secz-20260708.htm) 佐證 CIK 2094496 與普通股／NYSE。已在 P1-02 身分主檔更正 listing；個人 investability、資本結構及真實財務 OBSERVED 仍未完成，網頁連結仍待 P1-01 原文存證與審閱。詳見 [P1-02 驗收](../../reports/p1-02-validation.md)。
 
 ## S-PLAN-03：DTC／Stellar 連接計畫
 
