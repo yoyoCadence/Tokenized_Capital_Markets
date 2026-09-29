@@ -7,6 +7,7 @@ from pathlib import Path
 from engine.formulas.runtime import calculate
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
+from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snapshot_v2
@@ -80,6 +81,22 @@ def _main(argv=None):
     bundle.add_argument("--valuations", default="{}", help="JSON mapping quarter end to historical quote valuation instant")
     replay = sub.add_parser("replay-v2", help="Verify v2 digest and recompute offline from frozen inputs")
     replay.add_argument("file", type=Path)
+    stage = sub.add_parser("source-stage", help="Archive manually supplied source bytes outside the repository")
+    stage.add_argument("--id", required=True)
+    stage.add_argument("--metadata", type=Path, required=True)
+    stage.add_argument("--file", type=Path, required=True)
+    stage.add_argument("--store-dir", type=Path, required=True)
+    review = sub.add_parser("source-review", help="Record a human review; approval publishes source metadata only")
+    review.add_argument("--id", required=True)
+    review.add_argument("--review-id", required=True)
+    review.add_argument("--decision", required=True, choices=("APPROVED", "HOLD", "REJECTED"))
+    review.add_argument("--reviewer", required=True)
+    review.add_argument("--reason", required=True)
+    review.add_argument("--store-dir", type=Path, required=True)
+    artifact = sub.add_parser("source-verify", help="Verify the archived bytes against the staged digest")
+    artifact.add_argument("--id", required=True)
+    artifact.add_argument("--store-dir", type=Path, required=True)
+    sub.add_parser("source-status", help="Inspect staged sources without publication")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -157,6 +174,18 @@ def _main(argv=None):
                          ensure_ascii=False, indent=2))
     elif args.command == "replay-v2":
         print(json.dumps(replay_snapshot_v2(args.file), ensure_ascii=False, indent=2))
+    elif args.command == "source-stage":
+        print(json.dumps(stage_source(root=args.root, source_id=args.id, metadata_path=args.metadata,
+                                      file_path=args.file, store_dir=args.store_dir), ensure_ascii=False, indent=2))
+    elif args.command == "source-review":
+        print(json.dumps(review_source(root=args.root, source_id=args.id, review_id=args.review_id,
+                                       decision=args.decision, reviewer=args.reviewer, reason=args.reason,
+                                       store_dir=args.store_dir), ensure_ascii=False, indent=2))
+    elif args.command == "source-verify":
+        print(json.dumps(verify_artifact(root=args.root, source_id=args.id, store_dir=args.store_dir),
+                         ensure_ascii=False, indent=2))
+    elif args.command == "source-status":
+        print(json.dumps(staging_status(root=args.root), ensure_ascii=False, indent=2))
 
 
 def main(argv=None):

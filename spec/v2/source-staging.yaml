@@ -1,0 +1,9 @@
+schema_version: '1.0'
+adapter: MANUAL_FILE_V1
+capture_required: [id, adapter, status, url, publisher, title, document_kind, source_date, retrieved_at, tier, covered_metrics, locator, rights, artifact_sha256, artifact_bytes, media_type, failure_reason]
+document_kinds: [FILING, REGULATORY_ORDER, CONTRACT_EVENT, OFFICIAL_RELEASE, GOVERNANCE_PROPOSAL, ANALYTICS, MARKET_QUOTE, OTHER]
+review_required: [id, capture_id, decision, reviewer, reviewed_at, reason]
+decisions: [APPROVED, HOLD, REJECTED]
+rights: [PUBLIC_REDISTRIBUTABLE, RESTRICTED, UNKNOWN]
+artifact_storage: 'Content-addressed SHA-256 bytes outside the checkout; metadata and review only in git.'
+publication: 'APPROVED promotes source metadata and digest only; never creates an OBSERVED record.'

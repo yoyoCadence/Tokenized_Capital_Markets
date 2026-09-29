@@ -1,5 +1,5 @@
-# P0-09 extends the read-only v2 quality and resolution contract; v1 remains legacy.
-contract_version: '2.0-proposal.3'
+# P1-01 adds reviewed source metadata and artifact hashes; v1 remains legacy.
+contract_version: '2.0-proposal.4'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -28,6 +28,17 @@ input_role:
     required_period_basis: optional_period_basis
     max_age: optional_duration_or_null
   rule: 'Filter by role, scope, period, knowledge cutoff, source, and evidence before supersession. Same-number evidence remains visible.'
+
+source_archive:
+  staging_ledger: sources/staging.yaml
+  adapter: MANUAL_FILE_V1
+  canonical_source_optional: [document_kind, artifact_sha256, artifact_bytes, artifact_media_type, artifact_locator, review_id]
+  artifact_bytes_location: external_content_addressed_store_outside_public_checkout
+  invariants:
+    - 'Unknown source date or failed acquisition stays in staging; review cannot promote it.'
+    - 'Approved source metadata records exact digest, locator and review ID; source capture never creates an OBSERVED value.'
+    - 'Raw restricted bytes and credential-bearing URLs are not written to the public repository.'
+    - 'The v2 bundle archives review metadata and hashes, not the external original document bytes.'
 
 economic_period:
   required: [basis, start, end]

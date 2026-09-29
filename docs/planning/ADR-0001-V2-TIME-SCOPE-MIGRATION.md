@@ -1,8 +1,8 @@
 # ADR-0001：時間、經濟 scope 與 v1→v2 遷移
 
-**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04～10 完成**
+**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04～10 與 P1-01 完成**
 
-**實作進度：** P0-04 已完成獨立唯讀[雙時間選值](../../reports/p0-04-validation.md)，P0-05 已完成獨立唯讀 [UNI scope-aware 公式與 UI](../../reports/p0-05-validation.md)，P0-06 已完成[每條規則／資產的 v2 期間路徑](../../reports/p0-06-validation.md)，P0-07 已完成[獨立 audit-only 快照重播](../../reports/p0-07-validation.md)，P0-08 已完成[唯讀 API 與 v1 事件可恢復發布](../../reports/p0-08-validation.md)，P0-09 已完成[品質傳播與衝突選取理由](../../reports/p0-09-validation.md)，P0-10 已完成[G0 工程整合驗收](../../reports/p0-10-validation.md)。契約版本為 `2.0-proposal.3`；下方原決議與遷移步驟保留。v1 thesis／快照仍為 legacy，決策級研究發布未開放。
+**實作進度：** P0-04 已完成獨立唯讀[雙時間選值](../../reports/p0-04-validation.md)，P0-05 已完成獨立唯讀 [UNI scope-aware 公式與 UI](../../reports/p0-05-validation.md)，P0-06 已完成[每條規則／資產的 v2 期間路徑](../../reports/p0-06-validation.md)，P0-07 已完成[獨立 audit-only 快照重播](../../reports/p0-07-validation.md)，P0-08 已完成[唯讀 API 與 v1 事件可恢復發布](../../reports/p0-08-validation.md)，P0-09 已完成[品質傳播與衝突選取理由](../../reports/p0-09-validation.md)，P0-10 已完成[G0 工程整合驗收](../../reports/p0-10-validation.md)。P1-01 已完成[來源暫存與人審存證](../../reports/p1-01-validation.md)；契約版本為 `2.0-proposal.4`；下方原決議與遷移步驟保留。v1 thesis／快照仍為 legacy，決策級研究發布未開放。
 
 ## 背景與決策
 
