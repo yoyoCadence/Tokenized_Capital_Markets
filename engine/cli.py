@@ -6,6 +6,7 @@ from pathlib import Path
 
 from engine.formulas.runtime import calculate
 from engine.identity import identity_report, load_identity, lookup_symbol
+from engine.market_bridge import market_report
 from engine.normalization import normalize_plan
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
@@ -107,6 +108,9 @@ def _main(argv=None):
     normalization = sub.add_parser("normalize-report", help="Read-only v2 normalization audit plan")
     normalization.add_argument("--demo", action="store_true")
     normalization.add_argument("--plan", type=Path, required=True, help="Strict YAML plan of exact observed IDs and ordered steps")
+    market = sub.add_parser("market-report", help="Read-only price, supply and enterprise-value audit")
+    market.add_argument("--demo", action="store_true")
+    market.add_argument("--plan", type=Path, required=True, help="Strict YAML market input plan")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -211,6 +215,12 @@ def _main(argv=None):
         with read_lock(args.root):
             project = load_temporal_project(root=args.root, demo=args.demo)
             result = normalize_plan(project, plan, root=args.root)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "market-report":
+        plan = read_yaml(args.plan)
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = market_report(project, plan, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

@@ -99,6 +99,8 @@ SEC、exchange、chain 是高優先來源；其中的 forward-looking statements
 
 ## 5. 可交易實體與市場輸入
 
+**P1-04 實作狀態（2026-09-29）：** [唯讀市場橋接](../../reports/p1-04-validation.md)已涵蓋明確工具／venue／USD 報價、基本與稀釋股數、UNI／XLM 流通與總供給、缺件即 Unknown 的 SECZ EV 以及資料商市值差額。下述 bid/ask、交易時段、成交成本、實際原文查核與其它 venue 仍是後續工作；此節其餘內容保留原規劃範圍。
+
 建立 entity/security master：法律實體、協議、網路、股票／token、交易工具與持有人權利分開。ticker 只是帶有效期間的 alias。
 
 股票需 CIK／exchange／share class／幣別／corporate action／基本與稀釋股數；token 需 chain ID／contract／decimals／bridged representation／circulating 與 total supply 定義。避免同名資產或 wrapped 代幣重複計數。

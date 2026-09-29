@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.12 / P1-04 market inputs and EV bridge — 2026-09-29
+
+- Add distinct SECZ NYSE share price, basic/diluted counts, interest-bearing debt, preferred/noncontrolling claims, unrestricted/restricted cash and nonoperating assets; add UNI/XLM native circulating and total supply concepts. Prices bind exact security, instrument, venue, currency and timestamp.
+- Add five locked read-only equity/cap/FDV/EV formulas and `market-report`. An incomplete EV bridge returns Unknown; provider cap comparison retains delta, dates, tolerance and an explicitly analyst-classified discrepancy note. Scenario price reverse input remains separate from observed current-market reverse input.
+- Enforce publication/system knowledge, quote age, structure age, as-of precision, issuer security and source lineage. Bundle market definitions in v2 audit schema `2.0-compute-bundle.6`. [P1-04 validation](p1-04-validation.md): 156 tests; real market/financial observations remain 0. P1-05 UNI evidence is next.
+
 ## Software 0.1.11 / P1-03 normalization dictionary — 2026-09-29
 
 - Add explicit measurement basis, YTD periods and role-level accounting filters. Equal GAAP/adjusted values remain conflicting evidence; supersession and resolutions cannot cross measurement bases.

@@ -1,0 +1,17 @@
+schema_version: '2.0'
+formulas:
+  secz_basic_equity:
+    version: '1.0'
+    signature: 19bbfbb1c458640e347c04e7e5ba7dd6aec926c31289acceffca546b3c1051b8
+  secz_diluted_equity:
+    version: '1.0'
+    signature: 7beb41fc89449d792b30711f8465e9db22ccbe9580d6a37d676e6f2a0a904b56
+  secz_enterprise_value:
+    version: '1.0'
+    signature: 41f9ecd364d0fd965daae0a812da9c6f43daa02f3d44b5cfe19ff4cca71e2030
+  token_circulating_cap:
+    version: '1.0'
+    signature: 5fc5340b43dac38e8381e0f3693bb541cf7660b57eaa34ed5372a5bf431b55d9
+  token_total_fdv:
+    version: '1.0'
+    signature: 1d6c7ea2ef2229bde5c19817668681328a1cf15acc49dfd90f2c6d2dcfeb960d
