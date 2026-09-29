@@ -1,0 +1,5 @@
+{
+  "implementation": "CPython",
+  "python": [3, 12, 14],
+  "packages": {"PyYAML": "6.0.3"}
+}
