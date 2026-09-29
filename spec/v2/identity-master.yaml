@@ -1,0 +1,102 @@
+schema_version: '2.0'
+version: '2026-09-29.1'
+evidence:
+  - id: secz_completion_filing
+    url: https://www.sec.gov/Archives/edgar/data/2034269/000121390026076435/ea0297280-8k_cantor2.htm
+    publisher: SEC EDGAR / Cantor Equity Partners II
+    document_kind: FILING
+    source_date: '2026-07-08'
+    checked_on: '2026-09-29'
+    claim: Business combination consummated July 1, 2026; CEPT is a predecessor, not SECZ stock.
+    archive_status: LINK_CHECKED_UNARCHIVED
+  - id: secz_registered_class
+    url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/secz-20260708.htm
+    publisher: SEC EDGAR / Securitize Corp.
+    document_kind: FILING
+    source_date: '2026-08-13'
+    checked_on: '2026-09-29'
+    claim: Securitize Corp., CIK 2094496, common stock SECZ registered on NYSE; amended filing confirms July 1 closing.
+    archive_status: LINK_CHECKED_UNARCHIVED
+  - id: secz_listing_issuer
+    url: https://investors.securitize.io/news/news-details/2026/Tokenizing-SECZ-Securitize-Brings-Its-Own-Public-Stock-Onchain-at-Listing-Day/default.aspx
+    publisher: Securitize Investor Relations
+    document_kind: OFFICIAL_RELEASE
+    source_date: '2026-07-02'
+    checked_on: '2026-09-29'
+    claim: NYSE common stock began trading July 2; issuer-sponsored tokenized form has separate eligibility and is the same underlying class.
+    archive_status: LINK_CHECKED_UNARCHIVED
+  - id: uni_token_list
+    url: https://github.com/Uniswap/default-token-list/blob/main/src/tokens/mainnet.json
+    publisher: Uniswap / default-token-list
+    document_kind: OFFICIAL_REGISTRY
+    source_date: null
+    checked_on: '2026-09-29'
+    claim: UNI on Ethereum chain 1 has contract 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 and 18 decimals.
+    archive_status: LINK_CHECKED_UNARCHIVED
+  - id: xlm_native
+    url: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets
+    publisher: Stellar Development Foundation
+    document_kind: OFFICIAL_DOCUMENTATION
+    source_date: null
+    checked_on: '2026-09-29'
+    claim: XLM is the native lumen of Stellar, with no token issuer or ERC-20 contract; Stellar amount precision is seven decimals.
+    archive_status: LINK_CHECKED_UNARCHIVED
+entities:
+  - {id: uniswap_protocol, name: Uniswap protocol, type: PROTOCOL, evidence_ids: [uni_token_list]}
+  - {id: uniswap_labs, name: Uniswap Labs, type: COMPANY, evidence_ids: [], status: CONTEXT_ONLY}
+  - {id: stellar_network, name: Stellar network, type: NETWORK, evidence_ids: [xlm_native]}
+  - {id: stellar_foundation, name: Stellar Development Foundation, type: FOUNDATION, evidence_ids: [xlm_native]}
+  - {id: securitize_inc, name: 'Securitize, Inc.', type: COMPANY, evidence_ids: [secz_completion_filing]}
+  - {id: securitize_corp, name: Securitize Corp., type: COMPANY, cik: '0002094496', evidence_ids: [secz_registered_class]}
+  - {id: cantor_cept, name: 'Cantor Equity Partners II, Inc.', type: COMPANY, cik: '0002034269', evidence_ids: [secz_completion_filing]}
+securities:
+  - id: uni_ethereum
+    entity_id: uniswap_protocol
+    type: TOKEN
+    rights: GOVERNANCE; realized holder accrual requires separate evidence.
+    chain_id: 1
+    contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
+    contract_valid_from: null
+    contract_valid_to: null
+    decimals: 18
+    evidence_ids: [uni_token_list]
+  - id: xlm_native_stellar
+    entity_id: stellar_network
+    type: NATIVE_TOKEN
+    rights: Network native asset; no claim on foundation revenue.
+    chain_id: null
+    contract: null
+    decimals: 7
+    evidence_ids: [xlm_native]
+  - id: secz_common
+    entity_id: securitize_corp
+    type: COMMON_STOCK
+    rights: Common stock of Securitize Corp.; tokenized ownership does not create a separate share class.
+    share_class: common
+    currency: USD
+    evidence_ids: [secz_registered_class, secz_listing_issuer]
+  - id: cept_class_a
+    entity_id: cantor_cept
+    type: COMMON_STOCK
+    rights: Pre-combination CEPT Class A ordinary shares; not Securitize Corp. common stock.
+    share_class: Class A ordinary
+    currency: USD
+    evidence_ids: [secz_completion_filing]
+instruments:
+  - {id: uni_eth, security_id: uni_ethereum, form: ONCHAIN_NATIVE_CONTRACT, venue: ETHEREUM, evidence_ids: [uni_token_list]}
+  - {id: xlm_stellar, security_id: xlm_native_stellar, form: NETWORK_NATIVE, venue: STELLAR, evidence_ids: [xlm_native]}
+  - {id: secz_nyse, security_id: secz_common, form: EXCHANGE_SHARE, venue: NYSE, evidence_ids: [secz_registered_class, secz_listing_issuer]}
+  - {id: secz_tokenized, security_id: secz_common, form: ISSUER_TOKENIZED_SHARE, venue: SECURITIZE_PLATFORM, evidence_ids: [secz_listing_issuer]}
+  - {id: cept_legacy, security_id: cept_class_a, form: EXCHANGE_SHARE, venue: NASDAQ, evidence_ids: [secz_completion_filing]}
+aliases:
+  - {id: uni_eth_symbol, instrument_id: uni_eth, namespace: ETHEREUM_TOKEN, symbol: UNI, valid_from: null, valid_to: null, evidence_ids: [uni_token_list]}
+  - {id: xlm_native_symbol, instrument_id: xlm_stellar, namespace: STELLAR_NATIVE, symbol: XLM, valid_from: null, valid_to: null, evidence_ids: [xlm_native]}
+  - {id: secz_nyse_symbol, instrument_id: secz_nyse, namespace: NYSE, symbol: SECZ, valid_from: '2026-07-02', valid_to: null, evidence_ids: [secz_registered_class, secz_listing_issuer]}
+  - {id: secz_platform_symbol, instrument_id: secz_tokenized, namespace: SECURITIZE_PLATFORM, symbol: SECZ, valid_from: null, valid_to: null, evidence_ids: [secz_listing_issuer]}
+  - {id: cept_nasdaq_symbol, instrument_id: cept_legacy, namespace: NASDAQ, symbol: CEPT, valid_from: null, valid_to: '2026-07-01', evidence_ids: [secz_completion_filing]}
+corporate_actions:
+  - {id: secz_combination_20260701, type: BUSINESS_COMBINATION, effective_on: '2026-07-01', predecessor_entity_id: cantor_cept, successor_entity_id: securitize_corp, predecessor_security_id: cept_class_a, successor_security_id: secz_common, exchange_ratio: null, evidence_ids: [secz_completion_filing]}
+research_assets:
+  - {id: UNI, entity_id: uniswap_protocol, security_id: uni_ethereum, research_core: true, value_capture_status: UNVERIFIED, data_readiness: INCOMPLETE, market_instrument_status: IDENTIFIED, user_trade_eligibility: UNKNOWN, evidence_ids: [uni_token_list]}
+  - {id: SECZ, entity_id: securitize_corp, security_id: secz_common, research_core: true, value_capture_status: UNVERIFIED, data_readiness: INCOMPLETE, market_instrument_status: LISTED, user_trade_eligibility: UNKNOWN, evidence_ids: [secz_registered_class, secz_listing_issuer]}
+  - {id: XLM, entity_id: stellar_network, security_id: xlm_native_stellar, research_core: true, value_capture_status: UNVERIFIED, data_readiness: INCOMPLETE, market_instrument_status: IDENTIFIED, user_trade_eligibility: UNKNOWN, evidence_ids: [xlm_native]}

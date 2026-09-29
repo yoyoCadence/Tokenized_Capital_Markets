@@ -1,5 +1,5 @@
-# P1-01 adds reviewed source metadata and artifact hashes; v1 remains legacy.
-contract_version: '2.0-proposal.4'
+# P1-02 adds checked identity links; these are not archived canonical financial sources.
+contract_version: '2.0-proposal.5'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -39,6 +39,16 @@ source_archive:
     - 'Approved source metadata records exact digest, locator and review ID; source capture never creates an OBSERVED value.'
     - 'Raw restricted bytes and credential-bearing URLs are not written to the public repository.'
     - 'The v2 bundle archives review metadata and hashes, not the external original document bytes.'
+
+identity_master:
+  ledger: spec/v2/identity-master.yaml
+  dimensions: [entities, securities, instruments, aliases, corporate_actions, research_assets, evidence]
+  invariants:
+    - 'Protocol, network, issuer and predecessor company IDs are distinct; ticker is a namespaced, dated instrument alias.'
+    - 'Unknown alias start cannot prove historical identity; a dated lookup is public reconstruction, never system-as-known.'
+    - 'NYSE SECZ and issuer tokenized SECZ share the underlying common stock but are different instruments with different access gates.'
+    - 'Checked URL evidence is LINK_CHECKED_UNARCHIVED; it cannot promote a canonical source or create a financial observation.'
+    - 'Research core, listing, value capture, data readiness and user-specific trading eligibility remain independent.'
 
 economic_period:
   required: [basis, start, end]

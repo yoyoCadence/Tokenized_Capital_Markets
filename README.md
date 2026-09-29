@@ -1,12 +1,12 @@
 # Tokenized Capital Markets Living Underwriting Engine
 
-Local, reproducible investment research software. This MVP is an **engine plus a traceable presentation layer**, with a deliberately synthetic demo pack. It contains **no verified live prices or company financials**. The identifiers `SECZ` and its investability/listing status are research items, not an assertion that an instrument is currently listed.
+Local, reproducible investment research software. This MVP is an **engine plus a traceable presentation layer**, with a deliberately synthetic demo pack. It contains **no verified live prices or company financials**. SEC filings identify Securitize Corp. common stock as NYSE listed under `SECZ` since 2026-07-02; this does not verify a particular investor's ability to trade it.
 
 ## 後續發展規劃 / Development plan
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01**。軟體版本 0.1.9，**132 項測試通過**，見 [來源暫存驗收](reports/p1-01-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；讀取 API 純讀，事件以 journal 可恢復發布。來源原文在 repo 外以雜湊存證，經人工審閱才將 metadata 放入 v2 source registry；核准來源並不建立觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；未完成的 P0 優先級任務使決策級研究發布維持 BLOCKED。下一步 **P1-02：Entity/security master 與可交易性查核**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～02**。軟體版本 0.1.10，**136 項測試通過**，見 [身分主檔驗收](reports/p1-02-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；SECZ NYSE 普通股、同一 underlying 的 tokenized form 與前身 CEPT 分別建模。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；身分主檔的官方連結查核尚未完成這個原文存證步驟，也未建立財務觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；未完成的 P0 優先級任務使決策級研究發布維持 BLOCKED。下一步 **P1-03：資料字典與 normalization**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -34,7 +34,11 @@ python -m engine.cli snapshot --demo --as-of 2026-06-30
 python -m engine.cli compare --demo
 python -m engine.cli apply-event --demo --id event_demo_dtcc_planned
 python -m engine.cli recover            # complete a pending explicit event publication, if any
+python -m engine.cli identity --asset SECZ
+python -m engine.cli identity --namespace NYSE --symbol SECZ --as-of 2026-07-02
 ```
+
+`identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
 
 `GET /api/state` 不建立快照；請以 `snapshot` 明確發布。`apply-event` 逐檔更新前先建立 redo journal；若途中故障，讀取 API 回傳 503，`recover` 補齊完整版本（或下一次明確發布自動補齊）。相同事件與觀察值重試不重複新增；衝突的重用事件 ID 被拒絕。見 [故障注入驗收](reports/p0-08-validation.md)。
 

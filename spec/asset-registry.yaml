@@ -1,10 +1,10 @@
-version: '1.0'
+version: '1.1'
 initial_core: [UNI, SECZ, XLM]
 universe_stages: [DISCOVERED, CANDIDATE, PRIMARY_SOURCE_VERIFIED, VALUE_CAPTURE_MAPPED, INVESTABILITY_CHECKED, REVERSE_UNDERWRITING_AVAILABLE, CORE, SECONDARY]
 promotion_rule: 'Primary evidence, explicit economic capture, investability and reverse underwriting required for CORE.'
 assets:
   UNI: {name: Uniswap, kind: TOKEN, universe: CORE, capture_model: burn_net_of_distribution}
-  SECZ: {name: Securitize, kind: EQUITY, universe: CORE, capture_model: operating_fcf, investable: unknown, listing_status: unverified}
+  SECZ: {name: Securitize Corp., kind: EQUITY, universe: CORE, capture_model: operating_fcf, investable: unknown, listing_status: NYSE_LISTED_2026-07-02}
   XLM: {name: Stellar Lumens, kind: TOKEN, universe: CORE, capture_model: native_demand_not_fee_dcf}
   GLXY: {name: Galaxy Digital, kind: EQUITY, universe: SECONDARY}
   SUPERSTATE: {name: Superstate, kind: COMPANY, universe: SECONDARY, investable: false}

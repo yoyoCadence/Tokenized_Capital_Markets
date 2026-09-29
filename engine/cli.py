@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 from engine.formulas.runtime import calculate
+from engine.identity import identity_report, load_identity, lookup_symbol
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
@@ -97,6 +98,11 @@ def _main(argv=None):
     artifact.add_argument("--id", required=True)
     artifact.add_argument("--store-dir", type=Path, required=True)
     sub.add_parser("source-status", help="Inspect staged sources without publication")
+    identity = sub.add_parser("identity", help="Read-only entity/security and eligibility status")
+    identity.add_argument("--asset", choices=("UNI", "SECZ", "XLM"))
+    identity.add_argument("--namespace")
+    identity.add_argument("--symbol")
+    identity.add_argument("--as-of", help="ISO date required for a symbol lookup")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -186,6 +192,16 @@ def _main(argv=None):
                          ensure_ascii=False, indent=2))
     elif args.command == "source-status":
         print(json.dumps(staging_status(root=args.root), ensure_ascii=False, indent=2))
+    elif args.command == "identity":
+        with read_lock(args.root):
+            master = load_identity(args.root)
+            if args.asset and not (args.namespace or args.symbol or args.as_of):
+                result = identity_report(master, args.asset)
+            elif not args.asset and all((args.namespace, args.symbol, args.as_of)):
+                result = lookup_symbol(master, namespace=args.namespace, symbol=args.symbol, as_of=args.as_of)
+            else:
+                raise ValueError("Specify --asset or all of --namespace, --symbol and --as-of")
+        print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 def main(argv=None):

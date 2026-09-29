@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.10 / P1-02 entity and security identity — 2026-09-29
+
+- Add strict, read-only v2 identity master with distinct entity/security/instrument IDs, venue-scoped dated aliases, corporate-action links, underlying rights and independent research/listing/eligibility dimensions. Unknown alias starts and personal trade access remain unknown; checked links are not approved source artifacts or financial observations.
+- Correct SECZ legacy listing metadata after checking SEC completion and registration filings plus issuer listing announcement; predecessor CEPT is a separate security. Preserve original v1 financial formulas, fixture snapshots and empty research evidence.
+- Bundle identity definitions in v2 audit replay contract `2.0-compute-bundle.4`; [P1-02 validation](p1-02-validation.md): 136 tests, DEMO/RESEARCH 94 metrics and zero issues. P1-03 normalization is next.
+
 ## Software 0.1.9 / P1-01 source staging and review — 2026-09-29
 
 - Add strict manual source capture into an append-only staging ledger with actual acquisition time, SHA-256/size, locator, rights and explicit failure/unknown-date states. Raw bytes are content-addressed outside the checkout; URL credentials and raw checkout paths are refused.
