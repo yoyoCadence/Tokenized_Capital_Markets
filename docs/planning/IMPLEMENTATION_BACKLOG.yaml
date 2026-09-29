@@ -356,7 +356,7 @@ tasks:
     title: UNI primary evidence 最小包
     phase: P1
     priority: P0
-    status: PLANNED
+    status: BLOCKED
     owner_role: research
     effort_points: 5
     depends_on: [P1-01, P1-02, P1-03]
@@ -365,6 +365,10 @@ tasks:
       - 預算、execution、vesting、transfer、burn 不混淆。
       - 至少一完整期間 fees/burn/distribution 可對帳，未分配差額明示。
       - 官方提案不得代替當前合約執行與量測證據。
+    progress:
+      checked_on: '2026-09-29'
+      evidence: reports/p1-05-validation.md
+      result: 治理／合約線索及分帳殘差工具已建立；缺治理執行收據、完整期間鏈上資料、原始存證和人審，第二項驗收未過，研究觀察值仍為 0。
     audit_refs: [A-10]
   - id: P1-06
     title: SECZ 官方財務與資本結構包

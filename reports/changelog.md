@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.13 / P1-05 UNI evidence preparation — 2026-09-29
+
+- Map governance proposal #93, official contract addresses and DUNI's reported treasury action/tranche with distinct proposal, reported and onchain-verification states; note the unresolved one-day displayed-date difference. Links remain unarchived leads, with no promoted source or observed financial record.
+- Add read-only native-unit pool fee, TokenJar, burn-pending, vesting, ERC-20 total supply and non-dead balance reconciliation. Transfer to `0xdead` does not mechanically lower UNI contract `totalSupply()`; it has a separate economic-balance lane. Missing or nonzero residuals remain explicit; tests use only synthetic numbers.
+- [P1-05 validation](p1-05-validation.md) records the missing inclusive block range, inventory, full logs, boundary state, staged originals and reviewer. The complete-period criterion fails, so P1-05 is BLOCKED and remains next; no realized UNI value or USD valuation was published.
+
 ## Software 0.1.12 / P1-04 market inputs and EV bridge — 2026-09-29
 
 - Add distinct SECZ NYSE share price, basic/diluted counts, interest-bearing debt, preferred/noncontrolling claims, unrestricted/restricted cash and nonoperating assets; add UNI/XLM native circulating and total supply concepts. Prices bind exact security, instrument, venue, currency and timestamp.
