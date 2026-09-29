@@ -6,6 +6,7 @@ from engine.formulas.expression import ExpressionError, evaluate, names
 from engine.storage import ROOT, read_yaml
 from engine.validation.checks import signature
 from engine.validation.errors import ValidationError, issue
+from .quality import derived_quality
 from .selector import _day, _instant, select_temporal, validate_temporal_project
 
 
@@ -166,6 +167,8 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
                                           (role_id == "uni_forward_protocol_fee" and not 0 <= row["value"] <= 10000) or
                                           (role_id in SPOT and row["value"] <= 0)):
             _fail("INPUT_BOUND", f"Invalid value for {role_id}", role_id)
+        if row["value"] is None and row.get("reason") == "INCOMPATIBLE_PERIOD":
+            row["quality"]["coverage"]["status"] = "INCOMPATIBLE_PERIOD"
     forward = [row["economic_period"] for id_, row in selected.items() if id_ not in QUARTER | SPOT and row["value"] is not None]
     if len({(p["start"], p["end"]) for p in forward}) > 1:
         _fail("INCOMPATIBLE_PERIOD", "Forward inputs do not share an annual horizon", "query.horizon_end")
@@ -175,6 +178,7 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
     if all(selected[id_]["value"] is not None for id_ in SPOT) and len({selected[id_]["economic_period"]["end"] for id_ in SPOT}) > 1:
         selected["uni_current_supply"]["value"] = None
         selected["uni_current_supply"]["reason"] = "INCOMPATIBLE_PERIOD"
+        selected["uni_current_supply"]["quality"]["coverage"]["status"] = "INCOMPATIBLE_PERIOD"
     for id_ in active_formulas:
         f = formulas[id_]
         deps = {dep: selected[dep] if dep in selected else results[dep] for dep in f["inputs"]}
@@ -197,7 +201,8 @@ def calculate_economics(project, *, realized_quarter_end, horizon_end, knowledge
                         "period_basis": f["period_basis"], "classification": "DERIVED",
                         "formula_id": id_, "formula_version": f["version"],
                         "formula_signature": signature(f), "dependencies": f["inputs"],
-                        "record_ids": record_ids, "source_ids": source_ids, "fixture": fixture}
+                        "record_ids": record_ids, "source_ids": source_ids, "fixture": fixture,
+                        "quality": derived_quality(deps, missing)}
     return {"mode": project["mode"], "knowledge_policy": knowledge_policy,
             "knowledge_cutoff": knowledge_cutoff, "valuation_at": valuation_at,
             "realized_quarter_end": realized_quarter_end, "horizon_end": horizon_end,

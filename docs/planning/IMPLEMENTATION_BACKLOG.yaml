@@ -2,13 +2,13 @@ plan_id: TCM-PLAN-2026-09-25
 version: '1.2'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-09-28'
+updated_on: '2026-09-29'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P0-09
+next_task: P0-10
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -225,7 +225,7 @@ tasks:
     title: Transitive uncertainty 與衝突選取理由
     phase: P0
     priority: P1
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 3
     depends_on: [P0-03, P0-04]
@@ -235,6 +235,14 @@ tasks:
       - tier、freshness、coverage、measurement、mechanism 分開顯示。
       - 值相同的多來源與未選衝突來源均可追溯。
     audit_refs: [A-08]
+    completion:
+      completed_on: '2026-09-29'
+      implementation_commit: eeac7397db518b92cb8562a6ed269374a271babb
+      evidence: reports/p0-09-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_quality_v2.py, tests/regression/test_temporal_v2.py, tests/regression/test_scope_economics_v2.py, tests/integration/test_snapshots_v2.py]
+      full_suite_tests_passed: 119
+      result: v1 跨層情境／假設葉節點保留；v2 逐軸品質、受知識截止時間限制的嚴格人審衝突決定、未選證據與離線快照封存均通過；量測與機制尚未核實時明示未知。
   - id: P0-10
     title: G0 整合驗收與可重現測試環境
     phase: P0

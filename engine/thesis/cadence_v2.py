@@ -270,6 +270,7 @@ def evaluate_cadence_v2(project, *, economic_cutoff, knowledge_cutoff, knowledge
                     reason = "REPORT_LAG_EXCEEDED"
                     break
                 values, supporting, sources = {}, list(anchor["record_ids"]), list(anchor["source_ids"])
+                quality = {rule["anchor_role"]: anchor["quality"]}
                 for variable, dep in rule["inputs"].items():
                     if "formula_id" in dep:
                         economics = calculate_economics(project, realized_quarter_end=day, horizon_end=None,
@@ -278,11 +279,13 @@ def evaluate_cadence_v2(project, *, economic_cutoff, knowledge_cutoff, knowledge
                                                        requested_metrics=[dep["formula_id"]])
                         metric = economics["metrics"][dep["formula_id"]]
                         value, ids, sids = metric["value"], metric["record_ids"], metric["source_ids"]
+                        quality[variable] = metric["quality"]
                     else:
                         role = roles[dep["role_id"]]
                         cutoff = _instant(valuation, "query.valuation_by_period").date().isoformat() if role["required_period_basis"] == "SPOT" else day
                         item = _selection(project, dep["role_id"], cutoff, sample_cutoff, valuation, knowledge_policy)
                         value, ids, sids = item["value"], item["record_ids"], item["source_ids"]
+                        quality[variable] = item["quality"]
                         if value is not None and ((role["required_period_basis"] in {"QUARTER", "TTM"} and item["economic_period"]["end"] != day) or
                                                   (role["required_period_basis"] == "QUARTER" and
                                                    _day(item["economic_period"]["start"], "period.start") != _prior_quarter_end(end) + timedelta(days=1)) or
@@ -307,7 +310,7 @@ def evaluate_cadence_v2(project, *, economic_cutoff, knowledge_cutoff, knowledge
                 evidence.append({"period": period, "fiscal_year": fy[0], "fiscal_quarter": fy[1],
                                  "valuation_at": valuation, "knowledge_cutoff": sample_cutoff,
                                  "record_ids": sorted(set(supporting)), "source_ids": sorted(set(sources)),
-                                 "values": values, "matched": matched})
+                                 "values": values, "quality": quality, "matched": matched})
         if reason:
             output[asset]["unevaluated_rules"].append({**result, "reason": reason})
         elif all(row["matched"] for row in evidence):

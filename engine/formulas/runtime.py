@@ -153,9 +153,12 @@ def calculate(project, as_of=None, overrides=None):
         periods = [dep.get("period") for dep in deps]
         if periods and all(p is not None and p == periods[0] for p in periods):
             computed["period"] = periods[0]
+        # Classification of an intermediate DERIVED value cannot erase an
+        # upstream scenario/assumption. Inspect the already-transitive leaves.
+        leaf_classes = {leaf["classification"] for leaf in computed["lineage"]["leaves"]}
         computed["confidence"] = "UNKNOWN" if any(dep["value"] is None for dep in deps) else (
-            "DEMO" if computed["fixture"] else "SCENARIO" if any(d["classification"] == "SCENARIO" for d in deps) else
-            "ANALYST" if any(d["classification"] == "ASSUMPTION" for d in deps) else "SOURCE_BASED")
+            "DEMO" if computed["fixture"] else "SCENARIO" if "SCENARIO" in leaf_classes else
+            "ANALYST" if "ASSUMPTION" in leaf_classes else "SOURCE_BASED")
         if any(dep["value"] is None for dep in deps):
             computed["reason"] = f"Missing dependencies: {[d['metric_id'] for d in deps if d['value'] is None]}"
         else:
