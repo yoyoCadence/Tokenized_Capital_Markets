@@ -6,13 +6,14 @@ from pathlib import Path
 
 from engine.formulas.runtime import calculate
 from engine.identity import identity_report, load_identity, lookup_symbol
+from engine.normalization import normalize_plan
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
 from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snapshot_v2
-from engine.storage import ROOT, load_project, read_records
+from engine.storage import ROOT, load_project, read_records, read_yaml
 from engine.thesis.rules import evaluate_theses
 from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.temporal import calculate_economics, load_temporal_project, select_temporal
@@ -103,6 +104,9 @@ def _main(argv=None):
     identity.add_argument("--namespace")
     identity.add_argument("--symbol")
     identity.add_argument("--as-of", help="ISO date required for a symbol lookup")
+    normalization = sub.add_parser("normalize-report", help="Read-only v2 normalization audit plan")
+    normalization.add_argument("--demo", action="store_true")
+    normalization.add_argument("--plan", type=Path, required=True, help="Strict YAML plan of exact observed IDs and ordered steps")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -201,6 +205,12 @@ def _main(argv=None):
                 result = lookup_symbol(master, namespace=args.namespace, symbol=args.symbol, as_of=args.as_of)
             else:
                 raise ValueError("Specify --asset or all of --namespace, --symbol and --as-of")
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "normalize-report":
+        plan = read_yaml(args.plan)
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = normalize_plan(project, plan, root=args.root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

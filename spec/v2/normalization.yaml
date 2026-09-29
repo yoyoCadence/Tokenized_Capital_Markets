@@ -1,0 +1,48 @@
+schema_version: '2.0'
+definitions:
+  SECZ_ISSUER_REVENUE:
+    {kind: FLOW, concepts: [secz_revenue, secz_revenue_musd, secz_revenue_eur], accounting: [GAAP, IFRS, ADJUSTED], presentation: [GROSS, NET], consolidation: [CONSOLIDATED, SEGMENT], operations: [ALL, CONTINUING]}
+  SECZ_ISSUER_REVENUE_GROWTH:
+    {kind: RATIO, concepts: [secz_revenue_cagr], accounting: [GAAP, IFRS, ADJUSTED], presentation: [GROSS, NET], consolidation: [CONSOLIDATED, SEGMENT], operations: [ALL, CONTINUING]}
+  UNI_PROTOCOL_FEE_RATE:
+    {kind: RATIO, concepts: [uni_effective_protocol_fee, uni_fee_percent_raw], accounting: [NOT_APPLICABLE], presentation: [NOT_APPLICABLE], consolidation: [NOT_APPLICABLE], operations: [NOT_APPLICABLE]}
+  EUR_USD_PERIOD_AVERAGE:
+    {kind: RATIO, concepts: [eur_usd_average_rate], accounting: [NOT_APPLICABLE], presentation: [NOT_APPLICABLE], consolidation: [NOT_APPLICABLE], operations: [NOT_APPLICABLE]}
+formulas:
+  secz_scale_musd:
+    version: '1.0'
+    operation: SCALE
+    inputs: {raw: {concept: secz_revenue_musd, unit: USD_MILLION, basis: [QUARTER, YTD, ANNUAL]}}
+    output: {concept: secz_revenue, unit: USD, basis: SAME}
+    expression: 'raw * 1000000'
+  secz_fx_eur_usd:
+    version: '1.0'
+    operation: FX
+    inputs: {reported: {concept: secz_revenue_eur, unit: EUR, basis: [QUARTER, YTD, ANNUAL]}, fx: {concept: eur_usd_average_rate, unit: USD_PER_EUR, basis: [QUARTER, YTD, ANNUAL]}}
+    output: {concept: secz_revenue, unit: USD, basis: SAME}
+    expression: 'reported * fx'
+  secz_ttm:
+    version: '1.0'
+    operation: TTM
+    inputs: {q1: {concept: secz_revenue, unit: USD, basis: [QUARTER]}, q2: {concept: secz_revenue, unit: USD, basis: [QUARTER]}, q3: {concept: secz_revenue, unit: USD, basis: [QUARTER]}, q4: {concept: secz_revenue, unit: USD, basis: [QUARTER]}}
+    output: {concept: secz_revenue, unit: USD, basis: TTM}
+    expression: 'q1 + q2 + q3 + q4'
+  secz_ytd_quarter:
+    version: '1.0'
+    operation: YTD_DIFFERENCE
+    inputs: {current: {concept: secz_revenue, unit: USD, basis: [YTD]}, prior: {concept: secz_revenue, unit: USD, basis: [YTD]}}
+    output: {concept: secz_revenue, unit: USD, basis: QUARTER}
+    expression: 'current - prior'
+  secz_revenue_cagr:
+    version: '1.0'
+    operation: CAGR
+    inputs: {current: {concept: secz_revenue, unit: USD, basis: [ANNUAL]}, baseline: {concept: secz_revenue, unit: USD, basis: [ANNUAL]}}
+    output: {concept: secz_revenue_cagr, unit: FRACTION, basis: ANNUAL}
+    expression: '(current / baseline) ** (1 / years) - 1'
+    minimum_baseline_usd: 1
+  uni_percent_to_bp:
+    version: '1.0'
+    operation: PERCENT_TO_BP
+    inputs: {raw: {concept: uni_fee_percent_raw, unit: PERCENT, basis: [QUARTER]}}
+    output: {concept: uni_effective_protocol_fee, unit: BP, basis: SAME}
+    expression: 'raw * 100'

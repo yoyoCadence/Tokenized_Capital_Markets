@@ -16,7 +16,7 @@ from .quality import selected_quality
 CLASSES = {"OBSERVED", "DERIVED", "ASSUMPTION", "SCENARIO"}
 SCOPES = {"REALIZED", "RUN_RATE", "MODELED_HORIZON", "REVERSE_REQUIREMENT"}
 POLICIES = {"AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"}
-PERIODS = {"SPOT", "QUARTER", "ANNUAL", "TTM"}
+PERIODS = {"SPOT", "QUARTER", "ANNUAL", "TTM", "YTD"}
 MISSING_REASONS = {"NOT_DISCLOSED", "NOT_YET_RETRIEVED", "NOT_APPLICABLE", "STALE", "CONFLICT",
                    "INCOMPATIBLE_PERIOD", "MODEL_NOT_IDENTIFIED", "LEGACY_TIME_UNKNOWN"}
 
@@ -128,7 +128,8 @@ def validate_temporal_project(project):
         path = f"roles[{n}]"
         _fields(role, {"role_id": str, "concept_id": str, "allowed_classifications": "strings",
                        "allowed_scopes": "strings", "required_period_basis": str, "selection_policy": str},
-                {"entity_id": str, "security_id": str, "max_age_seconds": int}, path)
+                {"entity_id": str, "security_id": str, "max_age_seconds": int,
+                 "required_measurement_basis": dict}, path)
         if role["role_id"] in roles:
             _error("DUPLICATE_ID", role["role_id"], path)
         if role["concept_id"] not in concepts or not role["allowed_classifications"] or not set(role["allowed_classifications"]) <= (CLASSES - {"DERIVED"}) or not role["allowed_scopes"] or not set(role["allowed_scopes"]) <= set(concepts[role["concept_id"]]["permitted_scopes"]) or role["required_period_basis"] not in PERIODS or role["selection_policy"] not in {"LATEST_ELIGIBLE_UNAMBIGUOUS", "EXACT_RECORD_ID"}:
@@ -137,6 +138,12 @@ def validate_temporal_project(project):
             _error("ROLE", "Maximum quote age must be positive", path)
         if concepts[role["concept_id"]]["measure_kind"] == "PRICE" and "max_age_seconds" not in role:
             _error("ROLE", "Quote role needs an explicit maximum age", path)
+        if "required_measurement_basis" in role:
+            allowed_basis = {"definition_id", "accounting_basis", "presentation", "consolidation",
+                             "operations_basis", "fiscal_calendar_id", "comparability"}
+            basis = role["required_measurement_basis"]
+            if not basis or set(basis) - allowed_basis or any(type(value) is not str or not value for value in basis.values()):
+                _error("ROLE", "Invalid required measurement dimensions", path)
         roles[role["role_id"]] = role
     for n, source in enumerate(project["sources"]):
         path = f"sources[{n}]"
@@ -186,7 +193,8 @@ def validate_temporal_project(project):
                 {"entity_id": str, "security_id": str, "supersedes_id": str,
                  "as_of_at": (str, type(None)), "as_of_precision": str, "missing_reason": str,
                  "source_ids": "strings", "rationale": str, "scenario_name": str,
-                 "effective_from": str, "venue": str, "legacy_record_id": str}, path)
+                 "effective_from": str, "venue": str, "legacy_record_id": str,
+                 "measurement_basis": dict}, path)
         if record["id"] in records:
             _error("DUPLICATE_ID", record["id"], path)
         records[record["id"]] = record
@@ -205,6 +213,18 @@ def validate_temporal_project(project):
             _error("MISSING_REASON", "Unknown missing-data reason", path)
         if record["fixture"] and project["mode"] != "DEMO":
             _error("RESEARCH_FIXTURE", "Fixture evidence in RESEARCH", path)
+        if "measurement_basis" in record:
+            basis = record["measurement_basis"]
+            _fields(basis, {"definition_id": str, "accounting_basis": str,
+                            "presentation": str, "consolidation": str,
+                            "operations_basis": str, "fiscal_calendar_id": str,
+                            "comparability": str}, {}, f"{path}.measurement_basis")
+            if (basis["accounting_basis"] not in {"GAAP", "IFRS", "ADJUSTED", "NOT_APPLICABLE"} or
+                    basis["presentation"] not in {"GROSS", "NET", "NOT_APPLICABLE"} or
+                    basis["consolidation"] not in {"CONSOLIDATED", "SEGMENT", "NOT_APPLICABLE"} or
+                    basis["operations_basis"] not in {"CONTINUING", "ALL", "NOT_APPLICABLE"} or
+                    basis["comparability"] not in {"STANDARD", "FISCAL_CHANGE", "FIFTY_THREE_WEEK", "PRE_POST_COMBINATION"}):
+                _error("MEASUREMENT_BASIS", "Invalid accounting or comparability dimensions", path)
         period = record["economic_period"]
         _fields(period, {"basis": str, "start": str, "end": str},
                 {"fiscal_year": int, "fiscal_quarter": int, "period_label": str}, f"{path}.economic_period")
@@ -290,7 +310,8 @@ def validate_temporal_project(project):
         def identity(row):
             p = row["economic_period"]
             return (row["concept_id"], row.get("entity_id"), row.get("security_id"), row["classification"],
-                    row["economic_scope"], row["unit"], row["fixture"], tuple(sorted(p.items())))
+                    row["economic_scope"], row["unit"], row["fixture"], tuple(sorted(p.items())),
+                    tuple(sorted(row.get("measurement_basis", {}).items())))
         if parent is None or identity(parent) != identity(record):
             _error("SUPERSESSION", "Parent missing or differs in concept, class, scope, unit or economic period", record["id"])
         seen, current = set(), record["id"]
@@ -318,9 +339,13 @@ def validate_temporal_project(project):
                 row.get("security_id") != role.get("security_id") or row["classification"] not in role["allowed_classifications"] or
                 row["economic_scope"] not in role["allowed_scopes"] or
                 row["economic_period"]["basis"] != role["required_period_basis"] or
+                any(row.get("measurement_basis", {}).get(key) != value
+                    for key, value in role.get("required_measurement_basis", {}).items()) or
                 row["fixture"] != resolution["fixture"] for row in rows) or
                 len({tuple(sorted(row["economic_period"].items())) for row in rows}) != 1):
             _error("RESOLUTION_SCOPE", "Candidates differ in role, economic period or fixture status", path)
+        if len({tuple(sorted(row.get("measurement_basis", {}).items())) for row in rows}) != 1:
+            _error("RESOLUTION_SCOPE", "Cannot resolve different accounting or measurement bases as one fact", path)
         if resolution["fixture"] and project["mode"] != "DEMO":
             _error("RESOLUTION_FIXTURE", "Fixture resolution in research", path)
         if any(_publication(row["knowledge_time"], path) is None or
@@ -367,6 +392,10 @@ def select_temporal(project, *, role_id, economic_cutoff, knowledge_cutoff, valu
         if (record["classification"] not in role["allowed_classifications"] or
                 record["economic_scope"] != required_scope or record["economic_period"]["basis"] != role["required_period_basis"]):
             excluded[record["id"]] = "ROLE_OR_SCOPE_MISMATCH"
+            continue
+        if "required_measurement_basis" in role and any(record.get("measurement_basis", {}).get(key) != value
+                                                       for key, value in role["required_measurement_basis"].items()):
+            excluded[record["id"]] = "MEASUREMENT_BASIS_MISMATCH"
             continue
         if record_id is not None and record["id"] != record_id:
             continue
@@ -433,7 +462,8 @@ def select_temporal(project, *, role_id, economic_cutoff, knowledge_cutoff, valu
                    set(r["candidate_record_ids"]) == {row["id"] for row in active} and
                    _instant(r["reviewed_at"], "resolution.reviewed_at") <= known]
     resolution = max(resolutions, key=lambda r: _instant(r["reviewed_at"], "resolution.reviewed_at")) if resolutions else None
-    if len({(r["value"], r["classification"], r["economic_period"]["start"], r["economic_period"]["basis"]) for r in active}) > 1 and not resolution:
+    if len({(r["value"], r["classification"], r["economic_period"]["start"], r["economic_period"]["basis"],
+             tuple(sorted(r.get("measurement_basis", {}).items()))) for r in active}) > 1 and not resolution:
         return {**context, "value": None, "reason": "CONFLICT", "record_ids": [r["id"] for r in active],
                 "source_ids": sorted({s for r in active for s in r.get("source_ids", [])}), "excluded": excluded,
                 "quality": selected_quality(project, [], role, valuation_at, excluded, active)}

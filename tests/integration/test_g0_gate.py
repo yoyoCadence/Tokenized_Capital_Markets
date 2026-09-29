@@ -119,7 +119,7 @@ class G0GateIntegrationTests(unittest.TestCase):
     def test_backlog_blocks_decision_ready_even_after_g0_completion(self):
         from scripts.g0_gate import environment, readiness
         state = readiness()
-        self.assertIn("P1-03", {item["id"] for item in state["unresolved_p0"]})
+        self.assertIn("P1-04", {item["id"] for item in state["unresolved_p0"]})
         self.assertEqual(state["research_observations"], 0)
         self.assertFalse(state["decision_ready"])
         self.assertTrue(environment()["matches"])

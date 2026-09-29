@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～02**。軟體版本 0.1.10，**136 項測試通過**，見 [身分主檔驗收](reports/p1-02-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據及可離線重播的 audit bundle；SECZ NYSE 普通股、同一 underlying 的 tokenized form 與前身 CEPT 分別建模。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；身分主檔的官方連結查核尚未完成這個原文存證步驟，也未建立財務觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；未完成的 P0 優先級任務使決策級研究發布維持 BLOCKED。下一步 **P1-03：資料字典與 normalization**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～03**。軟體版本 0.1.11，**145 項測試通過**，見 [normalization 驗收](reports/p1-03-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據、身分主檔、唯讀正規化報告及可離線重播的 audit bundle。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；官方身分連結尚未完成原文存證，也沒有真實財務觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；決策級研究發布維持 BLOCKED。下一步 **P1-04：價格、供給、股本與 EV bridge**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -36,9 +36,27 @@ python -m engine.cli apply-event --demo --id event_demo_dtcc_planned
 python -m engine.cli recover            # complete a pending explicit event publication, if any
 python -m engine.cli identity --asset SECZ
 python -m engine.cli identity --namespace NYSE --symbol SECZ --as-of 2026-07-02
+python -m engine.cli normalize-report --demo --plan /path/to/plan.yaml
 ```
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
+
+`normalize-report` 需要以 strict YAML 提供 `schema_version: '2.0'`、`context`（`economic_cutoff`、`knowledge_cutoff`、`valuation_at`、`knowledge_policy`）和有序 `steps`。例如：
+
+```yaml
+schema_version: '2.0'
+context:
+  economic_cutoff: '2027-01-10'
+  knowledge_cutoff: '2027-01-10T23:00:00Z'
+  valuation_at: '2027-01-10T12:00:00Z'
+  knowledge_policy: AS_KNOWN_BY_SYSTEM
+steps:
+  - id: revenue_usd
+    formula_id: secz_scale_musd
+    inputs: {raw: exact_observed_record_id}
+```
+
+此 ID 是用法佔位符，repo 的 v2 demo/research ledger 目前都沒有該 OBSERVED 紀錄。輸入必須已有查核來源、相符概念／單位／會計口徑及合格時間；結果保留公式鎖版與逐層 lineage，僅為唯讀稽核輸出，不進 canonical ledger、v2 economics 或 thesis。六個支援公式及完整限制見 [P1-03 驗收](reports/p1-03-validation.md)。
 
 `GET /api/state` 不建立快照；請以 `snapshot` 明確發布。`apply-event` 逐檔更新前先建立 redo journal；若途中故障，讀取 API 回傳 503，`recover` 補齊完整版本（或下一次明確發布自動補齊）。相同事件與觀察值重試不重複新增；衝突的重用事件 ID 被拒絕。見 [故障注入驗收](reports/p0-08-validation.md)。
 
@@ -112,7 +130,7 @@ python -m engine.cli scope-report \
   --policy AS_KNOWN_BY_SYSTEM
 ```
 
-目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；132 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
+目前 RESEARCH 與 v2 DEMO ledger 均空，故全部 v2 結果為 Unknown；145 項測試中的數值只存在隔離的暫存 fixture。Dashboard 的「V2 scopes」可指定時間查詢，點選結果可檢視來源 tier、新鮮度、涵蓋、量測、機制及衝突候選與理由；沒有經原文查核的量測仍標未核實。[Resolution ledger 契約](reports/p0-09-validation.md)要求審核時間不能早於資料入庫，後續候選會使舊決定失效。原 v1 `net_burn_yield`、`xlm_network_fee_value` 等混合口徑在 UI 標為 LEGACY_MIXED；v1 當期 UNI 兩條含 TAM／反推的 thesis rule 已封鎖，狀態 Unknown 而非 Healthy。42.2% 的 v1 demo reverse regression 原值保留，不是 v2 結果。
 
 ## V2 rule cadence / P0-06
 

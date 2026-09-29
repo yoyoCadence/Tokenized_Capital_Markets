@@ -2,7 +2,7 @@
 
 更新：2026-09-29。詳細順序與驗收以 [IMPLEMENTATION_BACKLOG.yaml](docs/planning/IMPLEMENTATION_BACKLOG.yaml) 為準。未完成規劃不代表現有功能。
 
-## CURRENT — MVP 基礎、WP-01、P0-03～10 與 P1-01～02 已完成
+## CURRENT — MVP 基礎、WP-01、P0-03～10 與 P1-01～03 已完成
 
 - [x] Canonical dictionary、formulas/source registries、graph、events、四種 classification。
 - [x] UNI／SECZ／XLM demo economic models、reverse underwriting、sensitivity、thesis rules。
@@ -22,12 +22,13 @@
 - [x] **P0-10：G0 整合驗收。** 固定測試環境、CI、獨立 golden 算術與跨邊界負例；127 tests 通過。工程 gate PASS，決策級研究發布 BLOCKED。[驗收報告](reports/p0-10-validation.md)。
 - [x] **P1-01：來源暫存與原始證據存證。** 人工檔案 adapter、repo 外 SHA-256 原文、審閱與原子來源 metadata 發布；132 tests 通過，真實 observation 仍為 0。[驗收報告](reports/p1-01-validation.md)。
 - [x] **P1-02：Entity/security master。** 區分 UNI／XLM／SECZ 的實體、證券和交易形式，SECZ NYSE 上市由 SEC 文件核對，個人交易資格仍未知；136 tests 通過。[驗收報告](reports/p1-02-validation.md)。
+- [x] **P1-03：資料字典與 normalization。** 六個鎖版唯讀變換、原始與衍生 lineage、會計口徑和期間相容性驗證；145 tests 通過，真實觀察值仍為 0。[驗收報告](reports/p1-03-validation.md)。
 
 已修復 WP-01 fixture 隔離、v2 時間、UNI scope、規則排程、離線計算重播與事件發布復原；其他資產的 v2 財務輸入仍待後續工作；真實 observation 仍為 0，投資優勢尚未驗證。
 
 ## NEXT — 先做到可信、再做到日常可用
 
-1. [ ] P1-03：財務／鏈上資料字典與 normalization。
+1. [ ] P1-04：價格、供給、股本與 EV bridge。
 2. [ ] P1：primary-source research pack、價量／股本／EV、UNI／SECZ／XLM 資料對帳與第一份真實快照。
 4. [ ] Source freshness monitoring、stale-data detection、conflict queue；缺值保持 unknown。
 5. [ ] P2：三資產模型 v2、better bottom-up TAM engine、完整 reverse／joint sensitivity、決策研究包。
