@@ -1,5 +1,5 @@
-# P1-02 adds checked identity links; these are not archived canonical financial sources.
-contract_version: '2.0-proposal.5'
+# P1-03 adds an audit-only normalization registry; no real financial observations are ingested.
+contract_version: '2.0-proposal.6'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -8,7 +8,7 @@ orthogonal_dimensions:
   economic_scope: [REALIZED, RUN_RATE, MODELED_HORIZON, REVERSE_REQUIREMENT]
   knowledge_policy: [AS_KNOWN_BY_SYSTEM, PUBLIC_INFORMATION_RECONSTRUCTION]
   publication_precision: [INSTANT, DATE, UNKNOWN]
-  period_basis: [SPOT, QUARTER, ANNUAL, TTM]
+  period_basis: [SPOT, QUARTER, YTD, ANNUAL, TTM]
   missing_reason: [NOT_DISCLOSED, NOT_YET_RETRIEVED, NOT_APPLICABLE, STALE, CONFLICT, INCOMPATIBLE_PERIOD, MODEL_NOT_IDENTIFIED, LEGACY_TIME_UNKNOWN]
 
 metric_concept:
@@ -26,8 +26,24 @@ input_role:
     role_id: stable_formula_or_rule_input_identifier
     selection_policy: [LATEST_ELIGIBLE_UNAMBIGUOUS, EXACT_RECORD_ID]
     required_period_basis: optional_period_basis
+    required_measurement_basis: optional_partial_exact_accounting_and_fiscal_dimensions
     max_age: optional_duration_or_null
   rule: 'Filter by role, scope, period, knowledge cutoff, source, and evidence before supersession. Same-number evidence remains visible.'
+
+normalization:
+  registry: spec/v2/normalization.yaml
+  signature_lock: spec/v2/normalization-lock.yaml
+  mode: read_only_audit_plan_of_exact_observed_ids_and_prior_steps
+  formulas: [secz_scale_musd, secz_fx_eur_usd, secz_ttm, secz_ytd_quarter, secz_revenue_cagr, uni_percent_to_bp]
+  required_context: [economic_cutoff, knowledge_cutoff, valuation_at, knowledge_policy]
+  output: 'DERIVED with formula ID/version/signature, ordered dependencies, transitive observed record/source IDs and fixture flag; never append to canonical ledger.'
+  invariants:
+    - 'Raw filing or chain quantity remains OBSERVED in its original unit. Scaling, FX and period algebra produce separate DERIVED results.'
+    - 'Accounting basis, gross/net, consolidation, operations, fiscal calendar and comparability are explicit; missing metadata cannot enter normalization.'
+    - 'Cumulative YTD subtraction needs adjacent labeled quarters; TTM needs four contiguous fiscal quarters; CAGR needs aligned full fiscal years and a positive material baseline.'
+    - 'EUR flow uses a positive USD/EUR average rate for the exact interval; the source and availability of the rate must be verified.'
+    - 'No automatic selection of conflicting or superseded exact input IDs. A manual conflict resolution is outside this audit plan.'
+    - 'Normalization outputs are not yet input roles in v2 economics or thesis; later promotion needs a reviewed append-only integration.'
 
 source_archive:
   staging_ledger: sources/staging.yaml
@@ -99,7 +115,8 @@ valuation_time:
 
 record:
   required: [schema_version, id, concept_id, classification, economic_scope, value, unit, fixture, economic_period, knowledge_time]
-  common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, legacy_record_id]
+  common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, legacy_record_id, measurement_basis]
+  measurement_basis: {definition_id: semantic_dictionary_id, accounting_basis: 'GAAP|IFRS|ADJUSTED|NOT_APPLICABLE', presentation: 'GROSS|NET|NOT_APPLICABLE', consolidation: 'CONSOLIDATED|SEGMENT|NOT_APPLICABLE', operations_basis: 'ALL|CONTINUING|NOT_APPLICABLE', fiscal_calendar_id: explicit_id_or_UNKNOWN, comparability: 'STANDARD|FISCAL_CHANGE|FIFTY_THREE_WEEK|PRE_POST_COMBINATION'}
   value_rule: 'Exactly one of finite numeric value and missing_reason; missing is never encoded as zero.'
   observed_required: [source_ids, as_of_at, as_of_precision]
   observed_constraints:
@@ -114,7 +131,7 @@ record:
     - 'Formula dependency graph, input roles, economic scope and all leaves must be preserved.'
     - 'A derived REALIZED economic measure cannot depend on forward scenario or modeled-horizon economic inputs.'
     - 'A derived scope is determined by formula/context, never by DERIVED classification alone.'
-  supersession_identity: [concept_id, entity_id, security_id, classification, economic_scope, unit, economic_period]
+  supersession_identity: [concept_id, entity_id, security_id, classification, economic_scope, unit, economic_period, measurement_basis]
   supersession_rule: 'Append a new ID; for a restatement retain supersession identity, compare eligibility before superseding, retain unrelated conflicts.'
 
 resolution_record:

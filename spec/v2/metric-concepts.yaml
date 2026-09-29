@@ -1,8 +1,13 @@
 schema_version: '2.0'
 concepts:
   - {concept_id: secz_revenue, description: 'Securitize quarterly revenue evidence', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: secz_revenue_musd, description: 'Issuer-reported revenue in USD millions; raw scale', unit: USD_MILLION, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: secz_revenue_eur, description: 'Issuer-reported revenue in EUR; raw currency', unit: EUR, measure_kind: FLOW, permitted_scopes: [REALIZED]}
+  - {concept_id: secz_revenue_cagr, description: 'Comparable annual issuer-revenue growth; derived only', unit: FRACTION, measure_kind: RATIO, permitted_scopes: [REALIZED]}
+  - {concept_id: eur_usd_average_rate, description: 'Source-reported USD per EUR average over the exact revenue interval', unit: USD_PER_EUR, measure_kind: RATIO, permitted_scopes: [REALIZED]}
   - {concept_id: uni_price, description: 'UNI venue quote', unit: USD_PER_UNI, measure_kind: PRICE, permitted_scopes: [REALIZED]}
   - {concept_id: uni_effective_protocol_fee, description: 'Effective protocol fee', unit: BP, measure_kind: RATIO, permitted_scopes: [REALIZED, MODELED_HORIZON]}
+  - {concept_id: uni_fee_percent_raw, description: 'Reported protocol fee in percent, distinct from basis points', unit: PERCENT, measure_kind: RATIO, permitted_scopes: [REALIZED]}
   - {concept_id: uni_burn_value, description: 'Actually executed UNI burns valued in USD; not merely fees collected', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
   - {concept_id: uni_distribution_value, description: 'Actually distributed UNI valued in USD, distinct from projected growth budget', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED, MODELED_HORIZON]}
   - {concept_id: uni_dilution_value, description: 'Actual other dilution valued in USD', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}

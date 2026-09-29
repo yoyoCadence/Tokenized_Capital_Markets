@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.11 / P1-03 normalization dictionary — 2026-09-29
+
+- Add explicit measurement basis, YTD periods and role-level accounting filters. Equal GAAP/adjusted values remain conflicting evidence; supersession and resolutions cannot cross measurement bases.
+- Add six locked, read-only transformations for scaling, exact-period average FX, TTM, YTD difference, CAGR and percent to basis points. DERIVED reports preserve raw OBSERVED leaves, source IDs and formula signatures; unsuitable units, fiscal periods, scopes and denominators fail closed.
+- Freeze registry and signature lock in v2 audit bundle `2.0-compute-bundle.5`; preserve v1 snapshots and empty canonical finance evidence. [P1-03 validation](p1-03-validation.md): 145 tests. P1-04 market inputs and EV bridge are next.
+
 ## Software 0.1.10 / P1-02 entity and security identity — 2026-09-29
 
 - Add strict, read-only v2 identity master with distinct entity/security/instrument IDs, venue-scoped dated aliases, corporate-action links, underlying rights and independent research/listing/eligibility dimensions. Unknown alias starts and personal trade access remain unknown; checked links are not approved source artifacts or financial observations.

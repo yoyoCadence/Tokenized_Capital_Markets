@@ -1,8 +1,8 @@
 # ADR-0001：時間、經濟 scope 與 v1→v2 遷移
 
-**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04～10 與 P1-01～02 完成**
+**日期：2026-09-26｜決議：ACCEPTED AS DESIGN｜執行：P0-04～10 與 P1-01～03 完成**
 
-**實作進度：** P0-04～10 依各項驗收報告完成。P1-01 已完成[來源暫存與人審存證](../../reports/p1-01-validation.md)，P1-02 完成[身分與交易工具查核](../../reports/p1-02-validation.md)；契約版本為 `2.0-proposal.5`。下方原決議與遷移步驟保留。v1 thesis／快照仍為 legacy，決策級研究發布未開放。
+**實作進度：** P0-04～10 依各項驗收報告完成。P1-01 已完成[來源暫存與人審存證](../../reports/p1-01-validation.md)，P1-02 完成[身分與交易工具查核](../../reports/p1-02-validation.md)，P1-03 完成[唯讀正規化驗收](../../reports/p1-03-validation.md)；契約版本為 `2.0-proposal.6`。下方原決議與遷移步驟保留。v1 thesis／快照仍為 legacy，決策級研究發布未開放。
 
 ## 背景與決策
 
