@@ -1,0 +1,44 @@
+schema_version: '1.0'
+checked_on: '2026-09-29'
+evidence_status: LINK_CHECKED_UNARCHIVED
+proposal:
+  id: 93
+  url: https://vote.uniswapfoundation.org/proposals/93
+  status_shown: EXECUTED
+  display_time: 'Dec 28, 2025 11:19 pm (page timezone unverified)'
+  proposed_actions:
+    - treasury transfer of 100000000 UNI to 0xdead; one-time retroactive burn, not fee-funded
+    - v3 factory owner changed to fee controller; individual v3 pool activation needs separate check
+    - v2 factory feeTo changed to TokenJar
+    - treasury approval of 40000000 UNI to UNIVesting; approval is not transfer
+  execution_receipt: null
+  action_log_proofs: []
+contracts:
+  url: https://developers.uniswap.org/docs/protocols/protocol-fee/deployments
+  chain_id: 1
+  token_jar: '0xf38521f130fcCF29dB1961597bc5d2B60F995f85'
+  firepit: '0x0D5Cd355e2aBEB8fb1552F56c965B867346d6721'
+  v3_fee_adapter: '0x5E74C9f42EEd283bFf3744fBD1889d398d40867d'
+  uni_vesting: '0xCa046A83EDB78F74aE338bb5A291bF6FdAc9e1D2'
+  uni_token: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
+  historical_configuration_proofs: []
+issuer_report:
+  url: https://vote.uniswapfoundation.org/forums/7/duni-q4-and-year-end-2025-financial-statements-and-tax-update
+  status: PUBLISHER_REPORTED_NOT_TRANSACTION_RECONCILED
+  statements:
+    - 'DUNI says 100000000 UNI treasury burn on 2025-12-27; its date differs from Agora displayed execution date. Resolve with receipt and timezone.'
+    - 'DUNI says first 5000000 UNI quarterly tranche transferred on 2026-01-05; destination, logs, vesting and total-supply effects not independently reconciled.'
+mechanism:
+  fee_overview: https://developers.uniswap.org/docs/protocols/protocol-fee/overview
+  asset_balances: https://developers.uniswap.org/docs/protocols/protocol-fee/guides/read-asset-balances
+  contract_source: https://github.com/Uniswap/protocol-fees
+  limitations:
+    - v3 uncollected protocol fees sit in pools; v2 protocol fees can be LP tokens; TokenJar balance alone is incomplete.
+    - Firepit UNI payment and fee-asset release differ from treasury's one-time burn.
+    - L2 payment/bridge initiation is not L1 confirmed burn; mainnet-only period cannot claim global totals.
+    - Deployment and governance proposal are insufficient to prove every pool's fee setting on a historical block.
+period_gate:
+  status: BLOCKED
+  reason: No reviewed canonical sources, inclusive block range, pool inventory, complete event logs or boundary balances.
+  source_capture_ids: []
+  observed_record_ids: []

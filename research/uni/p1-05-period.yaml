@@ -1,0 +1,12 @@
+schema_version: '1.0'
+period:
+  start: '2026-01-01'
+  end: '2026-03-31'
+  chain_id: 1
+  start_block: null
+  end_block: null
+coverage:
+  pool_inventory_source_ids: []
+  event_range_source_ids: []
+  boundary_state_source_ids: []
+lanes: []

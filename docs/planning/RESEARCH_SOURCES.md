@@ -90,6 +90,8 @@
 
 ## 尚未查核完成的優先資料
 
+**2026-09-29 UNI 更新：** [#93 最終治理頁](https://vote.uniswapfoundation.org/proposals/93)顯示執行及八項規格，[官方部署表](https://developers.uniswap.org/docs/protocols/protocol-fee/deployments)給出主網地址，[DUNI 2025 Q4 報告](https://vote.uniswapfoundation.org/forums/7/duni-q4-and-year-end-2025-financial-statements-and-tax-update)敘述一次性 100M UNI 及首筆 5M UNI 轉出。治理頁與 DUNI 對 2025-12-27/28 日期有待 UTC 收據核對。詳細治理／帳務對照與阻塞原因見 [P1-05 進度](../../reports/p1-05-validation.md)；這些連結仍未存原文、未審閱，也沒有升級為 realized OBSERVED。
+
 | 優先 | 任務 | 需要完成的核對 |
 | --- | --- | --- |
 | 1 | UNI 治理到執行 | 提案版本、execution、fee-enabled pools、TokenJar/Firepit、growth vesting |
