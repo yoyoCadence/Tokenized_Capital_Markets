@@ -39,6 +39,7 @@ python -m engine.cli identity --namespace NYSE --symbol SECZ --as-of 2026-07-02
 python -m engine.cli normalize-report --demo --plan /path/to/plan.yaml
 python -m engine.cli market-report --demo --plan /path/to/market-plan.yaml
 python -m engine.cli readiness-report --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T23:00:00Z --valuation-at 2026-09-30T23:00:00Z --policy AS_KNOWN_BY_SYSTEM
+python -m engine.cli event-monitor --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T02:00:00Z --policy AS_KNOWN_BY_SYSTEM
 ```
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
@@ -48,6 +49,8 @@ SECZ 申報研究包可用 `python -m engine.secz_evidence` 唯讀重算兩類�
 XLM 研究包可用 `python -m engine.xlm_evidence` 唯讀檢查 native reserve／sponsorship 去重與 DTCC 鏈別里程碑。DTCC 在 Besu／Canton 的 production trades 不能當 Stellar live；全網 XLM 存量、DTCC 可歸因需求及價格效果仍未知。見 [P1-07 報告](reports/p1-07-validation.md)。
 
 `readiness-report` 依 [分析師假設政策](research/readiness/p1-08-policy.yaml)唯讀列出五項關鍵輸入的 age、門檻、缺值／衝突與手動來源檢查；`--plan` 可指定自訂 strict YAML 政策。報價 24 小時、季度期間 150 天、治理人審查核 7 天是起始假設，並非官方 SLA。`checks` 僅接受已審閱 v2 來源的具時點人工聲明，來源失效或逾期不沿用舊值。現有真實資料全部缺失，報告為 `BLOCKED`；見 [P1-08 驗收](reports/p1-08-validation.md)。
+
+`event-monitor` 讀取 v2 事件版本與 [假設圖政策](spec/v2/event-monitor.yaml)，列出當時已知的里程碑、來源版本、預期查核日期及反證；經濟效果維持 unknown。真實事件帳目前為空。`event-publish-v2 --event path.yaml --economic-cutoff ... --realized-quarter-end ... --horizon-end ... --knowledge-cutoff ... --valuation-at ...` 僅接受 `{event: {...}}` 的 strict YAML、已審來源及系統可知時點；它原子更新事件帳、可離線重播的 v2 audit snapshot 與 changelog。`--demo` 僅供合成驗證。見 [P2-07 驗收](reports/p2-07-validation.md)。
 
 `normalize-report` 需要以 strict YAML 提供 `schema_version: '2.0'`、`context`（`economic_cutoff`、`knowledge_cutoff`、`valuation_at`、`knowledge_policy`）和有序 `steps`。例如：
 

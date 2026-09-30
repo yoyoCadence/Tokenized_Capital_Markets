@@ -181,17 +181,25 @@ def recover_locked(root):
                 raise ValueError("Unsafe publication path")
             label = entry["label"]
             relative = entry["path"]
-            allowed = ((label == "ledger" and relative in ("data/observed/demo.yaml", "data/observed/research.yaml")) or
+            allowed = ((label == "ledger" and relative in ("data/observed/demo.yaml", "data/observed/research.yaml",
+                                                          "data/v2/events/demo.yaml", "data/v2/events/research.yaml")) or
                        (label == "source_staging" and relative == "sources/staging.yaml") or
                        (label == "source_registry_v2" and relative == "sources/v2/sources.yaml") or
                        (label == "changelog" and relative == "reports/changelog.md") or
-                       (label == "snapshot" and path.parent in (root / "data/snapshots/demo", root / "data/snapshots/research")
-                        and len(path.stem) == 20 and all(c in "0123456789abcdef" for c in path.stem) and path.suffix == ".json"))
+                       (label == "snapshot" and
+                        ((path.parent in (root / "data/snapshots/demo", root / "data/snapshots/research")
+                          and len(path.stem) == 20) or
+                         (path.parent in (root / "data/snapshots/v2/demo/historical",
+                                          root / "data/snapshots/v2/research/historical")
+                          and len(path.stem) == 64)) and
+                        all(c in "0123456789abcdef" for c in path.stem) and path.suffix == ".json"))
             if not allowed:
                 raise ValueError("Unknown publication destination")
             data = base64.b64decode(entry["data"], validate=True)
             if _sha(data) != entry["after"]:
                 raise ValueError("Journal checksum mismatch")
+            if (label == "snapshot" and len(path.stem) == 64 and _sha(data) != path.stem):
+                raise ValueError("V2 snapshot path differs from content digest")
             current = path.read_bytes() if path.exists() else None
             if _sha(current) not in (entry["before"], entry["after"]):
                 raise ValueError("Publication target changed outside journal")

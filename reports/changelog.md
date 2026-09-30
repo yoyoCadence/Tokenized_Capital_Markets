@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.17 / P2-07 event milestones and audit publication — 2026-09-30
+
+- Add strict v2 event revisions for all 13 legacy event types, with explicit planned, announced, approved, deployed, live, material, completed, delayed, cancelled and failed claims. Each new claim needs a distinct reviewed source (or marked demo fixture), dated availability and a human locator; materiality needs an explicit completed-period threshold. No milestone or economic effect is inferred from graph reachability.
+- Add an analyst-assumed lag/condition/measurement/counterevidence policy for every graph edge. Read-only `event-monitor` separates historical public reconstruction from system knowledge and returns assumed transmission checks with unknown economic effect.
+- Add `event-publish-v2` to atomically append a milestone, recompute v2 economics and cadence, freeze the event report in replayable audit bundle `2.0-compute-bundle.7`, and append a changelog entry. Recover and retry preserve one revision and one snapshot. [P2-07 validation](p2-07-validation.md) records engineering completion; no real event or financial observation was promoted. P2-04 is the next independent research package.
+
 ## Software 0.1.16 / P1-08 freshness, coverage and source checks — 2026-09-30
 
 - Add a strict, analyst-assumed policy for 24-hour UNI quotes, 150-day completed-quarter inputs, and seven-day UNI governance checks; source recheck limits are separate (24 hours / 14 days / seven days). These are project thresholds, not official provider SLAs.
