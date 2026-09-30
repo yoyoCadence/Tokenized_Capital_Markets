@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.8'
+version: '1.9'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-30'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P2-08
+next_task: P2-10
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -548,7 +548,7 @@ tasks:
     title: Open Universe 與 promotion evidence
     phase: P2
     priority: P1
-    status: PLANNED
+    status: BLOCKED
     owner_role: research
     effort_points: 3
     depends_on: [P1-02, P2-07]
@@ -557,6 +557,13 @@ tasks:
       - discovery 全部原始 triggers 保留，拒絕與未交易案例不刪。
       - PRIMARY VERIFIED/CAPTURE/INVESTABILITY/REVERSE gates 有證據。
       - initial_core 不作交易 eligibility 後門；所有 secondary 節點可見。
+    progress:
+      prepared_on: '2026-09-30'
+      implementation_ref: feat/p2-08-open-universe
+      evidence: reports/p2-08-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_universe.py]
+      result: 十三個 legacy/secondary/context 節點、七種發現觸發、來源時點、四門檻、拒絕及後續版本歷史可查；真實觸發/審閱晉升記錄為零，研究驗收仍阻塞。下一獨立工作包 P2-10。
   - id: P2-09
     title: 研究工作佇列與 Data Inspector v2
     phase: P2

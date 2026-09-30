@@ -1,0 +1,23 @@
+schema_version: '1.0'
+# Undated legacy labels are retained for visibility, not certified historical membership.
+# New candidates must carry their own observed discovery trigger and acquisition times.
+candidates:
+  - {id: UNI, name: Uniswap, kind: TOKEN, baseline: LEGACY_CORE, identity_asset_id: UNI, note: Existing research watch; capture and trading gates unverified.}
+  - {id: SECZ, name: Securitize Corp., kind: EQUITY, baseline: LEGACY_CORE, identity_asset_id: SECZ, note: NYSE listing is distinct from user-specific eligibility.}
+  - {id: XLM, name: Stellar Lumens, kind: TOKEN, baseline: LEGACY_CORE, identity_asset_id: XLM, note: Network adoption cannot establish native holder capture.}
+  - {id: GLXY, name: Galaxy Digital, kind: EQUITY, baseline: SECONDARY, identity_asset_id: null, note: Legacy secondary research node.}
+  - {id: SUPERSTATE, name: Superstate, kind: COMPANY, baseline: SECONDARY, identity_asset_id: null, note: Company context; no assumed trade instrument.}
+  - {id: BLSH, name: Bullish, kind: EQUITY, baseline: SECONDARY, identity_asset_id: null, note: Legacy secondary research node.}
+  - {id: EQUINITI, name: Equiniti, kind: COMPANY, baseline: SECONDARY, identity_asset_id: null, note: Company context; no assumed trade instrument.}
+  - {id: SOL, name: Solana, kind: TOKEN, baseline: SECONDARY, identity_asset_id: null, note: Legacy secondary research node.}
+  - {id: LINK, name: Chainlink, kind: TOKEN, baseline: SECONDARY, identity_asset_id: null, note: Legacy secondary research node.}
+  - {id: DTCC, name: Depository Trust & Clearing Corporation, kind: INFRASTRUCTURE, baseline: SECONDARY, identity_asset_id: null, note: Infrastructure context.}
+  - {id: SEC, name: U.S. Securities and Exchange Commission, kind: REGULATOR, baseline: SECONDARY, identity_asset_id: null, note: Regulatory context.}
+  - {id: NYSE, name: New York Stock Exchange, kind: EXCHANGE, baseline: SECONDARY, identity_asset_id: null, note: Exchange context.}
+  - {id: NASDAQ, name: Nasdaq, kind: EXCHANGE, baseline: SECONDARY, identity_asset_id: null, note: Exchange context.}
+# No historical discovery dates have been invented for the original registry.
+triggers: []
+# A decision is a new reviewed version; rejection/hold remains in history.
+decisions: []
+# Legacy graph edges are read separately and remain ASSUMPTION, never observed capture.
+exposure_links: []

@@ -20,6 +20,7 @@ from engine.storage import ROOT, load_project, read_records, read_yaml
 from engine.thesis.rules import evaluate_theses
 from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.tam import audit_tam
+from engine.universe import audit_universe
 from engine.temporal import calculate_economics, load_temporal_project, select_temporal
 from engine.validation.checks import require_valid_project
 from engine.validation.errors import ValidationError, issue, reject_errors
@@ -116,6 +117,11 @@ def _main(argv=None):
     market.add_argument("--plan", type=Path, required=True, help="Strict YAML market input plan")
     tam = sub.add_parser("tam-report", help="Read-only claim-level bottom-up TAM and genuine trade audit")
     tam.add_argument("--plan", type=Path, help="Strict YAML cohort plan; defaults to unfilled research pack")
+    universe = sub.add_parser("universe-report", help="Read-only candidate, trigger, decision and exposure audit")
+    universe.add_argument("--plan", type=Path, help="Strict YAML ledger; defaults to research universe")
+    universe.add_argument("--economic-cutoff", required=True)
+    universe.add_argument("--knowledge-cutoff", required=True)
+    universe.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
     readiness = sub.add_parser("readiness-report", help="Read-only v2 missing/conflict/freshness queue")
     readiness.add_argument("--demo", action="store_true")
     readiness.add_argument("--plan", type=Path, help="Strict YAML policy and dated manual source checks")
@@ -253,6 +259,14 @@ def _main(argv=None):
             project = load_temporal_project(root=args.root)
             plan = read_yaml(args.plan or args.root / "research/tam/p2-04-cohorts.yaml")
             result = audit_tam(plan, sources=project["sources"])
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "universe-report":
+        with read_lock(args.root):
+            load_project(root=args.root, demo=False)
+            project = load_temporal_project(root=args.root)
+            plan = read_yaml(args.plan or args.root / "research/universe/p2-08-ledger.yaml")
+            result = audit_universe(project, plan, root=args.root, economic_cutoff=args.economic_cutoff,
+                                    knowledge_cutoff=args.knowledge_cutoff, knowledge_policy=args.policy)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "readiness-report":
         with read_lock(args.root):
