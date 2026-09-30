@@ -1,0 +1,13 @@
+schema_version: '2.0'
+classification: ASSUMPTION
+# Analyst-defined thresholds, not exchange/issuer commitments. All durations are elapsed time.
+# Quarterly age starts at the selected period end; governance age starts at its last manual check.
+requirements:
+  - {id: UNI_PRICE, asset: UNI, kind: PRICE, critical: true, stale_action: BLOCK, role_id: uni_current_price, max_age_seconds: 86400, source_check_max_age_seconds: 86400}
+  - {id: UNI_BURN, asset: UNI, kind: QUARTERLY_EVIDENCE, critical: true, stale_action: BLOCK, role_id: uni_realized_burn_value, max_age_seconds: 12960000, source_check_max_age_seconds: 1209600}
+  - {id: SECZ_REVENUE, asset: SECZ, kind: QUARTERLY_FILING, critical: true, stale_action: BLOCK, role_id: secz_quarterly_revenue, max_age_seconds: 12960000, source_check_max_age_seconds: 1209600}
+  - {id: XLM_OPERATIONS, asset: XLM, kind: QUARTERLY_EVIDENCE, critical: true, stale_action: BLOCK, role_id: xlm_quarterly_operations, max_age_seconds: 12960000, source_check_max_age_seconds: 1209600}
+  - {id: UNI_GOVERNANCE, asset: UNI, kind: GOVERNANCE, critical: true, stale_action: BLOCK, source_id: null, max_age_seconds: 604800, source_check_max_age_seconds: 604800}
+# A check is a dated human assertion, never an automatic fetch or proof of no unseen event.
+# Populate only after the source is in the reviewed v2 source registry.
+checks: []
