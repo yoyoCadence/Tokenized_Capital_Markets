@@ -1,0 +1,18 @@
+schema_version: '1.0'
+as_of: '2026-09-30'
+period: {start: '2026-07-01', end: '2026-09-30'}
+currency: USD
+universe_scope: US issuer securities considered for onchain ownership or exposure; exact issuer/security census pending.
+universe_coverage:
+  EQUITY: {complete: false, source_ids: [], fixture: false, rationale: Issuer and security census unreviewed.}
+  FUND: {complete: false, source_ids: [], fixture: false, rationale: Fund share census and portfolio overlap unreviewed.}
+  CREDIT: {complete: false, source_ids: [], fixture: false, rationale: Credit issuer and instrument census unreviewed.}
+# URL leads are taxonomy/context only. They are not approved original evidence or cohort amounts.
+source_leads:
+  - https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities
+  - https://www.sec.gov/investment/new-form-n-port
+  - https://investors.securitize.io/news/news-details/2026/Tokenizing-SECZ-Securitize-Brings-Its-Own-Public-Stock-Onchain-at-Listing-Day/default.aspx
+# No complete issuer/security coverage, eligible stock, issued balances, float,
+# venue/holder eligibility, trade tape or capture evidence is reviewed yet.
+cohorts: []
+transactions: []

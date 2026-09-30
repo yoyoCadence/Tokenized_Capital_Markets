@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-29 已完成 **WP-01、P0-03～P0-10 與 P1-01～04**。軟體版本 0.1.12，**156 項測試通過**，見 [市場橋接驗收](reports/p1-04-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據、身分主檔、唯讀正規化與市場橋接報告，以及可離線重播的 audit bundle。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；官方身分連結尚未完成原文存證，也沒有真實財務或市場觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；決策級研究發布維持 BLOCKED。下一步 **P1-05：UNI primary evidence 最小包**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-09-30 已完成 **WP-01、P0-03～P0-10、P1-01～04、P1-08 與 P2-07**。軟體版本 0.1.18，**194 項測試通過**，見 [P2-04 TAM 驗收](reports/p2-04-validation.md)。v2 有雙時間選值、UNI scope-aware 公式、逐規則季度證據、身分主檔、唯讀正規化、市場橋接、事件監控與 bottom-up TAM 審計，以及可離線重播的 audit bundle。來源原文須在 repo 外留存並經人工審閱才能進 canonical source registry；官方連結尚未完成原文存證，也沒有真實財務或市場觀察值。v1 財務數字、thesis 與既有快照仍是 LEGACY 路徑。G0 工程驗收通過，但真實 observation 與正式 conflict resolution 均為 0；P1-05～07 與 P2-04 真實證據仍 BLOCKED，決策級研究發布維持 BLOCKED。下一步 **P2-08：Open Universe 與 promotion evidence**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -40,6 +40,7 @@ python -m engine.cli normalize-report --demo --plan /path/to/plan.yaml
 python -m engine.cli market-report --demo --plan /path/to/market-plan.yaml
 python -m engine.cli readiness-report --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T23:00:00Z --valuation-at 2026-09-30T23:00:00Z --policy AS_KNOWN_BY_SYSTEM
 python -m engine.cli event-monitor --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T02:00:00Z --policy AS_KNOWN_BY_SYSTEM
+python -m engine.cli tam-report
 ```
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
@@ -51,6 +52,8 @@ XLM 研究包可用 `python -m engine.xlm_evidence` 唯讀檢查 native reserve�
 `readiness-report` 依 [分析師假設政策](research/readiness/p1-08-policy.yaml)唯讀列出五項關鍵輸入的 age、門檻、缺值／衝突與手動來源檢查；`--plan` 可指定自訂 strict YAML 政策。報價 24 小時、季度期間 150 天、治理人審查核 7 天是起始假設，並非官方 SLA。`checks` 僅接受已審閱 v2 來源的具時點人工聲明，來源失效或逾期不沿用舊值。現有真實資料全部缺失，報告為 `BLOCKED`；見 [P1-08 驗收](reports/p1-08-validation.md)。
 
 `event-monitor` 讀取 v2 事件版本與 [假設圖政策](spec/v2/event-monitor.yaml)，列出當時已知的里程碑、來源版本、預期查核日期及反證；經濟效果維持 unknown。真實事件帳目前為空。`event-publish-v2 --event path.yaml --economic-cutoff ... --realized-quarter-end ... --horizon-end ... --knowledge-cutoff ... --valuation-at ...` 僅接受 `{event: {...}}` 的 strict YAML、已審來源及系統可知時點；它原子更新事件帳、可離線重播的 v2 audit snapshot 與 changelog。`--demo` 僅供合成驗證。見 [P2-07 驗收](reports/p2-07-validation.md)。
+
+`tam-report [--plan path.yaml]` 唯讀檢查 claim-level cohort、表示形式、資產存量、完整期間交易覆蓋與實際收入。真實 [研究 pack](research/tam/p2-04-cohorts.yaml)尚無經審原始數據，所有市場數字為 `null` 且狀態 `BLOCKED`；`source_leads` 只供查找。合成範例見 [P2-04 驗收](reports/p2-04-validation.md)。不跨基金股份與底層股票加總，不將成交量或 TAM 當資產價值。
 
 `normalize-report` 需要以 strict YAML 提供 `schema_version: '2.0'`、`context`（`economic_cutoff`、`knowledge_cutoff`、`valuation_at`、`knowledge_policy`）和有序 `steps`。例如：
 

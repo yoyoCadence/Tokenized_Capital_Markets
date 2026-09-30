@@ -19,6 +19,7 @@ from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snaps
 from engine.storage import ROOT, load_project, read_records, read_yaml
 from engine.thesis.rules import evaluate_theses
 from engine.thesis.cadence_v2 import evaluate_cadence_v2
+from engine.tam import audit_tam
 from engine.temporal import calculate_economics, load_temporal_project, select_temporal
 from engine.validation.checks import require_valid_project
 from engine.validation.errors import ValidationError, issue, reject_errors
@@ -113,6 +114,8 @@ def _main(argv=None):
     market = sub.add_parser("market-report", help="Read-only price, supply and enterprise-value audit")
     market.add_argument("--demo", action="store_true")
     market.add_argument("--plan", type=Path, required=True, help="Strict YAML market input plan")
+    tam = sub.add_parser("tam-report", help="Read-only claim-level bottom-up TAM and genuine trade audit")
+    tam.add_argument("--plan", type=Path, help="Strict YAML cohort plan; defaults to unfilled research pack")
     readiness = sub.add_parser("readiness-report", help="Read-only v2 missing/conflict/freshness queue")
     readiness.add_argument("--demo", action="store_true")
     readiness.add_argument("--plan", type=Path, help="Strict YAML policy and dated manual source checks")
@@ -244,6 +247,12 @@ def _main(argv=None):
         with read_lock(args.root):
             project = load_temporal_project(root=args.root, demo=args.demo)
             result = market_report(project, plan, root=args.root)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "tam-report":
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root)
+            plan = read_yaml(args.plan or args.root / "research/tam/p2-04-cohorts.yaml")
+            result = audit_tam(plan, sources=project["sources"])
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "readiness-report":
         with read_lock(args.root):
