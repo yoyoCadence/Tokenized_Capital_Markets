@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.14 / P1-06 SECZ filing evidence preparation — 2026-09-29
+
+- Separate 2026 Q2/H1 operating-company 8-K/A financials from the premerger shell 10-Q and hypothetical pro forma. Reconcile four disclosed total-revenue periods to two official categories; all six analyst allocations remain unknown.
+- Add read-only reconciliation of Q2 GAAP continuing loss to reported adjusted EBITDA and H1 operating cash flow less disclosed equipment purchases. Keep premerger escrow, debt, SAFEs and cash separate from postcombination EV/FCFF; do not promote links as observations.
+- Preserve the 47,002-share same-closing-date discrepancy between the original 8-K and later 10-Q, plus five warrant-underlying shares; distinguish warrants, options/RSUs, conditional new earnout, plan reserves and already-issued sponsor earnout. [P1-06 validation](p1-06-validation.md) remains BLOCKED pending archived originals/review, conflict resolution and complete postclose inputs. P1-05 remains BLOCKED; P1-07 is the next independent work package.
+
 ## Software 0.1.13 / P1-05 UNI evidence preparation — 2026-09-29
 
 - Map governance proposal #93, official contract addresses and DUNI's reported treasury action/tranche with distinct proposal, reported and onchain-verification states; note the unresolved one-day displayed-date difference. Links remain unarchived leads, with no promoted source or observed financial record.
