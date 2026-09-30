@@ -1,14 +1,14 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.5'
+version: '1.6'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-09-29'
+updated_on: '2026-09-30'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-08
+next_task: P2-07
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -410,7 +410,7 @@ tasks:
     title: Freshness、coverage 與 stale-data detection
     phase: P1
     priority: P1
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 3
     depends_on: [P0-09, P1-03]
@@ -419,6 +419,13 @@ tasks:
       - price、quarterly filing、governance 各自 cadence/SLA 且標為假設。
       - 重要缺值不被總體完整率平均掉；age 和 unknown reason 可見。
       - 來源失效不悄悄沿用舊值；可設定 block 或明示 stale。
+    completion:
+      completed_on: '2026-09-30'
+      implementation_ref: feat/p1-08-readiness
+      evidence: reports/p1-08-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_readiness.py]
+      result: 審計型 readiness 報告逐項揭示五個重要缺口、age/門檻/衝突與手動來源檢查；分析師假設的價格、季度及治理 SLA 獨立。真實資料與治理人審來源仍空，報告 BLOCKED；P1-09 的 G1 不可發布。
   - id: P1-09
     title: 第一份真實研究發布與 G1
     phase: P1

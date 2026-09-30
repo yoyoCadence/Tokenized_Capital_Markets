@@ -10,6 +10,7 @@ from engine.market_bridge import market_report
 from engine.normalization import normalize_plan
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
+from engine.readiness import load_readiness_plan, readiness_report
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
@@ -111,6 +112,13 @@ def _main(argv=None):
     market = sub.add_parser("market-report", help="Read-only price, supply and enterprise-value audit")
     market.add_argument("--demo", action="store_true")
     market.add_argument("--plan", type=Path, required=True, help="Strict YAML market input plan")
+    readiness = sub.add_parser("readiness-report", help="Read-only v2 missing/conflict/freshness queue")
+    readiness.add_argument("--demo", action="store_true")
+    readiness.add_argument("--plan", type=Path, help="Strict YAML policy and dated manual source checks")
+    readiness.add_argument("--economic-cutoff", required=True)
+    readiness.add_argument("--knowledge-cutoff", required=True)
+    readiness.add_argument("--valuation-at", required=True)
+    readiness.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -221,6 +229,14 @@ def _main(argv=None):
         with read_lock(args.root):
             project = load_temporal_project(root=args.root, demo=args.demo)
             result = market_report(project, plan, root=args.root)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "readiness-report":
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            plan = load_readiness_plan(args.plan or args.root / "research/readiness/p1-08-policy.yaml")
+            result = readiness_report(project, plan, economic_cutoff=args.economic_cutoff,
+                                      knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                                      knowledge_policy=args.policy)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

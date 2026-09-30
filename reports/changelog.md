@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.16 / P1-08 freshness, coverage and source checks — 2026-09-30
+
+- Add a strict, analyst-assumed policy for 24-hour UNI quotes, 150-day completed-quarter inputs, and seven-day UNI governance checks; source recheck limits are separate (24 hours / 14 days / seven days). These are project thresholds, not official provider SLAs.
+- Add read-only `readiness-report` with explicit economic, knowledge and valuation cutoffs. Each required input retains its own age, source check age, conflict candidates, reason and critical blocker; a coverage count never overrides a missing critical input. Manual source assertions require a reviewed source (or marked demo fixture), and future checks cannot repair a historical query. `BLOCK` and `LABEL_STALE` keep stale evidence out of decision-ready status.
+- [P1-08 validation](p1-08-validation.md) records engineering completion. The real v2 evidence ledger remains empty; five critical requirements are BLOCKED and G1 publication remains blocked by P1-05/06/07. Next independent work package: P2-07 event monitoring.
+
 ## Software 0.1.15 / P1-07 XLM native demand preparation — 2026-09-30
 
 - Map Stellar native minimum reserve, sponsorship and fee mechanics with dynamic-document dates left unknown. Add an audit-only same-ledger account inventory in integer stroops: balance is counted once, minimum reserve and native selling liabilities are parts of that balance, and overlapping liquidity/collateral labels cannot multiply it.

@@ -8,7 +8,7 @@ from engine.storage import ROOT
 
 def copy_project(directory):
     root = Path(directory)
-    for name in ("spec", "sources", "data", "reports", "dashboard"):
+    for name in ("spec", "sources", "data", "reports", "dashboard", "research"):
         shutil.copytree(ROOT / name, root / name)
     return root
 
