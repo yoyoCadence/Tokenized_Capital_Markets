@@ -56,6 +56,8 @@
 
 下一次查 DTCC 原公告、正式監管文件、部署與交易證據、首次商用／materiality；發布日期未知，需補齊或留 staging，不能用本次查阅日代替公開日。
 
+**2026-09-30 更新：** [DTCC 2026-05-27 原公告](https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy)預期 Stellar 於 2027 上半年可用；[DTCC 2026-07-15 正式環境交易公告](https://www.dtcc.com/press-releases/2026/dtcc-turns-tokenization-into-reality)明列使用 Besu 和 Canton，不能當作 Stellar 已 live。兩份仍為未存證的連結線索；Stellar-specific ledger／資產、實際 XLM demand 與 materiality 均未知。詳見 [P1-07 進度](../../reports/p1-07-validation.md)。
+
 ## S-PLAN-04：Stellar sponsored reserves
 
 - Publisher：Stellar developer documentation。

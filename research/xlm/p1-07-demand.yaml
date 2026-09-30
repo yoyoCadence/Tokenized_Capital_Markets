@@ -1,0 +1,105 @@
+schema_version: '1.0'
+checked_on: '2026-09-30'
+evidence_status: LINK_CHECKED_UNARCHIVED
+source_leads:
+  stellar_reserves:
+    publisher: Stellar Development Foundation
+    document_kind: OTHER
+    source_date: null
+    url: https://developers.stellar.org/docs/learn/fundamentals/lumens
+    claim: Base reserve and minimum balance; selling liabilities reduce available balance but are not added to minimum balance.
+  stellar_sponsorship:
+    publisher: Stellar Development Foundation
+    document_kind: OTHER
+    source_date: null
+    url: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves
+    claim: Minimum balance equals (2 + subentries + sponsoring - sponsored) times base reserve; the sponsor bears a reserve formerly borne by the owner.
+  stellar_accounts:
+    publisher: Stellar Development Foundation
+    document_kind: OTHER
+    source_date: null
+    url: https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/accounts/object
+    claim: Horizon account fields expose native balance, selling liabilities, subentry count and sponsorship counters; a historical snapshot still needs a common ledger.
+  stellar_fees:
+    publisher: Stellar Development Foundation
+    document_kind: OTHER
+    source_date: null
+    url: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering
+    claim: Inclusion fees and contract resource fees differ; bids and minimum fee are not actual aggregate fee paid.
+  dtcc_stellar_plan:
+    publisher: DTCC
+    document_kind: OFFICIAL_RELEASE
+    source_date: '2026-05-27'
+    url: https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy
+    claim: DTCC and SDF plan a Stellar connection with DTC-tokenized assets expected in H1 2027.
+  dtcc_other_chain_production:
+    publisher: DTCC
+    document_kind: OFFICIAL_RELEASE
+    source_date: '2026-07-15'
+    url: https://www.dtcc.com/press-releases/2026/dtcc-turns-tokenization-into-reality
+    claim: DTC-tokenized assets were used in production trades on Besu and Canton; this release does not establish Stellar production.
+network:
+  security_id: xlm_native_stellar
+  instrument_id: xlm_stellar
+  network_id: STELLAR_PUBLIC
+  native_unit: STROOP
+  stroops_per_xlm: 10000000
+  mechanism_note: A reserve is a portion of an existing XLM balance, not an extra token balance. The same balance can have liquidity and collateral uses; categories are tags, not additive positions.
+snapshot:
+  ledger_sequence: null
+  base_reserve_stroops: null
+  account_coverage_source_ids: []
+  contract_position_coverage_source_ids: []
+  accounts: []
+  contract_positions: []
+  unknown_scope: Complete public-network account and contract inventory, sponsor-to-entry mapping, institution attribution, operating inventory, liquidity and collateral rights.
+activity:
+  period: {start: '2026-07-01', end: '2026-08-31'}
+  start_ledger: null
+  end_ledger: null
+  range_coverage_source_ids: []
+  external_economic_transfer_count: null
+  native_xlm_transfer_stroops: null
+  classic_fee_paid_stroops: null
+  contract_fee_paid_stroops: null
+  unknown_scope: Payment/path-payment transfers need self/internal/bridge/issuer movement filters; classic inclusion and contract resource fees need actual paid amounts and full ledger coverage.
+dtcc_milestones:
+  - id: stellar_connection
+    status: PLANNED
+    event_on: '2026-05-27'
+    network: STELLAR_PUBLIC
+    source: dtcc_stellar_plan
+    evidence_ids: []
+  - id: other_network_production
+    status: LIVE_OTHER_NETWORKS
+    event_on: '2026-07-15'
+    network: BESU_AND_CANTON
+    source: dtcc_other_chain_production
+    evidence_ids: []
+  - id: stellar_production
+    status: UNKNOWN
+    event_on: null
+    network: STELLAR_PUBLIC
+    source: null
+    evidence_ids: []
+  - id: stellar_materiality
+    status: UNKNOWN
+    event_on: null
+    network: STELLAR_PUBLIC
+    source: null
+    evidence_ids: []
+materiality:
+  predeclared_threshold: null
+  dtcc_stellar_period_volume: null
+  comparable_total_period_volume: null
+  note: A denominator, threshold, eligible asset scope and chain-specific audited or ledger evidence are required before materiality can be assessed.
+transmission:
+  hypothesis: More Stellar network usage may require XLM reserves, operating balances or fees, but sponsorship, batching, velocity, alternative payment assets and net supply can break a direct price mapping.
+  classification: ASSUMPTION
+  dtcc_attributable_xlm_stroops: null
+  incremental_native_demand_stroops: null
+  price_effect_usd: null
+promotion_gate:
+  staged_original_source_ids: []
+  reviewed_source_ids: []
+  observed_record_ids: []
