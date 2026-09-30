@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.7'
+version: '1.8'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-30'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P2-04
+next_task: P2-08
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -482,7 +482,7 @@ tasks:
     title: Bottom-up TAM 與可服務量
     phase: P2
     priority: P1
-    status: PLANNED
+    status: BLOCKED
     owner_role: research
     effort_points: 5
     depends_on: [P1-02, P1-03, P1-01]
@@ -491,6 +491,13 @@ tasks:
       - equities/funds/credit、native/wrapped、bridge 去重有定義。
       - eligible、issued、float、trade volume、revenue 每步有證據或假設。
       - TAM 不直接輸出 asset value，wash/mint/internal transfer 不冒充成交。
+    progress:
+      prepared_on: '2026-09-30'
+      implementation_ref: feat/p2-04-bottom-up-tam
+      evidence: reports/p2-04-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/regression/test_tam.py]
+      result: 唯讀 cohort/representation/完整成交帶的工程橋接及合成測試已完成；真實三類 issuer/security 覆蓋與逐段原始證據皆缺，不能計算實際 TAM、可服務交易量或收入。
   - id: P2-05
     title: 有時點的 reverse underwriting
     phase: P2

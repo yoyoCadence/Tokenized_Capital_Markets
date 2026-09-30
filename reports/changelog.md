@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.18 / P2-04 bottom-up TAM accounting — 2026-09-30
+
+- Add read-only `tam-report` with explicit equity/fund/credit issuer/security cohorts, one legal claim per security, native/wrapped/bridged representation lineage and fund-underlying overlap links. Stock steps require separate evidence and shrink from eligible through issued, float and serviceable float; incomplete coverage returns null.
+- Count trade notional only from reviewed or synthetic marked, distinct ownership-changing executions on a completed period and a claimed complete tape. Exclude mint/burn/bridge/internal/transfer/self/wash activity and uncertain wash reviews. Actual captured revenue remains a separate input; neither cross-class stock grand totals nor asset value are inferred.
+- [P2-04 validation](p2-04-validation.md) documents the unfilled real research pack, strict-source gate and synthetic accounting cases. P2-04 research remains BLOCKED; P2-08 is the next independent package. No canonical financial data, formulas or snapshots changed.
+
 ## Software 0.1.17 / P2-07 event milestones and audit publication — 2026-09-30
 
 - Add strict v2 event revisions for all 13 legacy event types, with explicit planned, announced, approved, deployed, live, material, completed, delayed, cancelled and failed claims. Each new claim needs a distinct reviewed source (or marked demo fixture), dated availability and a human locator; materiality needs an explicit completed-period threshold. No milestone or economic effect is inferred from graph reachability.
