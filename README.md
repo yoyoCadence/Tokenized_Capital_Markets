@@ -44,6 +44,8 @@ python -m engine.cli market-report --demo --plan /path/to/market-plan.yaml
 
 SECZ 申報研究包可用 `python -m engine.secz_evidence` 唯讀重算兩類收入、非 GAAP 調節、現金橋接與衝突股數。官方 2026 Q2/H1 營運財報屬合併前 Securitize, Inc.，同期 SECZ 10-Q 為未營運控股殼公司；原文待存證人審，結果仍 `BLOCKED`，六分析分項、FCFF、postclose EV cash 和 fully diluted shares 均未知。見 [P1-06 報告](reports/p1-06-validation.md)。
 
+XLM 研究包可用 `python -m engine.xlm_evidence` 唯讀檢查 native reserve／sponsorship 去重與 DTCC 鏈別里程碑。DTCC 在 Besu／Canton 的 production trades 不能當 Stellar live；全網 XLM 存量、DTCC 可歸因需求及價格效果仍未知。見 [P1-07 報告](reports/p1-07-validation.md)。
+
 `normalize-report` 需要以 strict YAML 提供 `schema_version: '2.0'`、`context`（`economic_cutoff`、`knowledge_cutoff`、`valuation_at`、`knowledge_policy`）和有序 `steps`。例如：
 
 ```yaml

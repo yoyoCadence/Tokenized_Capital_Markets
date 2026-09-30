@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P1-07
+next_task: P1-08
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -392,7 +392,7 @@ tasks:
     title: XLM 採用與 native demand 證據包
     phase: P1
     priority: P0
-    status: PLANNED
+    status: BLOCKED
     owner_role: research
     effort_points: 5
     depends_on: [P1-01, P1-02, P1-03]
@@ -401,6 +401,10 @@ tasks:
       - reserve/sponsorship/liquidity/collateral 去重與未知範圍可查。
       - transfer flow、demand stock、price effects 分開。
       - planned/live/material 各有證據；不能辨識的價值傳導保持 assumed。
+    progress:
+      checked_on: '2026-09-30'
+      evidence: reports/p1-07-validation.md
+      result: 官方 reserve/sponsorship/fee 定義與 DTCC 5 月 Stellar 規劃、7 月 Besu/Canton 正式環境交易已分層；去重 ledger 工具及合成測試完成。缺完整公網原始快照／期間活動、來源存證人審、DTCC Stellar-specific live/material 證據及可歸因 native stock，真實觀察值仍為 0。
     audit_refs: [A-10]
   - id: P1-08
     title: Freshness、coverage 與 stale-data detection

@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.15 / P1-07 XLM native demand preparation — 2026-09-30
+
+- Map Stellar native minimum reserve, sponsorship and fee mechanics with dynamic-document dates left unknown. Add an audit-only same-ledger account inventory in integer stroops: balance is counted once, minimum reserve and native selling liabilities are parts of that balance, and overlapping liquidity/collateral labels cannot multiply it.
+- Separate completed-period network activity from balance stock and price effects, with missing ledger coverage and external transfer classification explicit. Synthetic tests exercise sponsor burden shift, duplicate/mixed-ledger rejection and fixture/source gates; no mainnet demand or fee observation is published.
+- Classify DTCC's May 2026 Stellar connection announcement as planned for H1 2027 and July 2026 production trades as Besu/Canton, not Stellar. Stellar-specific live/material status and XLM attribution remain unknown. [P1-07 validation](p1-07-validation.md) is BLOCKED pending reviewed originals and ledger proof; P1-05/06 remain BLOCKED. P1-08 is the next independent engineering package.
+
 ## Software 0.1.14 / P1-06 SECZ filing evidence preparation — 2026-09-29
 
 - Separate 2026 Q2/H1 operating-company 8-K/A financials from the premerger shell 10-Q and hypothetical pro forma. Reconcile four disclosed total-revenue periods to two official categories; all six analyst allocations remain unknown.
