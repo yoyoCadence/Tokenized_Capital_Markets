@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.6'
+version: '1.7'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-09-30'
@@ -8,7 +8,7 @@ classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
 scope: roadmap_with_completion_evidence
 first_work_package: WP-01
-next_task: P2-07
+next_task: P2-04
 execution_authorized_by_this_file: false
 effort_scale:
   unit: relative_points
@@ -521,7 +521,7 @@ tasks:
     title: 事件里程碑與經濟傳導監控
     phase: P2
     priority: P1
-    status: PLANNED
+    status: DONE
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P0-08, P1-01, P1-08]
@@ -530,6 +530,13 @@ tasks:
       - 支援原規定全部 event types，延期/取消以新版本保留。
       - planned/approved/deployed/live/material 不自動晉級。
       - event → evidence → recompute → rules → snapshot → changelog 可重播。
+    completion:
+      completed_on: '2026-09-30'
+      implementation_ref: feat/p2-07-event-monitor
+      evidence: reports/p2-07-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_event_monitor_v2.py, tests/integration/test_snapshots_v2.py]
+      result: v2 十三類原事件型別的可知里程碑、延期/取消、已審來源及假設圖傳導可查；原子發布同時封存事件帳、經濟及規則重算、離線快照和日誌。沒有真實事件或可識別收益；事件不替規則補缺失資料。
   - id: P2-08
     title: Open Universe 與 promotion evidence
     phase: P2

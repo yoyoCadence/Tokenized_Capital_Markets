@@ -1,5 +1,5 @@
 # P1-04 adds a read-only market bridge; no real prices or financial observations are ingested.
-contract_version: '2.0-proposal.7'
+contract_version: '2.0-proposal.8'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -70,6 +70,19 @@ source_archive:
     - 'Approved source metadata records exact digest, locator and review ID; source capture never creates an OBSERVED value.'
     - 'Raw restricted bytes and credential-bearing URLs are not written to the public repository.'
     - 'The v2 bundle archives review metadata and hashes, not the external original document bytes.'
+
+event_monitor:
+  ledger: data/v2/events/research.yaml
+  demo_ledger: data/v2/events/demo.yaml
+  graph_policy: spec/v2/event-monitor.yaml
+  statuses: [PLANNED, ANNOUNCED, APPROVED, DEPLOYED, LIVE, MATERIAL, COMPLETED, DELAYED, CANCELLED, FAILED]
+  publication: audited_append_and_atomic_ledger_snapshot_changelog
+  invariants:
+    - 'A separate reviewed source version and human locator support each explicit revision; knowledge time gates precede supersession.'
+    - 'LIVE requires its own usage claim; MATERIAL additionally requires an explicit prior LIVE claim and completed-period analyst threshold.'
+    - 'Delay, cancellation and failure are preserved as new revisions; cancellation/failure is terminal.'
+    - 'Graph reachability and due dates open research checks, not observed economics or automatic thesis-state promotion.'
+    - 'The offline v2 audit snapshot freezes event inputs, the recomputed economics and cadence, and the event report; actual event-linked rule effect remains NOT_WIRED_TO_V2_RULES until a sourced role exists.'
 
 identity_master:
   ledger: spec/v2/identity-master.yaml

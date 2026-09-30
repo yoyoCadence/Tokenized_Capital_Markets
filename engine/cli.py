@@ -7,6 +7,7 @@ from pathlib import Path
 from engine.formulas.runtime import calculate
 from engine.identity import identity_report, load_identity, lookup_symbol
 from engine.market_bridge import market_report
+from engine.event_monitor import event_report, load_event_policy, load_event_rows, publish_event
 from engine.normalization import normalize_plan
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
@@ -119,6 +120,20 @@ def _main(argv=None):
     readiness.add_argument("--knowledge-cutoff", required=True)
     readiness.add_argument("--valuation-at", required=True)
     readiness.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    monitor = sub.add_parser("event-monitor", help="Read-only v2 milestone and assumed graph transmission audit")
+    monitor.add_argument("--demo", action="store_true")
+    monitor.add_argument("--economic-cutoff", required=True)
+    monitor.add_argument("--knowledge-cutoff", required=True)
+    monitor.add_argument("--policy", required=True, choices=("AS_KNOWN_BY_SYSTEM", "PUBLIC_INFORMATION_RECONSTRUCTION"))
+    event_publish = sub.add_parser("event-publish-v2", help="Atomically append a reviewed milestone and replayable audit bundle")
+    event_publish.add_argument("--demo", action="store_true")
+    event_publish.add_argument("--event", type=Path, required=True, help="Strict YAML document with one event")
+    event_publish.add_argument("--economic-cutoff", required=True)
+    event_publish.add_argument("--realized-quarter-end", required=True)
+    event_publish.add_argument("--horizon-end", required=True)
+    event_publish.add_argument("--knowledge-cutoff", required=True)
+    event_publish.add_argument("--valuation-at", required=True)
+    event_publish.add_argument("--valuations", default="{}", help="JSON mapping quarter end to valuation instant")
     args = parser.parse_args(argv)
     if args.command == "serve":
         serve(port=args.port, demo=args.demo, root=args.root)
@@ -237,6 +252,20 @@ def _main(argv=None):
             result = readiness_report(project, plan, economic_cutoff=args.economic_cutoff,
                                       knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
                                       knowledge_policy=args.policy)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "event-monitor":
+        with read_lock(args.root):
+            project = load_temporal_project(root=args.root, demo=args.demo)
+            result = event_report(project, load_event_rows(args.root, args.demo), load_event_policy(args.root),
+                                  economic_cutoff=args.economic_cutoff, knowledge_cutoff=args.knowledge_cutoff,
+                                  knowledge_policy=args.policy, root=args.root)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "event-publish-v2":
+        result = publish_event(root=args.root, event=read_yaml(args.event), demo=args.demo,
+                               economic_cutoff=args.economic_cutoff,
+                               realized_quarter_end=args.realized_quarter_end, horizon_end=args.horizon_end,
+                               knowledge_cutoff=args.knowledge_cutoff, valuation_at=args.valuation_at,
+                               valuation_by_period=json.loads(args.valuations))
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

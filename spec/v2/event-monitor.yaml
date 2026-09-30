@@ -1,0 +1,19 @@
+schema_version: '2.0'
+version: '1.0'
+classification: ASSUMPTION
+# Analyst-defined review lags. Reaching the due date opens a research check only.
+edges:
+  - {from: SEC, to: SECZ, type: regulates, lag_days: 30, condition: 'Applicable final rule', measurement: 'Issuer compliance evidence', counterevidence: 'Rule withdrawn or inapplicable', exposure_definition: 'SECZ regulated activities'}
+  - {from: SEC, to: UNI, type: regulates, lag_days: 30, condition: 'Applicable final rule', measurement: 'Protocol implementation and usage', counterevidence: 'No applicable implementation', exposure_definition: 'UNI-related protocol activity'}
+  - {from: NYSE, to: SECZ, type: increases_addressable_market, lag_days: 90, condition: 'Eligible listed service', measurement: 'New issuer cohorts', counterevidence: 'No conversion to issuer use', exposure_definition: 'SECZ eligible issuer base'}
+  - {from: NASDAQ, to: SECZ, type: increases_addressable_market, lag_days: 90, condition: 'Eligible listed service', measurement: 'New issuer cohorts', counterevidence: 'No conversion to issuer use', exposure_definition: 'SECZ eligible issuer base'}
+  - {from: DTCC, to: XLM, type: enables, lag_days: 90, condition: 'Stellar-specific deployment verified', measurement: 'Stellar ledger activity', counterevidence: 'Production remains on other chains', exposure_definition: 'Identified Stellar accounts'}
+  - {from: XLM, to: XLM, type: creates_token_demand, lag_days: 90, condition: 'Incremental native inventory net of overlap', measurement: 'Distinct XLM balance stock', counterevidence: 'Sponsorship or re-use offsets demand', exposure_definition: 'Deduplicated account cohort'}
+  - {from: SECZ, to: UNI, type: increases_addressable_market, lag_days: 90, condition: 'Eligible flow reaches UNI venue', measurement: 'Qualifying net volume', counterevidence: 'Flow remains off protocol', exposure_definition: 'Eligible protocol pools'}
+  - {from: UNI, to: UNI, type: creates_token_demand, lag_days: 90, condition: 'Verified fee capture and burn or distribution', measurement: 'Holder economic flow', counterevidence: 'Activity without holder capture', exposure_definition: 'Protocol fee-bearing pools'}
+  - {from: SOL, to: UNI, type: competes_with, lag_days: 90, condition: 'Substitutable trading flow', measurement: 'Relative qualified volume', counterevidence: 'Distinct non-substitutable use', exposure_definition: 'Comparable venues'}
+  - {from: LINK, to: SECZ, type: provides_oracle, lag_days: 90, condition: 'Production integration', measurement: 'Verified service use', counterevidence: 'Integration stays planned', exposure_definition: 'Integrated issuer products'}
+  - {from: SUPERSTATE, to: SECZ, type: competes_with, lag_days: 90, condition: 'Overlapping eligible customers', measurement: 'Customer and revenue overlap', counterevidence: 'Distinct customers or services', exposure_definition: 'Overlapping issuer cohort'}
+  - {from: GLXY, to: SECZ, type: increases_addressable_market, lag_days: 90, condition: 'Production distribution', measurement: 'Qualified new issuance', counterevidence: 'Announcement only', exposure_definition: 'Eligible distribution products'}
+  - {from: BLSH, to: UNI, type: competes_with, lag_days: 90, condition: 'Substitutable venue and flow', measurement: 'Relative qualified volume', counterevidence: 'No shared eligible flow', exposure_definition: 'Comparable protocol venues'}
+  - {from: EQUINITI, to: SECZ, type: provides_registry, lag_days: 90, condition: 'Production registry use', measurement: 'Verified issuer adoption', counterevidence: 'No production integration', exposure_definition: 'Integrated issuer cohort'}
