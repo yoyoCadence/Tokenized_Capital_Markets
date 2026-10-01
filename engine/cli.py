@@ -13,6 +13,7 @@ from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
 from engine.readiness import load_readiness_plan, readiness_report
 from engine.research_refresh import build_refresh_plan, prepare_refresh, review_refresh, refresh_status
+from engine.source_acquisition import acquire_source
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
@@ -94,6 +95,11 @@ def _main(argv=None):
     stage.add_argument("--metadata", type=Path, required=True)
     stage.add_argument("--file", type=Path, required=True)
     stage.add_argument("--store-dir", type=Path, required=True)
+    acquire = sub.add_parser("source-acquire", help="Download one official HTTPS text document into unreviewed staging")
+    acquire.add_argument("--id", required=True)
+    acquire.add_argument("--metadata", type=Path, required=True)
+    acquire.add_argument("--store-dir", type=Path, required=True)
+    acquire.add_argument("--user-agent", required=True, help="Accurate declared application/contact; never saved in git")
     review = sub.add_parser("source-review", help="Record a human review; approval publishes source metadata only")
     review.add_argument("--id", required=True)
     review.add_argument("--review-id", required=True)
@@ -241,6 +247,12 @@ def _main(argv=None):
     elif args.command == "source-stage":
         print(json.dumps(stage_source(root=args.root, source_id=args.id, metadata_path=args.metadata,
                                       file_path=args.file, store_dir=args.store_dir), ensure_ascii=False, indent=2))
+    elif args.command == "source-acquire":
+        result = acquire_source(root=args.root, source_id=args.id, metadata_path=args.metadata,
+                                store_dir=args.store_dir, user_agent=args.user_agent)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if result["status"] == "FAILED":
+            raise SystemExit(1)
     elif args.command == "source-review":
         print(json.dumps(review_source(root=args.root, source_id=args.id, review_id=args.review_id,
                                        decision=args.decision, reviewer=args.reviewer, reason=args.reason,

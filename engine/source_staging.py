@@ -1,4 +1,4 @@
-"""Manual source capture and review; raw bytes stay in a private external artifact store."""
+"""Source capture and review; raw bytes stay in a private external artifact store."""
 from datetime import date, datetime, timezone
 import hashlib
 import os
@@ -25,6 +25,8 @@ DOCUMENT_KINDS = {"FILING", "REGULATORY_ORDER", "CONTRACT_EVENT", "OFFICIAL_RELE
                   "GOVERNANCE_PROPOSAL", "ANALYTICS", "MARKET_QUOTE", "OTHER"}
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 IDENTITY = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,79}\Z")
+OFFICIAL_HOSTS = {"FILING": {"www.sec.gov", "sec.gov"},
+                  "GOVERNANCE_PROPOSAL": {"vote.uniswapfoundation.org", "gov.uniswap.org"}}
 
 
 def _fail(code, message, path):
@@ -80,7 +82,7 @@ def _validate_ledger(doc, root):
     shape = Shape()
     shape.fields(doc, {"schema_version": str, "captures": list, "reviews": list}, {}, LEDGER)
     reject_errors(shape.issues)
-    if doc["schema_version"] != "1.0":
+    if doc["schema_version"] not in {"1.0", "1.1"}:
         _fail("STAGE_SCHEMA", "Unknown staging schema", LEDGER)
     capture_fields = {"id": str, "adapter": str, "status": str, "url": str, "publisher": str,
                       "document_kind": str,
@@ -92,7 +94,7 @@ def _validate_ledger(doc, root):
     review_fields = {"id": str, "capture_id": str, "decision": str, "reviewer": str,
                      "reviewed_at": str, "reason": str}
     for n, row in enumerate(doc["captures"]):
-        shape.fields(row, capture_fields, {"supersedes_id": str}, f"{LEDGER}:captures[{n}]")
+        shape.fields(row, capture_fields, {"supersedes_id": str, "http": dict}, f"{LEDGER}:captures[{n}]")
     for n, row in enumerate(doc["reviews"]):
         shape.fields(row, review_fields, {}, f"{LEDGER}:reviews[{n}]")
     reject_errors(shape.issues)
@@ -104,8 +106,14 @@ def _validate_ledger(doc, root):
         _metadata({key: row[key] for key in ("url", "publisher", "title", "document_kind", "source_date", "tier",
                                                  "covered_metrics", "locator", "rights", "media_type")}, root)
         attempted = _instant(row["attempted_at"], id_)
-        if row["adapter"] != "MANUAL_FILE_V1" or row["status"] not in {"CAPTURED", "FAILED"}:
+        if row["adapter"] not in {"MANUAL_FILE_V1", "OFFICIAL_HTTP_V1"} or row["status"] not in {"CAPTURED", "FAILED"}:
             _fail("STAGE_STATUS", "Unknown adapter or status", id_)
+        if row["adapter"] == "OFFICIAL_HTTP_V1":
+            if doc["schema_version"] != "1.1":
+                _fail("STAGE_SCHEMA", "HTTP capture requires staging schema 1.1", id_)
+            _http_evidence(row)
+        elif "http" in row:
+            _fail("STAGE_HTTP", "Manual capture cannot claim an HTTP receipt", id_)
         if row["status"] == "CAPTURED":
             if (row["retrieved_at"] is None or not isinstance(row["artifact_sha256"], str) or
                     not HASH.fullmatch(row["artifact_sha256"]) or
@@ -126,6 +134,31 @@ def _validate_ledger(doc, root):
         seen_reviews.add(row["id"])
         decided.add(row["capture_id"])
     return doc
+
+
+def _http_evidence(row):
+    shape = Shape()
+    receipt = row.get("http")
+    shape.fields(receipt, {"requested_at": str, "completed_at": str,
+                          "status_code": (int, type(None)), "content_type": (str, type(None))}, {}, row["id"])
+    reject_errors(shape.issues)
+    requested = _instant(receipt["requested_at"], row["id"])
+    completed = _instant(receipt["completed_at"], row["id"])
+    code, content_type = receipt["status_code"], receipt["content_type"]
+    url = urlparse(row["url"])
+    if (url.hostname not in OFFICIAL_HOSTS.get(row["document_kind"], set()) or
+            url.netloc != url.hostname or row["tier"] not in {1, 2} or
+            not row["url"].isascii() or completed < requested or
+            completed != _instant(row["attempted_at"], row["id"]) or
+            (code is not None and (type(code) is not int or not 100 <= code <= 599)) or
+            (content_type is not None and (len(content_type) > 300 or any(ord(c) < 32 for c in content_type)))):
+        _fail("STAGE_HTTP", "Invalid official HTTP receipt, URL or acquisition clock", row["id"])
+    if row["status"] == "CAPTURED" and (code != 200 or not content_type or
+            content_type.split(";", 1)[0].strip().lower() != row["media_type"] or
+            row["media_type"] not in {"text/plain", "text/html", "application/xhtml+xml"} or
+            row["retrieved_at"] is None or _instant(row["retrieved_at"], row["id"]) < requested or
+            type(row["artifact_bytes"]) is not int or not 0 < row["artifact_bytes"] <= MAX_BYTES):
+        _fail("STAGE_HTTP", "Captured HTTP source needs successful bounded text evidence", row["id"])
 
 
 def _ledger(root):

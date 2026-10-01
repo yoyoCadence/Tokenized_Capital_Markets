@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-01 軟體版本 **0.1.20**：已合併 [P2-08 Open Universe](reports/p2-08-validation.md)，並實作 [P2-10 審閱更新第一增量](reports/p2-10-validation.md)。可手動從已核准原文定位財報數值／治理里程碑，經獨立擷取審閱後原子入庫、產生 audit bundle 並離線回放；原文版本、數值、單位與期間須精確匹配。自動取得／追蹤與真實文檔操作驗收未完成，**P2-10 IN_PROGRESS**，下一步仍是 P2-10。v1 財務／thesis／舊快照仍是 LEGACY；真實 v2 observation 與正式 promotion 均為 0，P1-05～07、P2-04、P2-08 研究及決策級發布維持 BLOCKED。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-10-01 軟體版本 **0.1.21**：已合併 [P2-10 審閱更新第一增量](reports/p2-10-validation.md)，並補上 [官方原文下載與真實引用稽核](reports/p2-10-acquisition-validation.md)。`source-acquire` 可手動啟動一份官方 HTTPS 原文取得，保存實際時間、HTTP 結果及 repo 外的原文 hash；三份真實 SEC／治理原文已存證待審，九處 byte citations 核對成功。來源與擷取分開審閱，核准才原子入庫、產生 audit bundle 並離線回放。自動 discovery／polling、SEC 表格／多文件／營運公司口徑和真實治理事件審閱驗收未完成，**P2-10 IN_PROGRESS**，下一步仍是 P2-10。v1 財務／thesis／舊快照仍是 LEGACY；canonical v2 source/observation/event 與正式 promotion 均為 0，P1-05～07、P2-04、P2-08 研究及決策級發布維持 BLOCKED。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -47,7 +47,7 @@ python -m engine.cli refresh-status
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。
 
-SECZ 申報研究包可用 `python -m engine.secz_evidence` 唯讀重算兩類收入、非 GAAP 調節、現金橋接與衝突股數。官方 2026 Q2/H1 營運財報屬合併前 Securitize, Inc.，同期 SECZ 10-Q 為未營運控股殼公司；原文待存證人審，結果仍 `BLOCKED`，六分析分項、FCFF、postclose EV cash 和 fully diluted shares 均未知。見 [P1-06 報告](reports/p1-06-validation.md)。
+SECZ 申報研究包可用 `python -m engine.secz_evidence` 唯讀重算兩類收入、非 GAAP 調節、現金橋接與衝突股數。官方 2026 Q2/H1 營運財報屬合併前 Securitize, Inc.，同期 SECZ 10-Q 為未營運控股殼公司；部分原文已存證但尚待人審，結果仍 `BLOCKED`，六分析分項、FCFF、postclose EV cash 和 fully diluted shares 均未知。見 [P1-06 報告](reports/p1-06-validation.md)。
 
 XLM 研究包可用 `python -m engine.xlm_evidence` 唯讀檢查 native reserve／sponsorship 去重與 DTCC 鏈別里程碑。DTCC 在 Besu／Canton 的 production trades 不能當 Stellar live；全網 XLM 存量、DTCC 可歸因需求及價格效果仍未知。見 [P1-07 報告](reports/p1-07-validation.md)。
 
