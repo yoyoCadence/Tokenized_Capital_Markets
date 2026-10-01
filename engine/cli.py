@@ -15,6 +15,7 @@ from engine.readiness import load_readiness_plan, readiness_report
 from engine.research_refresh import build_refresh_plan, prepare_refresh, review_refresh, refresh_status
 from engine.source_acquisition import acquire_source
 from engine.sec_table_review import sec_table_packet
+from engine.sec_table_admission import prepare_sec_admission, review_sec_admission, sec_admission_status
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
@@ -115,6 +116,21 @@ def _main(argv=None):
     sec_packet = sub.add_parser("sec-table-preview", help="Offline original-table/index review packet; never canonical admission")
     sec_packet.add_argument("--plan", type=Path, required=True)
     sec_packet.add_argument("--store-dir", type=Path, required=True)
+    for command in ("sec-admission-preview", "sec-admission-stage"):
+        admission = sub.add_parser(command, help="Preview or stage a pending operating-company batch")
+        admission.add_argument("--plan", type=Path, required=True)
+        admission.add_argument("--store-dir", type=Path, required=True)
+    admission_review = sub.add_parser("sec-admission-review", help="Human review and atomic operating-company admission")
+    admission_review.add_argument("--id", required=True)
+    admission_review.add_argument("--decision", required=True, choices=("APPROVED", "HOLD", "REJECTED"))
+    admission_review.add_argument("--reviewer", required=True)
+    admission_review.add_argument("--reason", required=True)
+    admission_review.add_argument("--store-dir", type=Path, required=True)
+    admission_review.add_argument("--acknowledgements", nargs="*", default=[])
+    admission_review.add_argument("--economic-cutoff")
+    admission_review.add_argument("--realized-quarter-end")
+    admission_review.add_argument("--horizon-end")
+    sub.add_parser("sec-admission-status", help="Inspect pending operating-company admission batches")
     refresh_plan = sub.add_parser("refresh-plan", help="Locate unique original tokens and print an unreviewed extraction plan")
     refresh_plan.add_argument("--draft", type=Path, required=True)
     refresh_plan.add_argument("--store-dir", type=Path, required=True)
@@ -284,6 +300,16 @@ def _main(argv=None):
         print(json.dumps(result, ensure_ascii=False, indent=2))
     elif args.command == "refresh-status":
         print(json.dumps(refresh_status(root=args.root), ensure_ascii=False, indent=2))
+    elif args.command in ("sec-admission-preview", "sec-admission-stage"):
+        print(json.dumps(prepare_sec_admission(root=args.root, plan_path=args.plan, store_dir=args.store_dir,
+            stage=args.command == "sec-admission-stage"), ensure_ascii=False, indent=2))
+    elif args.command == "sec-admission-review":
+        print(json.dumps(review_sec_admission(root=args.root, proposal_id=args.id, decision=args.decision,
+            reviewer=args.reviewer, reason=args.reason, store_dir=args.store_dir,
+            acknowledgements=args.acknowledgements, economic_cutoff=args.economic_cutoff,
+            realized_quarter_end=args.realized_quarter_end, horizon_end=args.horizon_end), ensure_ascii=False, indent=2))
+    elif args.command == "sec-admission-status":
+        print(json.dumps(sec_admission_status(root=args.root), ensure_ascii=False, indent=2))
     elif args.command == "identity":
         with read_lock(args.root):
             master = load_identity(args.root)

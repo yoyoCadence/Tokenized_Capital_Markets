@@ -6,7 +6,7 @@
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.23**；[第四增量](../../reports/p2-10-measurement-validation.md)新增真實 MD&A／S-1 存證與八個會計／幣別支持引用，packet 1.1 可離線核對跨原文證據與正規化文字 digest。六份原文尚未人審，四筆收入候選保持 unit=null；美元定義的跨期間適用性、比較口徑、fiscal calendar 和獨立 operating-company admission 仍待完成。下一工作包仍 **P2-10**；canonical v2 source/observation/event 為 0、G1 與決策級發布 BLOCKED。前版審閱包、v1 公式及舊快照不變。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.24**；[第五增量](../../reports/p2-10-admission-validation.md)完成 operating-company concept/roles、待審批次及核准後四檔原子發布／恢復／重試。真實四筆提案已 stage；六份唯一原文／十個 capture，來源未審、unit／部分量測字段 null、canonical observation 0。下一工作包仍 **P2-10**：來源與量測人審驗收及治理 receipt 證據。G1／決策級發布 BLOCKED，既有金融公式與快照不變。
 
 ## 先讀這三個結論
 

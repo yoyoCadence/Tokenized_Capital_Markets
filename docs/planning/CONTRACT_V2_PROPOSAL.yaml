@@ -1,5 +1,5 @@
 # P2-10 adds bounded acquisition and unreviewed real originals; canonical financial evidence remains empty.
-contract_version: '2.0-proposal.12'
+contract_version: '2.0-proposal.13'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -108,7 +108,28 @@ sec_table_review:
     - 'The SEC index must identify the same accession and EX-99.1 original; labeled Filing Date is separate from Period of Report and signature date.'
     - 'Dollar symbol does not prove USD. Unit remains null; calendar-month period normalization is analyst-defined and pending review, not a fabricated literal start-date quote.'
     - 'Securitize, Inc. operating-company quantities are separate from the listed SECZ issuer role; publication timezone, fiscal calendar and measurement basis remain unresolved.'
-  unimplemented: [reviewed_currency_mapping, reviewed_fiscal_measurement_basis, packet_to_canonical_refresh_admission]
+  unimplemented: [reviewed_currency_mapping, reviewed_fiscal_measurement_basis, real_human_review_acceptance]
+
+sec_table_admission:
+  ledger: data/v2/refresh/sec_tables.yaml
+  schema_version: '1.0'
+  commands: [sec-admission-preview, sec-admission-stage, sec-admission-review, sec-admission-status]
+  plan_fields: [schema_version, id, table_plan, mappings]
+  mapping_fields: [candidate_id, record_id, unit, measurement_basis, rationale]
+  mapping_optional: [supersedes_id]
+  proposal_fields: [id, staged_at, plan, plan_sha256, packet]
+  plan_digest: 'SHA-256 of UTF-8 JSON, sorted keys, compact separators, no nonfinite numbers'
+  review_fields: [proposal_id, decision, reviewer, reason, reviewed_at, acknowledgements, source_review_ids, published_records]
+  acknowledgements: [CURRENCY_APPLICABILITY, ACCOUNTING_SCOPE, PERIOD_NORMALIZATION, COMPARABILITY, OPERATING_ENTITY]
+  invariants:
+    - 'A 1.1 embedded table plan maps every candidate exactly once. Pending unit/basis fields may be null; no pending candidate is canonical.'
+    - 'Separate source approvals must cover securitize_inc_revenue and precede extraction approval; all supporting originals are verified again.'
+    - 'All seven measurement dimensions and scoped rationale are explicit. NOT_APPLICABLE is not a substitute for unknown revenue dimensions.'
+    - 'AS_REPORTED preserves the literal reported revenue aggregate; it asserts no uniform gross/net policy or cross-company comparability.'
+    - 'ACQUISITION_SCOPE_CHANGE marks scope comparability; no automatic STANDARD or growth inference. Prior definitions/formulas remain unchanged.'
+    - 'Records use securitize_inc_revenue / securitize_inc, never listed SECZ role or a security ID; date-only unknown timezone remains unknown.'
+    - 'Review, all observations, audit bundle and changelog publish in one recoverable intent. New mappings require a new proposal ID; observations require new IDs and explicit supersession.'
+    - 'Reviewer strings are explicit review records, not authenticated identity; real human source/extraction acceptance remains pending.'
 
 event_monitor:
   ledger: data/v2/events/research.yaml
@@ -183,7 +204,7 @@ valuation_time:
 record:
   required: [schema_version, id, concept_id, classification, economic_scope, value, unit, fixture, economic_period, knowledge_time]
   common_optional: [entity_id, security_id, supersedes_id, as_of_at, as_of_precision, missing_reason, source_ids, input_role_id, venue, instrument_id, legacy_record_id, measurement_basis]
-  measurement_basis: {definition_id: semantic_dictionary_id, accounting_basis: 'GAAP|IFRS|ADJUSTED|NOT_APPLICABLE', presentation: 'GROSS|NET|NOT_APPLICABLE', consolidation: 'CONSOLIDATED|SEGMENT|NOT_APPLICABLE', operations_basis: 'ALL|CONTINUING|NOT_APPLICABLE', fiscal_calendar_id: explicit_id_or_UNKNOWN, comparability: 'STANDARD|FISCAL_CHANGE|FIFTY_THREE_WEEK|PRE_POST_COMBINATION'}
+  measurement_basis: {definition_id: semantic_dictionary_id, accounting_basis: 'GAAP|IFRS|ADJUSTED|NOT_APPLICABLE', presentation: 'GROSS|NET|AS_REPORTED|NOT_APPLICABLE', consolidation: 'CONSOLIDATED|SEGMENT|NOT_APPLICABLE', operations_basis: 'ALL|CONTINUING|NOT_APPLICABLE', fiscal_calendar_id: explicit_id_or_UNKNOWN, comparability: 'STANDARD|FISCAL_CHANGE|FIFTY_THREE_WEEK|PRE_POST_COMBINATION|ACQUISITION_SCOPE_CHANGE'}
   value_rule: 'Exactly one of finite numeric value and missing_reason; missing is never encoded as zero.'
   observed_required: [source_ids, as_of_at, as_of_precision]
   observed_constraints:

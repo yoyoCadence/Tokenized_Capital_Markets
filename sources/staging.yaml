@@ -147,4 +147,87 @@ captures:
     completed_at: '2026-10-01T10:19:23.835378+00:00'
     status_code: 200
     content_type: text/html
+- id: securitize_inc_financials_scope_20261001
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit991securitize-q22026.htm
+  publisher: SEC EDGAR / Securitize Corp.
+  title: Securitize, Inc. and subsidiaries Q2/H1 2026 unaudited operating financials
+    — Exhibit 99.1
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - securitize_inc_revenue
+  locator: Exhibit 99.1 / statements of operations, page 3; operating-company concept
+    coverage pending source review
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T11:38:34.284485+00:00'
+  retrieved_at: '2026-10-01T11:38:34.284485+00:00'
+  artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+  artifact_bytes: 1161272
+  failure_reason: null
+- id: securitize_inc_index_scope_20261001
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/0001628280-26-056811-index.html
+  publisher: SEC EDGAR / Securitize Corp.
+  title: Securitize Corp. accession 0001628280-26-056811 filing index
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - securitize_inc_revenue
+  locator: Filing Date, Accepted, Document Format Files EX-99.1; operating-company
+    concept coverage pending source review
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T11:38:34.496776+00:00'
+  retrieved_at: '2026-10-01T11:38:34.496776+00:00'
+  artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+  artifact_bytes: 10979
+  failure_reason: null
+- id: securitize_inc_mda_scope_20261001
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit992securitizemdaq22.htm
+  publisher: SEC EDGAR / Securitize Corp.
+  title: Securitize Q2/H1 2026 management discussion — Exhibit 99.2
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - securitize_inc_revenue
+  locator: Exhibit 99.2 / entity definition, comparative results and accounting discussion;
+    operating-company concept coverage pending source review
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T11:38:34.717430+00:00'
+  retrieved_at: '2026-10-01T11:38:34.717430+00:00'
+  artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+  artifact_bytes: 356493
+  failure_reason: null
+- id: securitize_inc_s1_scope_20261001
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026051182/secz-20260731.htm
+  publisher: SEC EDGAR / Securitize Corp.
+  title: Securitize Corp. July 31, 2026 Form S-1 — currency definition and historical
+    operating financial policies
+  document_kind: FILING
+  source_date: '2026-07-31'
+  tier: 1
+  covered_metrics:
+  - securitize_inc_revenue
+  locator: Certain Defined Terms / historical operating financials Foreign Currency
+    Translation; applicability to later Q2 exhibit pending review; operating-company
+    concept coverage pending source review
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T11:38:34.980244+00:00'
+  retrieved_at: '2026-10-01T11:38:34.980244+00:00'
+  artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+  artifact_bytes: 5790137
+  failure_reason: null
 reviews: []

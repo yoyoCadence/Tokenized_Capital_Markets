@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.24 / P2-10 operating-company batch admission — 2026-10-01
+
+- Merge verified PR #23. Reuse securitize_inc identity and add independent revenue concept, QUARTER/YTD roles and measurement definition; original SECZ roles and formulas are unchanged.
+- Add strict sec-admission preview/stage/review/status and a real pending four-candidate batch. Four scoped metadata captures reuse exact originals with actual new manual receipt times and new concept coverage; previous six captures remain unchanged. No source or extraction approval is fabricated.
+- Separate explicit source reviews, complete measurement mapping and five scope acknowledgements gate one atomic four-record/review/audit-bundle/changelog publication. Preserve unknown timezone, verify originals at approval, recover every publication boundary and reject changed/repeated admissions.
+- AS_REPORTED preserves the literal aggregate without a uniform gross/net assertion; ACQUISITION_SCOPE_CHANGE retains acquisition comparability concerns. Bundle `.12` freezes the new admission ledger; [validation](p2-10-admission-validation.md) records canonical evidence zero, real human acceptance pending and P2-10 IN_PROGRESS.
+
 ## Software 0.1.23 / P2-10 currency and accounting evidence — 2026-10-01
 
 - Merge verified PR #22; archive real EX-99.2 MD&A and July 31 S-1 without implicit human review. Six originals remain pending.

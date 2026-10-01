@@ -74,7 +74,7 @@ plan 欄位：`schema_version: '1.0'`、`id`、`entity_id: securitize_inc`、`so
 
 四筆真實擷取結果保存在 [packet](../research/secz/p2-10-table-packet.yaml)，皆 **PENDING_REVIEW**／`publishable=false`／`canonical_admission=false`。unit null，因 `$` 不足以認定 USD。Three／Six Months Ended 加年份的月末日期可生成明示的待審日曆區間，標 `ANALYST_NORMALIZED_PENDING_REVIEW`，不是原文含起日的 quote；fiscal calendar／量測口徑仍未知。entity 固定為營運公司 `securitize_inc`，不能改成上市 SECZ role。
 
-來源/數值分類、日曆推導、publication date、unknown timezone、兩份原文的實際 retrieval 和完整 review requirements 都在 packet 保留。first_seen 用兩份 supporting originals 的較晚 retrieval；ingested_at null。clone repo 的 packet 只供審閱，不能直接複製到 canonical records；財務 validator 會拒絕它。語義人審、幣別證據與 packet-to-canonical admission 尚未完成，見 [第三增量驗收](../reports/p2-10-sec-table-validation.md)。
+來源/數值分類、日曆推導、publication date、unknown timezone、兩份原文的實際 retrieval 和完整 review requirements 都在 packet 保留。first_seen 用兩份 supporting originals 的較晚 retrieval；ingested_at null。clone repo 的 packet 只供審閱，不能直接複製到 canonical records；財務 validator 會拒絕它。第三增量未提供 admission；第五增量新增獨立批次流程（見下），來源／量測人審仍未完成。原版 packet 保持不變。
 
 ## 草稿格式
 
@@ -127,9 +127,9 @@ JSON plan 可由 strict YAML loader 讀取。每個 `citations` 欄位是 `{star
 
 精確引用、原始數字、單位和期間校驗能拒絕一類擷取錯誤；它們不能證明被引數字真是該公司、该季度或該會計概念。context span 保存定位與 digest，語義仍須審閱。instruction marker 的負例只是有限模式偵測，不是通用 prompt injection 分類器；核心防線是原文永不執行、候選 schema 嚴格、明確人工審閱和經濟 scope 限制。
 
-尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是幣別／量測口徑原文證據與 reviewed operating-company admission，再處理治理欄位／receipt 映射。repo 有六筆未審原文 capture、四筆只供審閱的 SEC 表格候選；canonical source/observation/event/refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
+尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是來源／量測人審驗收，再處理治理欄位／receipt 映射。repo 有六份唯一原文、十個待審 capture（四個是營運概念專用 metadata scope），一個真實四筆 admission proposal。canonical source/observation/event 和原 literal refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
 
-新 snapshot 為 `2.0-compute-bundle.11`，包含 HTTP staging receipt、取得及表格 packet policy／程式和擷取審閱 ledger；packet 不會進核心計算。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。
+新 snapshot 為 `2.0-compute-bundle.12`，包含 HTTP staging receipt、取得及表格 packet policy／程式和擷取審閱 ledger；packet 不會進核心計算。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。
 
 ## 第四增量：支持幣別／會計證據（packet 1.1）
 
@@ -144,3 +144,32 @@ python -m engine.cli sec-table-preview --plan research/secz/p2-10-measurement-pl
 `text_verified=true` 只表示原版／文字相符；`semantic_status=PENDING_REVIEW` 不會設定 USD、GAAP 等 canonical dimensions。source approvals 全部 false、unit null、ingestion null，候選 source_ids 仍為原數字／索引來源；packet sources 加支持來源，first_seen_at 取全部原文的較晚真實取得時間，不回填歷史。支持原文的 source_date 不取代原 Filing Date。
 
 S-1 貨幣定義限其文件；歷史財報的美元表達需審閱是否延續至 Q2 Exhibit 99.1。MD&A 提醒 pre/post-combination identity、2025 acquisition 和 discontinued-operations 比較範圍。gross/net、fiscal calendar、跨期可比性與營運公司身份仍需決議；批准 PR 不等同來源／擷取人審。詳見 [驗收及待審決議](../reports/p2-10-measurement-validation.md)。現有 canonical source/observation/event 仍為 0。
+
+## 第五增量：營運公司四筆批次入庫
+
+身份表已有 `securitize_inc`，本次增加獨立 `securitize_inc_revenue` concept、`securitize_inc_quarterly_revenue`／`securitize_inc_ytd_revenue` roles，以及 `SECURITIZE_INC_REPORTED_REVENUE` definition。不修改上市 SECZ role，不加 security_id，不將營運收入接到 issuer valuation。
+
+真實 `research/secz/p2-10-admission-plan.yaml` 已以實際 staging UTC 時間保存到 `data/v2/refresh/sec_tables.yaml`；一個提案包含四個 raw Revenue 候選、原版 citations 和每筆 unit／七個 measurement dimensions／rationale。仍有 unit、presentation、operations_basis、fiscal_calendar_id=null，其他提出的 mapping 也仍待人審。沒有記錄虛構 reviewer、來源核准或 ingestion。
+
+```bash
+python -m engine.cli sec-admission-preview --plan research/secz/p2-10-admission-plan.yaml --store-dir /private/artifacts
+python -m engine.cli sec-admission-status
+```
+
+此預覽／狀態命令不發布 canonical rows。`sec-admission-stage` 才保存 immutable proposal；相同 ID 重試不重複，改 mapping 必須新 proposal ID。尚未 source-review 的 capture 可先存為待審材料；來源批准不修改 frozen packet，只在最後 review 保存來源 review ID。
+
+原六個 capture 的 covered_metrics 是舊概念，不能修改成新 concept。四個 `securitize_inc_*_scope_20261001` 以外部 store 的相同 digest bytes 再建立 `MANUAL_FILE_V1` metadata scope，覆蓋新 concept，保持真實新讀取時間、不偽造 HTTP receipt，也不是重新下載四份文件。scope 是另一個 metadata 用途，沒有宣稱 supersede 舊金融概念來源。舊六份 capture 及原版 packet 都原樣保留。
+
+審閱者須逐一 source-review 該四個 scoped captures，核對 document date／rights／publisher／new concept coverage；再 append 新 admission plan ID，填入已決議的 unit 和完整 basis，stage，再 review。APPROVED 必須明確五項 acknowledgements：`CURRENCY_APPLICABILITY ACCOUNTING_SCOPE PERIOD_NORMALIZATION COMPARABILITY OPERATING_ENTITY`，以及 economic/model cutoffs。示範命令只供具名審閱者完成實際審閱後操作：
+
+```bash
+python -m engine.cli sec-admission-stage --plan /private/reviewed-mapping-new-id.yaml --store-dir /private/artifacts
+python -m engine.cli sec-admission-review --id reviewed_mapping_new_id --decision APPROVED --reviewer "Actual reviewer" --reason "Originals, currency applicability, reported basis, calendar duration and comparison scope checked" --acknowledgements CURRENCY_APPLICABILITY ACCOUNTING_SCOPE PERIOD_NORMALIZATION COMPARABILITY OPERATING_ENTITY --store-dir /private/artifacts --economic-cutoff 2026-09-30 --realized-quarter-end 2026-06-30 --horizon-end 2027-12-31
+python -m engine.cli recover
+```
+
+`HOLD`／`REJECTED` 保留決议，不需要假裝來源通過，也不寫 observation/snapshot；重新考慮須新 proposal。APPROVED 重新核對完整 originals/packet、來源 review 和完整 dimensions，再以實際 UTC ingestion 一次發布四筆 observations、review、audit bundle、changelog。任一步驟中斷都由同一 redo intent 恢復；重試核對 bundle 和原 canonical records，不重複入帳。
+
+`AS_REPORTED` 是經審閱保留原表總數和其 reported basis，**不是**把未知 gross/net 改名已知；它不聲稱所有收入流採統一 gross/net 原則，也不默認跨公司可比。`ACQUISITION_SCOPE_CHANGE` 留下收購範圍影響，不是 STANDARD；舊 issuer definitions/formulas 不增加這些 inputs。calendar ID 必须用獨立 `securitize_inc_` prefix，日期起點為審閱過的日曆 duration normalization，不能宣稱原文明列起日或上市 SECZ fiscal calendar 已核准。
+
+本次仍 **0 canonical observations**。即使日後 admission 審閱通過，publication timezone=null 仍維持歷史 temporal eligibility Unknown，不以 ingestion 倒推 SEC 發布時區。audit bundle 不宣稱研究可供決策。reviewer string 也沒有登入／簽章驗證，不是已建立多使用者審核系統。

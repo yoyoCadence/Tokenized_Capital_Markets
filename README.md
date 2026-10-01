@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-01 軟體版本 **0.1.23**：已合併 [SEC 表格審閱包](reports/p2-10-sec-table-validation.md)，並新增 [幣別／會計證據審閱](reports/p2-10-measurement-validation.md)。六份官方原文已存證待審；新版 `sec-table-preview` 將四筆營運公司收入候選連到八個附註／MD&A／S-1 證據定位，逐一核對原文及正規化文字 digest。S-1 有美元定義及歷史報表美元表達證據，跨文件／期間適用性仍待審；候選幣別保持 null，不直接歸入上市 SECZ。**P2-10 IN_PROGRESS**；下一項為人審量測決議與獨立 operating-company admission，然後治理證據。canonical v2 source/observation/event 均為 0；G1 與決策級發布仍 BLOCKED，v1 公式與舊快照不變。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-10-01 軟體版本 **0.1.24**：已合併 [幣別／會計證據包](reports/p2-10-measurement-validation.md)，並完成 [營運公司批次審閱入庫流程](reports/p2-10-admission-validation.md)。獨立 `securitize_inc_revenue` concept 和 quarter/YTD roles 保留營運公司與上市 SECZ 差別；一個真實四筆提案已 stage，來源及量測欄位仍待審，**canonical observation 仍為 0**。核准後可一次發布四筆、audit snapshot 與 changelog，支援中斷恢復及重試。六份唯一原文／十個 metadata captures；P2-10 **IN_PROGRESS**，下一步為實際來源與量測決議、治理 receipt 證據。G1／決策級研究發布仍 BLOCKED，v1 公式與舊快照不變。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
 
 ## Requirements / 啟動
 

@@ -1,0 +1,494 @@
+schema_version: '1.0'
+proposals:
+- id: securitize_inc_revenue_admission_pending_20261001
+  staged_at: '2026-10-01T11:38:35.291628+00:00'
+  plan:
+    schema_version: '1.0'
+    id: securitize_inc_revenue_admission_pending_20261001
+    table_plan:
+      schema_version: '1.1'
+      id: securitize_inc_admission_table_20261001
+      entity_id: securitize_inc
+      source_id: securitize_inc_financials_scope_20261001
+      artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+      index_source_id: securitize_inc_index_scope_20261001
+      index_artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+      entity_heading:
+        start: 78850
+        end: 78883
+        sha256: 9053c314e6e6dab08ea8d98f11f6ee505e71309055e855a042fa255b54fcaae0
+      statement_heading:
+        start: 79039
+        end: 79119
+        sha256: 63819ebdf652f5f2d721aefccf7e205daf9f89373893f12bafe4d10f47488153
+      table:
+        start: 79171
+        end: 140583
+        sha256: 455e159e4127441f9b7fab3ff6099ae4f85bea941a600d8821c6fa0967dbab7a
+      period_row: 1
+      year_row: 2
+      columns:
+      - id: q2_2026_revenue
+        value_column: 4
+        symbol_column: 3
+      - id: q2_2025_revenue
+        value_column: 10
+        symbol_column: 9
+      - id: h1_2026_revenue
+        value_column: 16
+        symbol_column: 15
+      - id: h1_2025_revenue
+        value_column: 22
+        symbol_column: 21
+      supporting_evidence:
+      - source_id: securitize_inc_financials_scope_20261001
+        artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+        citations:
+        - id: gaap_consolidation
+          role: Accounting and consolidation basis
+          citation:
+            start: 688666
+            end: 689173
+            sha256: 9b12a374e2ad6a99e4bde4dd13aa308f52a03222fd132a49d6827e13f69c69d1
+          normalized_text_sha256: 69e58dbef962583c3daa2437775c89e4abbb6b205389485e57d74e78e55b6c29
+        - id: reclassifications
+          role: Prior-period presentation changes
+          citation:
+            start: 695834
+            end: 696101
+            sha256: dbab2e8345e8ff4a9ee189cdc05b9316da7f7cc0772a1d46bfc9caabbca7a9f7
+          normalized_text_sha256: 09f170e851976ec2ac5adf5ce8759d007d88c73ec2ed00585300be1fcb0fc2de
+        - id: tokenization_revenue_policy
+          role: Recognition timing; not proof of a single gross/net convention
+          citation:
+            start: 1107478
+            end: 1108464
+            sha256: 6f74a98ebec2484d1f888eba836afb9cce45ffff0137651afce2fa4d5de0b923
+          normalized_text_sha256: b777b329512cd2d8a9a5144df593bb3c81b5c55e876e356d6537a4c1fbda8e13
+      - source_id: securitize_inc_mda_scope_20261001
+        artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+        citations:
+        - id: reporting_entity_transition
+          role: Pre/post-business-combination entity context
+          citation:
+            start: 666
+            end: 2496
+            sha256: d759513b223e4786b32bdf1d67549e238eac5711d65b54e7bb80c16f08159715
+          normalized_text_sha256: d25bc49d13e86c882e086b40cbe95230213db7bda7f61cf0e308d67b4d9774f1
+        - id: acquisition_comparability
+          role: Acquisition-date consolidation changes comparison scope
+          citation:
+            start: 28088
+            end: 28758
+            sha256: 9baa346c2eb4759ed16d5e312d6b35df9a2281d70c5ced15c17ab4d99b2dce5f
+          normalized_text_sha256: d0146f067bae815cdc611bfaba669df505cb2625eb026f5018a50b1d39693764
+        - id: discontinued_operations
+          role: Continuing/discontinued presentation needs review
+          citation:
+            start: 46935
+            end: 47450
+            sha256: 89e290ae198bee2141cc5d70fb054ef699242afd124dbc8711f7ec745decb5f3
+          normalized_text_sha256: fc5b2a3c7797a55c68770fd8980f99327ba7bb840c47cbc97cbd564d2781a063
+      - source_id: securitize_inc_s1_scope_20261001
+        artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+        citations:
+        - id: document_currency_definition
+          role: USD symbol definition applies to this S-1; later-exhibit applicability
+            needs review
+          citation:
+            start: 415035
+            end: 415356
+            sha256: 8502d3e6e1e87419d935a2872f267ff71626b84230bb7639fbcaabd1cd198098
+          normalized_text_sha256: 56c76dec530c8be61abcf772ecc7b75b117a10478176267f746309306b4804f7
+        - id: historical_currency_presentation
+          role: Historical operating statements translation; Q2 continuity needs review
+          citation:
+            start: 4698755
+            end: 4699533
+            sha256: 38756258590d63775e2c2dc8b033978959ab0e88db9cbfb4345e2351b7559936
+          normalized_text_sha256: 0d997a48a7bd6f89da8ded9c9d687bfc506f4abac4aeda43a09053126982c076
+    mappings:
+    - candidate_id: q2_2026_revenue
+      record_id: securitize_inc_q2_2026_revenue_20261001
+      unit: null
+      measurement_basis:
+        definition_id: SECURITIZE_INC_REPORTED_REVENUE
+        accounting_basis: GAAP
+        presentation: null
+        consolidation: CONSOLIDATED
+        operations_basis: null
+        fiscal_calendar_id: null
+        comparability: ACQUISITION_SCOPE_CHANGE
+      rationale: 'PENDING HUMAN REVIEW: GAAP/consolidation and acquisition scope are
+        proposed from cited notes; cross-document USD applicability, gross/net, continuing/all
+        operations and fiscal calendar remain unresolved. Calendar start is an explicit
+        duration normalization, not a literal source quote.'
+    - candidate_id: q2_2025_revenue
+      record_id: securitize_inc_q2_2025_revenue_20261001
+      unit: null
+      measurement_basis:
+        definition_id: SECURITIZE_INC_REPORTED_REVENUE
+        accounting_basis: GAAP
+        presentation: null
+        consolidation: CONSOLIDATED
+        operations_basis: null
+        fiscal_calendar_id: null
+        comparability: ACQUISITION_SCOPE_CHANGE
+      rationale: 'PENDING HUMAN REVIEW: GAAP/consolidation and acquisition scope are
+        proposed from cited notes; cross-document USD applicability, gross/net, continuing/all
+        operations and fiscal calendar remain unresolved. Calendar start is an explicit
+        duration normalization, not a literal source quote.'
+    - candidate_id: h1_2026_revenue
+      record_id: securitize_inc_h1_2026_revenue_20261001
+      unit: null
+      measurement_basis:
+        definition_id: SECURITIZE_INC_REPORTED_REVENUE
+        accounting_basis: GAAP
+        presentation: null
+        consolidation: CONSOLIDATED
+        operations_basis: null
+        fiscal_calendar_id: null
+        comparability: ACQUISITION_SCOPE_CHANGE
+      rationale: 'PENDING HUMAN REVIEW: GAAP/consolidation and acquisition scope are
+        proposed from cited notes; cross-document USD applicability, gross/net, continuing/all
+        operations and fiscal calendar remain unresolved. Calendar start is an explicit
+        duration normalization, not a literal source quote.'
+    - candidate_id: h1_2025_revenue
+      record_id: securitize_inc_h1_2025_revenue_20261001
+      unit: null
+      measurement_basis:
+        definition_id: SECURITIZE_INC_REPORTED_REVENUE
+        accounting_basis: GAAP
+        presentation: null
+        consolidation: CONSOLIDATED
+        operations_basis: null
+        fiscal_calendar_id: null
+        comparability: ACQUISITION_SCOPE_CHANGE
+      rationale: 'PENDING HUMAN REVIEW: GAAP/consolidation and acquisition scope are
+        proposed from cited notes; cross-document USD applicability, gross/net, continuing/all
+        operations and fiscal calendar remain unresolved. Calendar start is an explicit
+        duration normalization, not a literal source quote.'
+  plan_sha256: db152aa426dad7aaa0ac6a9a6ec92ef42d70f0f52205f2e59f22a5009a3cbe8d
+  packet:
+    schema_version: '1.1'
+    id: securitize_inc_admission_table_20261001
+    status: PENDING_REVIEW
+    publishable: false
+    canonical_admission: false
+    sources:
+    - id: securitize_inc_financials_scope_20261001
+      artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+      retrieved_at: '2026-10-01T11:38:34.284485+00:00'
+    - id: securitize_inc_index_scope_20261001
+      artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+      retrieved_at: '2026-10-01T11:38:34.496776+00:00'
+    - id: securitize_inc_mda_scope_20261001
+      artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+      retrieved_at: '2026-10-01T11:38:34.717430+00:00'
+    - id: securitize_inc_s1_scope_20261001
+      artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+      retrieved_at: '2026-10-01T11:38:34.980244+00:00'
+    table_citation:
+      start: 79171
+      end: 140583
+      sha256: 455e159e4127441f9b7fab3ff6099ae4f85bea941a600d8821c6fa0967dbab7a
+    entity_citation:
+      start: 78850
+      end: 78883
+      sha256: 9053c314e6e6dab08ea8d98f11f6ee505e71309055e855a042fa255b54fcaae0
+    statement_citation:
+      start: 79039
+      end: 79119
+      sha256: 63819ebdf652f5f2d721aefccf7e205daf9f89373893f12bafe4d10f47488153
+    publication:
+      accession: 0001628280-26-056811
+      published_on: '2026-08-13'
+      publication_precision: DATE
+      publication_timezone: null
+      index_source_id: securitize_inc_index_scope_20261001
+      date_citation:
+        start: 3618
+        end: 3628
+        sha256: 8e73856aa74988c0ed85bf478b6210b01a9470f9b0561f2f6a57d9eb11772fe9
+      exhibit_link_citation:
+        start: 5695
+        end: 5841
+        sha256: 4f118a9112225f0d16eb30d5dce2a75fdbbbf719dbdb6da9308aa0f679a3a8d8
+      historical_availability: UNKNOWN
+    first_seen_at: '2026-10-01T11:38:34.980244+00:00'
+    ingested_at: null
+    candidates:
+    - id: q2_2026_revenue
+      classification: OBSERVED
+      fixture: false
+      economic_scope: REALIZED
+      reporting_entity_id: securitize_inc
+      reporting_scope: OPERATING_COMPANY
+      reported_label: Revenue
+      value: 14435845
+      original_value_text: 14,435,845
+      display_symbol: $
+      unit: null
+      economic_period:
+        basis: QUARTER
+        start: '2026-04-01'
+        end: '2026-06-30'
+        derivation_status: ANALYST_NORMALIZED_PENDING_REVIEW
+        fiscal_calendar_id: null
+      period_method: CALENDAR_MONTH_DURATION_PENDING_REVIEW_V1
+      source_ids:
+      - securitize_inc_financials_scope_20261001
+      - securitize_inc_index_scope_20261001
+      logical_value_column: 4
+      citations:
+        row:
+          start: 81628
+          end: 81864
+          sha256: e9b71ea8dc0c3b5a8082501881712f75243b5f18b4bc17af1371d54aa44eb9df
+        value:
+          start: 82116
+          end: 82374
+          sha256: 7c2ca522e4309e1e990a43382cf1d500c9b7f705e9a4394e3c01db770964ea51
+        currency_symbol:
+          start: 81864
+          end: 82116
+          sha256: 15526fced36d6f30f20cb6a2f939f8bc3f15e96c3613bcd6368133ebce1dd7d7
+        duration_end_header:
+          start: 80038
+          end: 80298
+          sha256: 67b1585feb13f194f2ddbee9d9e43f15f2f1c099b09f188c47475e5973383b9b
+        year_header:
+          start: 80650
+          end: 80860
+          sha256: 1774dc8f7c3eaf17e1fdd9c31603ece64a30a1d5c6b02a3f495a061716d9429e
+      status: PENDING_REVIEW
+      publishable: false
+    - id: q2_2025_revenue
+      classification: OBSERVED
+      fixture: false
+      economic_scope: REALIZED
+      reporting_entity_id: securitize_inc
+      reporting_scope: OPERATING_COMPANY
+      reported_label: Revenue
+      value: 15262176
+      original_value_text: 15,262,176
+      display_symbol: $
+      unit: null
+      economic_period:
+        basis: QUARTER
+        start: '2025-04-01'
+        end: '2025-06-30'
+        derivation_status: ANALYST_NORMALIZED_PENDING_REVIEW
+        fiscal_calendar_id: null
+      period_method: CALENDAR_MONTH_DURATION_PENDING_REVIEW_V1
+      source_ids:
+      - securitize_inc_financials_scope_20261001
+      - securitize_inc_index_scope_20261001
+      logical_value_column: 10
+      citations:
+        row:
+          start: 81628
+          end: 81864
+          sha256: e9b71ea8dc0c3b5a8082501881712f75243b5f18b4bc17af1371d54aa44eb9df
+        value:
+          start: 82827
+          end: 83085
+          sha256: a5721f26667e35678fb5a75427a4227d3869d68ebf3542736eb0d8239a5211de
+        currency_symbol:
+          start: 82575
+          end: 82827
+          sha256: 15526fced36d6f30f20cb6a2f939f8bc3f15e96c3613bcd6368133ebce1dd7d7
+        duration_end_header:
+          start: 80038
+          end: 80298
+          sha256: 67b1585feb13f194f2ddbee9d9e43f15f2f1c099b09f188c47475e5973383b9b
+        year_header:
+          start: 80903
+          end: 81113
+          sha256: 5c0e889d2262fc662a6f6eb22a1b10db3832fad8bf687a275713a5386777ae23
+      status: PENDING_REVIEW
+      publishable: false
+    - id: h1_2026_revenue
+      classification: OBSERVED
+      fixture: false
+      economic_scope: REALIZED
+      reporting_entity_id: securitize_inc
+      reporting_scope: OPERATING_COMPANY
+      reported_label: Revenue
+      value: 33914311
+      original_value_text: 33,914,311
+      display_symbol: $
+      unit: null
+      economic_period:
+        basis: YTD
+        start: '2026-01-01'
+        end: '2026-06-30'
+        derivation_status: ANALYST_NORMALIZED_PENDING_REVIEW
+        fiscal_calendar_id: null
+      period_method: CALENDAR_MONTH_DURATION_PENDING_REVIEW_V1
+      source_ids:
+      - securitize_inc_financials_scope_20261001
+      - securitize_inc_index_scope_20261001
+      logical_value_column: 16
+      citations:
+        row:
+          start: 81628
+          end: 81864
+          sha256: e9b71ea8dc0c3b5a8082501881712f75243b5f18b4bc17af1371d54aa44eb9df
+        value:
+          start: 83538
+          end: 83796
+          sha256: 1f5a6a5820304e681718ee3f576d96e0b7634acb29ff25123262cd745dcc976e
+        currency_symbol:
+          start: 83286
+          end: 83538
+          sha256: 15526fced36d6f30f20cb6a2f939f8bc3f15e96c3613bcd6368133ebce1dd7d7
+        duration_end_header:
+          start: 80341
+          end: 80598
+          sha256: a54bb1283afb563cb4f6d1ec8694b0cc41a4853938ff2e6d5f99941ead89d010
+        year_header:
+          start: 81156
+          end: 81366
+          sha256: 1774dc8f7c3eaf17e1fdd9c31603ece64a30a1d5c6b02a3f495a061716d9429e
+      status: PENDING_REVIEW
+      publishable: false
+    - id: h1_2025_revenue
+      classification: OBSERVED
+      fixture: false
+      economic_scope: REALIZED
+      reporting_entity_id: securitize_inc
+      reporting_scope: OPERATING_COMPANY
+      reported_label: Revenue
+      value: 29296195
+      original_value_text: 29,296,195
+      display_symbol: $
+      unit: null
+      economic_period:
+        basis: YTD
+        start: '2025-01-01'
+        end: '2025-06-30'
+        derivation_status: ANALYST_NORMALIZED_PENDING_REVIEW
+        fiscal_calendar_id: null
+      period_method: CALENDAR_MONTH_DURATION_PENDING_REVIEW_V1
+      source_ids:
+      - securitize_inc_financials_scope_20261001
+      - securitize_inc_index_scope_20261001
+      logical_value_column: 22
+      citations:
+        row:
+          start: 81628
+          end: 81864
+          sha256: e9b71ea8dc0c3b5a8082501881712f75243b5f18b4bc17af1371d54aa44eb9df
+        value:
+          start: 84249
+          end: 84507
+          sha256: 42d8d6741c70e02d492bdad1267271edf1dc45acdc4c8b5ffca7addbaacbe962
+        currency_symbol:
+          start: 83997
+          end: 84249
+          sha256: 15526fced36d6f30f20cb6a2f939f8bc3f15e96c3613bcd6368133ebce1dd7d7
+        duration_end_header:
+          start: 80341
+          end: 80598
+          sha256: a54bb1283afb563cb4f6d1ec8694b0cc41a4853938ff2e6d5f99941ead89d010
+        year_header:
+          start: 81409
+          end: 81619
+          sha256: 5c0e889d2262fc662a6f6eb22a1b10db3832fad8bf687a275713a5386777ae23
+      status: PENDING_REVIEW
+      publishable: false
+    review_requirements:
+    - SOURCE_DATE_AND_RIGHTS
+    - TABLE_COLUMN_AND_MEASUREMENT_SEMANTICS
+    - CALENDAR_MONTH_DURATION_AND_FISCAL_BASIS
+    - CURRENCY_IS_NOT_VERIFIED_BY_DOLLAR_SYMBOL
+    - OPERATING_COMPANY_IS_NOT_LISTED_ISSUER
+    - PUBLICATION_TIMEZONE_UNKNOWN
+    - SUPPORTING_DOCUMENT_SCOPE_AND_PERIOD_APPLICABILITY
+    canonical_blocker: 'Packet is not a v2 record: currency, measurement basis and
+      reviewed admission remain unresolved.'
+    supporting_evidence:
+    - source_id: securitize_inc_financials_scope_20261001
+      artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+      citations:
+      - id: gaap_consolidation
+        role: Accounting and consolidation basis
+        citation:
+          start: 688666
+          end: 689173
+          sha256: 9b12a374e2ad6a99e4bde4dd13aa308f52a03222fd132a49d6827e13f69c69d1
+        normalized_text_sha256: 69e58dbef962583c3daa2437775c89e4abbb6b205389485e57d74e78e55b6c29
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+      - id: reclassifications
+        role: Prior-period presentation changes
+        citation:
+          start: 695834
+          end: 696101
+          sha256: dbab2e8345e8ff4a9ee189cdc05b9316da7f7cc0772a1d46bfc9caabbca7a9f7
+        normalized_text_sha256: 09f170e851976ec2ac5adf5ce8759d007d88c73ec2ed00585300be1fcb0fc2de
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+      - id: tokenization_revenue_policy
+        role: Recognition timing; not proof of a single gross/net convention
+        citation:
+          start: 1107478
+          end: 1108464
+          sha256: 6f74a98ebec2484d1f888eba836afb9cce45ffff0137651afce2fa4d5de0b923
+        normalized_text_sha256: b777b329512cd2d8a9a5144df593bb3c81b5c55e876e356d6537a4c1fbda8e13
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+    - source_id: securitize_inc_mda_scope_20261001
+      artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+      citations:
+      - id: reporting_entity_transition
+        role: Pre/post-business-combination entity context
+        citation:
+          start: 666
+          end: 2496
+          sha256: d759513b223e4786b32bdf1d67549e238eac5711d65b54e7bb80c16f08159715
+        normalized_text_sha256: d25bc49d13e86c882e086b40cbe95230213db7bda7f61cf0e308d67b4d9774f1
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+      - id: acquisition_comparability
+        role: Acquisition-date consolidation changes comparison scope
+        citation:
+          start: 28088
+          end: 28758
+          sha256: 9baa346c2eb4759ed16d5e312d6b35df9a2281d70c5ced15c17ab4d99b2dce5f
+        normalized_text_sha256: d0146f067bae815cdc611bfaba669df505cb2625eb026f5018a50b1d39693764
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+      - id: discontinued_operations
+        role: Continuing/discontinued presentation needs review
+        citation:
+          start: 46935
+          end: 47450
+          sha256: 89e290ae198bee2141cc5d70fb054ef699242afd124dbc8711f7ec745decb5f3
+        normalized_text_sha256: fc5b2a3c7797a55c68770fd8980f99327ba7bb840c47cbc97cbd564d2781a063
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+    - source_id: securitize_inc_s1_scope_20261001
+      artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+      citations:
+      - id: document_currency_definition
+        role: USD symbol definition applies to this S-1; later-exhibit applicability
+          needs review
+        citation:
+          start: 415035
+          end: 415356
+          sha256: 8502d3e6e1e87419d935a2872f267ff71626b84230bb7639fbcaabd1cd198098
+        normalized_text_sha256: 56c76dec530c8be61abcf772ecc7b75b117a10478176267f746309306b4804f7
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+      - id: historical_currency_presentation
+        role: Historical operating statements translation; Q2 continuity needs review
+        citation:
+          start: 4698755
+          end: 4699533
+          sha256: 38756258590d63775e2c2dc8b033978959ab0e88db9cbfb4345e2351b7559936
+        normalized_text_sha256: 0d997a48a7bd6f89da8ded9c9d687bfc506f4abac4aeda43a09053126982c076
+        text_verified: true
+        semantic_status: PENDING_REVIEW
+reviews: []

@@ -185,6 +185,7 @@ def recover_locked(root):
                                                           "data/v2/events/demo.yaml", "data/v2/events/research.yaml",
                                                           "data/v2/observed/research.yaml")) or
                        (label in ("refresh_staging", "refresh_review") and relative == "data/v2/refresh/research.yaml") or
+                       (label in ("sec_table_staging", "sec_table_review") and relative == "data/v2/refresh/sec_tables.yaml") or
                        (label == "source_staging" and relative == "sources/staging.yaml") or
                        (label == "source_registry_v2" and relative == "sources/v2/sources.yaml") or
                        (label == "changelog" and relative == "reports/changelog.md") or

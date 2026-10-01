@@ -1,5 +1,7 @@
 schema_version: '2.0'
 definitions:
+  SECURITIZE_INC_REPORTED_REVENUE:
+    {kind: FLOW, concepts: [securitize_inc_revenue], accounting: [GAAP], presentation: [GROSS, NET, AS_REPORTED], consolidation: [CONSOLIDATED], operations: [ALL, CONTINUING]}
   SECZ_ISSUER_REVENUE:
     {kind: FLOW, concepts: [secz_revenue, secz_revenue_musd, secz_revenue_eur], accounting: [GAAP, IFRS, ADJUSTED], presentation: [GROSS, NET], consolidation: [CONSOLIDATED, SEGMENT], operations: [ALL, CONTINUING]}
   SECZ_ISSUER_REVENUE_GROWTH:
