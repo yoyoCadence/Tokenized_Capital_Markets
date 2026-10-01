@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.23 / P2-10 currency and accounting evidence — 2026-10-01
+
+- Merge verified PR #22; archive real EX-99.2 MD&A and July 31 S-1 without implicit human review. Six originals remain pending.
+- Add backward-compatible table plan/packet 1.1 supporting original/version/span/normalized-text digests, bounded strict schema and inert parsing; eight real citations tie currency and accounting context to the existing four candidate numbers. Preserve the prior 1.0 packet.
+- S-1 dollar definition and historical presentation support a concrete cross-period currency review, not automatic USD admission. GAAP/consolidation, acquisitions, discontinued operations and reclassifications require explicit scope/comparability decisions. First-seen includes supporting acquisition; publication date and numeric source IDs retain their original meaning.
+- [Validation and next review](p2-10-measurement-validation.md): unit null, canonical evidence zero, P2-10 IN_PROGRESS; next step is human measurement decisions and independent operating-company admission, then governance evidence. Bundle `.11`; v1 financial formulas and snapshots unchanged.
+
 ## Software 0.1.22 / P2-10 real SEC table review packet — 2026-10-01
 
 - Merge verified PR #21 and add offline read-only `sec-table-preview`: original table/nearby operating-entity/statement hashes, colspan logical columns, Revenue/year/duration/value/currency-symbol cells and same-accession SEC index EX-99.1 relationship.

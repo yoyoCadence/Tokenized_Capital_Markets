@@ -198,11 +198,14 @@ def sec_table_packet(*, root=ROOT, plan_path, store_dir):
     with read_lock(root):
         policy = load_sec_table_policy(root)
         plan = read_yaml(plan_path)
-        _fields(plan, {'schema_version': str, 'id': str, 'entity_id': str, 'source_id': str,
+        required = {'schema_version': str, 'id': str, 'entity_id': str, 'source_id': str,
                       'artifact_sha256': str, 'index_source_id': str, 'index_artifact_sha256': str,
                       'entity_heading': dict, 'statement_heading': dict, 'table': dict,
-                      'period_row': int, 'year_row': int, 'columns': list}, 'sec-table-plan')
-        if plan['schema_version'] != '1.0' or not IDENTITY.fullmatch(plan['id']) or plan['entity_id'] != policy['entity_id']:
+                      'period_row': int, 'year_row': int, 'columns': list}
+        if isinstance(plan, dict) and plan.get('schema_version') == '1.1':
+            required['supporting_evidence'] = list
+        _fields(plan, required, 'sec-table-plan')
+        if plan['schema_version'] not in {'1.0', '1.1'} or not IDENTITY.fullmatch(plan['id']) or plan['entity_id'] != policy['entity_id']:
             _fail('Invalid plan ID, version or reporting entity; never assign the operating company to SECZ')
         ledger = _ledger(root)
         primary, data = _source(root, ledger, plan['source_id'], plan['artifact_sha256'], store_dir)
@@ -260,17 +263,46 @@ def sec_table_packet(*, root=ROOT, plan_path, store_dir):
                            'economic_period': bounds, 'period_method': policy['period_method'],
                            'source_ids': [primary['id'], index['id']], 'logical_value_column': col,
                            'citations': citations, 'status': 'PENDING_REVIEW', 'publishable': False})
+        captures, supporting = [primary, index], []
+        if plan['schema_version'] == '1.1':
+            docs = plan['supporting_evidence']
+            if not 1 <= len(docs) <= 8:
+                _fail('Supporting evidence requires one to eight explicit source versions')
+            seen_sources = set()
+            for doc in docs:
+                _fields(doc, {'source_id': str, 'artifact_sha256': str, 'citations': list}, 'sec-table.support')
+                if doc['source_id'] in seen_sources or not 1 <= len(doc['citations']) <= 20:
+                    _fail('Duplicate supporting source or invalid citation count')
+                seen_sources.add(doc['source_id'])
+                cap, original = _source(root, ledger, doc['source_id'], doc['artifact_sha256'], store_dir)
+                if cap['id'] not in {row['id'] for row in captures}:
+                    captures.append(cap)
+                excerpts, seen_ids = [], set()
+                for entry in doc['citations']:
+                    _fields(entry, {'id': str, 'role': str, 'citation': dict, 'normalized_text_sha256': str}, 'sec-table.support.citation')
+                    if not IDENTITY.fullmatch(entry['id']) or entry['id'] in seen_ids or not entry['role'].strip() or not re.fullmatch(r'[0-9a-f]{64}', entry['normalized_text_sha256']):
+                        _fail('Invalid or duplicate supporting citation identity/text')
+                    seen_ids.add(entry['id'])
+                    text, _ = _html(_span(original, entry['citation']))
+                    if hashlib.sha256(text.encode('utf-8')).hexdigest() != entry['normalized_text_sha256']:
+                        _fail('Supporting text differs from the cited original', code='SEC_TABLE_CITATION')
+                    excerpts.append({**entry, 'text_verified': True, 'semantic_status': 'PENDING_REVIEW'})
+                supporting.append({'source_id': cap['id'], 'artifact_sha256': cap['artifact_sha256'], 'citations': excerpts})
         source_reviews = {row['capture_id']: row for row in ledger['reviews']}
         sources = [{'id': cap['id'], 'artifact_sha256': cap['artifact_sha256'],
                     'retrieved_at': cap['retrieved_at'], 'source_approved':
-                    source_reviews.get(cap['id'], {}).get('decision') == 'APPROVED'} for cap in (primary, index)]
-        return {'schema_version': '1.0', 'id': plan['id'], 'status': 'PENDING_REVIEW',
+                    source_reviews.get(cap['id'], {}).get('decision') == 'APPROVED'} for cap in captures]
+        packet = {'schema_version': plan['schema_version'], 'id': plan['id'], 'status': 'PENDING_REVIEW',
                 'publishable': False, 'canonical_admission': False, 'sources': sources,
                 'table_citation': plan['table'], 'entity_citation': plan['entity_heading'],
                 'statement_citation': plan['statement_heading'], 'publication': publication,
-                'first_seen_at': max((cap['retrieved_at'] for cap in (primary, index)), key=lambda v: _instant(v, 'retrieval')),
+                'first_seen_at': max((cap['retrieved_at'] for cap in captures), key=lambda v: _instant(v, 'retrieval')),
                 'ingested_at': None, 'candidates': values,
                 'review_requirements': ['SOURCE_DATE_AND_RIGHTS', 'TABLE_COLUMN_AND_MEASUREMENT_SEMANTICS',
                                         'CALENDAR_MONTH_DURATION_AND_FISCAL_BASIS', 'CURRENCY_IS_NOT_VERIFIED_BY_DOLLAR_SYMBOL',
                                         'OPERATING_COMPANY_IS_NOT_LISTED_ISSUER', 'PUBLICATION_TIMEZONE_UNKNOWN'],
                 'canonical_blocker': 'Packet is not a v2 record: currency, measurement basis and reviewed admission remain unresolved.'}
+        if plan['schema_version'] == '1.1':
+            packet['supporting_evidence'] = supporting
+            packet['review_requirements'].append('SUPPORTING_DOCUMENT_SCOPE_AND_PERIOD_APPLICABILITY')
+        return packet

@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-01 軟體版本 **0.1.22**：已合併 [官方原文取得](reports/p2-10-acquisition-validation.md)，並實作 [真實 SEC 表格審閱包](reports/p2-10-sec-table-validation.md)。四份官方原文已存證待審；`sec-table-preview` 可把四個營運公司收入數字綁定 Revenue／year／duration／currency-symbol 欄位，連到同 accession 的 SEC Filing Date。候選可離線重現，但幣別 null、期間推導待審、營運公司不能直接當上市 SECZ，尚未 canonical admission。**P2-10 IN_PROGRESS**；下一項為幣別／量測原文證據與審閱後 admission，再處理治理證據及 discovery／polling。canonical v2 source/observation/event 與正式 promotion 均為 0，P1-05～07、P2-04／08、G1 與決策級發布仍 BLOCKED；v1 財務／thesis／舊快照維持 LEGACY。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-10-01 軟體版本 **0.1.23**：已合併 [SEC 表格審閱包](reports/p2-10-sec-table-validation.md)，並新增 [幣別／會計證據審閱](reports/p2-10-measurement-validation.md)。六份官方原文已存證待審；新版 `sec-table-preview` 將四筆營運公司收入候選連到八個附註／MD&A／S-1 證據定位，逐一核對原文及正規化文字 digest。S-1 有美元定義及歷史報表美元表達證據，跨文件／期間適用性仍待審；候選幣別保持 null，不直接歸入上市 SECZ。**P2-10 IN_PROGRESS**；下一項為人審量測決議與獨立 operating-company admission，然後治理證據。canonical v2 source/observation/event 均為 0；G1 與決策級發布仍 BLOCKED，v1 公式與舊快照不變。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 

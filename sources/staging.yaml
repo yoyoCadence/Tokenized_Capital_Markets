@@ -97,4 +97,54 @@ captures:
     completed_at: '2026-10-01T09:37:57.989494+00:00'
     status_code: 200
     content_type: text/html; charset=UTF-8
+- id: secz_operating_mda_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit992securitizemdaq22.htm
+  publisher: SEC / Securitize Corp. (Securitize, Inc. exhibit)
+  title: Securitize Q2/H1 2026 management discussion — Exhibit 99.2
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - secz_revenue
+  locator: Exhibit 99.2 / entity definition, comparative results and accounting discussion
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T10:18:09.297106+00:00'
+  retrieved_at: '2026-10-01T10:18:09.296248+00:00'
+  artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+  artifact_bytes: 356493
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T10:18:00.704244+00:00'
+    completed_at: '2026-10-01T10:18:09.297106+00:00'
+    status_code: 200
+    content_type: text/html
+- id: secz_s1_currency_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026051182/secz-20260731.htm
+  publisher: SEC / Securitize Corp. (Securitize, Inc. exhibit)
+  title: Securitize Corp. July 31, 2026 Form S-1 — currency definition and historical
+    operating financial policies
+  document_kind: FILING
+  source_date: '2026-07-31'
+  tier: 1
+  covered_metrics:
+  - secz_revenue
+  locator: Certain Defined Terms / historical operating financials Foreign Currency
+    Translation; applicability to later Q2 exhibit pending review
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T10:19:23.835378+00:00'
+  retrieved_at: '2026-10-01T10:19:23.829551+00:00'
+  artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+  artifact_bytes: 5790137
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T10:19:14.433616+00:00'
+    completed_at: '2026-10-01T10:19:23.835378+00:00'
+    status_code: 200
+    content_type: text/html
 reviews: []

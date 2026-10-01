@@ -127,6 +127,20 @@ JSON plan 可由 strict YAML loader 讀取。每個 `citations` 欄位是 `{star
 
 精確引用、原始數字、單位和期間校驗能拒絕一類擷取錯誤；它們不能證明被引數字真是該公司、该季度或該會計概念。context span 保存定位與 digest，語義仍須審閱。instruction marker 的負例只是有限模式偵測，不是通用 prompt injection 分類器；核心防線是原文永不執行、候選 schema 嚴格、明確人工審閱和經濟 scope 限制。
 
-尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是幣別／量測口徑原文證據與 reviewed operating-company admission，再處理治理欄位／receipt 映射。repo 有四筆未審原文 capture、四筆只供審閱的 SEC 表格候選；canonical source/observation/event/refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
+尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是幣別／量測口徑原文證據與 reviewed operating-company admission，再處理治理欄位／receipt 映射。repo 有六筆未審原文 capture、四筆只供審閱的 SEC 表格候選；canonical source/observation/event/refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
 
-新 snapshot 為 `2.0-compute-bundle.10`，包含 HTTP staging receipt、取得及表格 packet policy／程式和擷取審閱 ledger；packet 不會進核心計算。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。
+新 snapshot 為 `2.0-compute-bundle.11`，包含 HTTP staging receipt、取得及表格 packet policy／程式和擷取審閱 ledger；packet 不會進核心計算。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。
+
+## 第四增量：支持幣別／會計證據（packet 1.1）
+
+新增 `research/secz/p2-10-measurement-plan.yaml` 與 `p2-10-measurement-packet.yaml`，不覆寫原版 1.0 plan/packet。以相同 `sec-table-preview` 命令離線重現新版：
+
+```bash
+python -m engine.cli sec-table-preview --plan research/secz/p2-10-measurement-plan.yaml --store-dir /private/artifacts
+```
+
+1.1 只增 `supporting_evidence`；每份文件必須有唯一 source_id、原文 SHA-256，及 1～20 個唯一 citation ID/role/byte span/normalized_text_sha256。最多八份支持文件、每段最多 8192 bytes，拒絕未知欄位、假文字 digest、錯原版、重複引用及 executable HTML。正規化文字為 inert HTMLParser 可見文字的空白合併；不宣稱完整 CSS 可見性。保存 digest/定位而非長篇原文；實際內容可由外部原版與引用定位核查。
+
+`text_verified=true` 只表示原版／文字相符；`semantic_status=PENDING_REVIEW` 不會設定 USD、GAAP 等 canonical dimensions。source approvals 全部 false、unit null、ingestion null，候選 source_ids 仍為原數字／索引來源；packet sources 加支持來源，first_seen_at 取全部原文的較晚真實取得時間，不回填歷史。支持原文的 source_date 不取代原 Filing Date。
+
+S-1 貨幣定義限其文件；歷史財報的美元表達需審閱是否延續至 Q2 Exhibit 99.1。MD&A 提醒 pre/post-combination identity、2025 acquisition 和 discontinued-operations 比較範圍。gross/net、fiscal calendar、跨期可比性與營運公司身份仍需決議；批准 PR 不等同來源／擷取人審。詳見 [驗收及待審決議](../reports/p2-10-measurement-validation.md)。現有 canonical source/observation/event 仍為 0。
