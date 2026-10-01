@@ -73,4 +73,28 @@ captures:
     completed_at: '2026-10-01T09:01:22.756472+00:00'
     status_code: 200
     content_type: text/html; charset=utf-8
+- id: secz_filing_index_20260813_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/0001628280-26-056811-index.html
+  publisher: SEC EDGAR
+  title: Securitize Corp. accession 0001628280-26-056811 filing index
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - secz_revenue
+  locator: Filing Date, Accepted, Document Format Files EX-99.1
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T09:37:57.989494+00:00'
+  retrieved_at: '2026-10-01T09:37:57.988920+00:00'
+  artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+  artifact_bytes: 10979
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T09:37:50.975456+00:00'
+    completed_at: '2026-10-01T09:37:57.989494+00:00'
+    status_code: 200
+    content_type: text/html; charset=UTF-8
 reviews: []

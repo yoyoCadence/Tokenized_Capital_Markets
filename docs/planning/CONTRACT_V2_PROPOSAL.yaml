@@ -1,5 +1,5 @@
 # P2-10 adds bounded acquisition and unreviewed real originals; canonical financial evidence remains empty.
-contract_version: '2.0-proposal.10'
+contract_version: '2.0-proposal.11'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -89,6 +89,20 @@ research_refresh:
     - 'HOLD and REJECTED remain append-only; interrupted approved publication recovers all outputs without duplicate evidence.'
   implemented_acquisition: explicitly_started_OFFICIAL_HTTP_V1
   unimplemented: [automatic_source_discovery_and_polling, PDF_OCR, real_document_reviewed_financial_and_event_acceptance]
+
+sec_table_review:
+  policy: spec/v2/sec-table-review.yaml
+  command: sec-table-preview
+  packet_schema: '1.0'
+  status: PENDING_REVIEW
+  canonical_admission: false
+  invariants:
+    - 'Unreviewed captured originals may produce a read-only review packet, never a canonical record or implicit source approval.'
+    - 'Explicit original table/entity/statement digests, colspan logical columns, Revenue row, currency symbol, duration and year cells bind each reported number.'
+    - 'The SEC index must identify the same accession and EX-99.1 original; labeled Filing Date is separate from Period of Report and signature date.'
+    - 'Dollar symbol does not prove USD. Unit remains null; calendar-month period normalization is analyst-defined and pending review, not a fabricated literal start-date quote.'
+    - 'Securitize, Inc. operating-company quantities are separate from the listed SECZ issuer role; publication timezone, fiscal calendar and measurement basis remain unresolved.'
+  unimplemented: [reviewed_currency_mapping, reviewed_fiscal_measurement_basis, packet_to_canonical_refresh_admission]
 
 event_monitor:
   ledger: data/v2/events/research.yaml

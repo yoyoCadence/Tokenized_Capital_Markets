@@ -1,0 +1,34 @@
+schema_version: '1.0'
+id: securitize_inc_revenue_review_20261001
+entity_id: securitize_inc
+source_id: secz_operating_q2_2026_20261001
+artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+index_source_id: secz_filing_index_20260813_20261001
+index_artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+entity_heading:
+  start: 78850
+  end: 78883
+  sha256: 9053c314e6e6dab08ea8d98f11f6ee505e71309055e855a042fa255b54fcaae0
+statement_heading:
+  start: 79039
+  end: 79119
+  sha256: 63819ebdf652f5f2d721aefccf7e205daf9f89373893f12bafe4d10f47488153
+table:
+  start: 79171
+  end: 140583
+  sha256: 455e159e4127441f9b7fab3ff6099ae4f85bea941a600d8821c6fa0967dbab7a
+period_row: 1
+year_row: 2
+columns:
+- id: q2_2026_revenue
+  value_column: 4
+  symbol_column: 3
+- id: q2_2025_revenue
+  value_column: 10
+  symbol_column: 9
+- id: h1_2026_revenue
+  value_column: 16
+  symbol_column: 15
+- id: h1_2025_revenue
+  value_column: 22
+  symbol_column: 21

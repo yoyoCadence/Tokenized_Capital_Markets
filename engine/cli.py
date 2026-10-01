@@ -14,6 +14,7 @@ from engine.publication import read_lock, recover, write_lock
 from engine.readiness import load_readiness_plan, readiness_report
 from engine.research_refresh import build_refresh_plan, prepare_refresh, review_refresh, refresh_status
 from engine.source_acquisition import acquire_source
+from engine.sec_table_review import sec_table_packet
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
@@ -111,6 +112,9 @@ def _main(argv=None):
     artifact.add_argument("--id", required=True)
     artifact.add_argument("--store-dir", type=Path, required=True)
     sub.add_parser("source-status", help="Inspect staged sources without publication")
+    sec_packet = sub.add_parser("sec-table-preview", help="Offline original-table/index review packet; never canonical admission")
+    sec_packet.add_argument("--plan", type=Path, required=True)
+    sec_packet.add_argument("--store-dir", type=Path, required=True)
     refresh_plan = sub.add_parser("refresh-plan", help="Locate unique original tokens and print an unreviewed extraction plan")
     refresh_plan.add_argument("--draft", type=Path, required=True)
     refresh_plan.add_argument("--store-dir", type=Path, required=True)
@@ -262,6 +266,9 @@ def _main(argv=None):
                          ensure_ascii=False, indent=2))
     elif args.command == "source-status":
         print(json.dumps(staging_status(root=args.root), ensure_ascii=False, indent=2))
+    elif args.command == "sec-table-preview":
+        print(json.dumps(sec_table_packet(root=args.root, plan_path=args.plan, store_dir=args.store_dir),
+                         ensure_ascii=False, indent=2))
     elif args.command == "refresh-plan":
         result = build_refresh_plan(root=args.root, draft_path=args.draft, store_dir=args.store_dir)
         print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -24,7 +24,7 @@ from engine.thesis.cadence_v2 import evaluate_cadence_v2
 from engine.validation.errors import ValidationError, issue
 
 
-SCHEMA = "2.0-compute-bundle.9"
+SCHEMA = "2.0-compute-bundle.10"
 TRACKS = {"HISTORICAL", "CURRENT"}
 CONFIG = {"requirements.txt", "pyproject.toml"}
 LEDGERS = {"sources/v2/sources.yaml", "sources/staging.yaml", "data/v2/observed/research.yaml",
