@@ -1,3 +1,76 @@
-schema_version: '1.0'
-captures: []
+schema_version: '1.1'
+captures:
+- id: secz_8ka_20260813_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/secz-20260708.htm
+  publisher: SEC / Securitize Corp.
+  title: Securitize Corp. amended 8-K/A filed August 13, 2026
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - secz_revenue
+  locator: 8-K/A / Item 9.01 and signature; links to Exhibit 99.1
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T09:01:03.590367+00:00'
+  retrieved_at: '2026-10-01T09:01:03.589238+00:00'
+  artifact_sha256: 038c353f7482582380a971fcec281f98b26c3e822b4cbe430478b6ac369d2ef1
+  artifact_bytes: 34773
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T09:00:54.431613+00:00'
+    completed_at: '2026-10-01T09:01:03.590367+00:00'
+    status_code: 200
+    content_type: text/html
+- id: secz_operating_q2_2026_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://www.sec.gov/Archives/edgar/data/2094496/000162828026056811/exhibit991securitize-q22026.htm
+  publisher: SEC / Securitize Corp. (Securitize, Inc. exhibit)
+  title: Securitize, Inc. and subsidiaries Q2/H1 2026 unaudited operating financials
+    — Exhibit 99.1
+  document_kind: FILING
+  source_date: '2026-08-13'
+  tier: 1
+  covered_metrics:
+  - secz_revenue
+  locator: Exhibit 99.1 / statements of operations, page 3
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T09:01:14.301610+00:00'
+  retrieved_at: '2026-10-01T09:01:14.298018+00:00'
+  artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+  artifact_bytes: 1161272
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T09:01:04.590528+00:00'
+    completed_at: '2026-10-01T09:01:14.301610+00:00'
+    status_code: 200
+    content_type: text/html
+- id: uni_proposal_93_20261001
+  adapter: OFFICIAL_HTTP_V1
+  status: CAPTURED
+  url: https://vote.uniswapfoundation.org/proposals/93
+  publisher: Uniswap Foundation governance portal
+  title: Uniswap governance proposal 93 — acquired page pending content review
+  document_kind: GOVERNANCE_PROPOSAL
+  source_date: null
+  tier: 2
+  covered_metrics:
+  - uni_burn_value
+  locator: Proposal 93 / original HTML; dynamic content may require a separate original
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-01T09:01:22.756472+00:00'
+  retrieved_at: '2026-10-01T09:01:22.755301+00:00'
+  artifact_sha256: 21efa35abcf40f9057a72a983a8b4ac32a78f721158d99530842ae743d8cd0c6
+  artifact_bytes: 144088
+  failure_reason: null
+  http:
+    requested_at: '2026-10-01T09:01:15.301750+00:00'
+    completed_at: '2026-10-01T09:01:22.756472+00:00'
+    status_code: 200
+    content_type: text/html; charset=utf-8
 reviews: []

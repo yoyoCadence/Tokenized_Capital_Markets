@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.21 / P2-10 official acquisition and original citation audit — 2026-10-01
+
+- Merge verified PR #20 and add explicitly started `OFFICIAL_HTTP_V1` source acquisition: exact official HTTPS hosts, declared User-Agent, no redirect, bounded text/UTF-8/size/transfer time, shared project interval and sanitized persistent failures. Idempotent retries verify existing originals without refetching.
+- Migrate staging to 1.1 with actual HTTP request/completion clocks and response metadata; capture never approves sources or observations. Bundle `.9` preserves the acquisition implementation/policy and receipts; prior v1/v2 snapshots remain unchanged.
+- Archive three real SEC/Uniswap originals outside git and verify nine original-version byte citations with a read-only audit manifest. No source/extraction reviewer is impersonated: all three captures remain unreviewed, and canonical financial/event evidence remains empty.
+- [Acquisition validation](p2-10-acquisition-validation.md) identifies real SEC table/period/unit, parent-exhibit publication and operating-company identity gaps, plus portal-reported execution versus verified chain evidence. P2-10 stays IN_PROGRESS; next task remains real reviewed P2-10 acceptance, and research publication stays BLOCKED.
+
 ## Software 0.1.20 / P2-10 reviewed refresh first increment — 2026-10-01
 
 - Merge verified PR #19 and add manually started SEC filing / Uniswap governance extraction adapters with original-version byte citations, separate source/extraction review, exact units and calendar periods, and no AI SDK or key requirement.

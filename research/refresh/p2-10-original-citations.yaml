@@ -1,0 +1,78 @@
+schema_version: '1.0'
+status: UNREVIEWED_RESEARCH_LEADS
+documents:
+- source_id: secz_8ka_20260813_20261001
+  artifact_sha256: 038c353f7482582380a971fcec281f98b26c3e822b4cbe430478b6ac369d2ef1
+  citations:
+  - id: signature_date
+    role: parent signature date; not an independently verified filing acceptance instant
+    start: 32942
+    end: 32957
+    sha256: fee07a958baab72ec90ae42e1cfbf1151db8d6989ef0c441cc6d61e031c656b9
+  - id: exhibit_link
+    role: parent exhibit relationship
+    start: 27696
+    end: 27727
+    sha256: da994727f65f1b86489f852a6feb6a9447b9558214f8b229afded8c95987588d
+  limitations:
+  - Signature date and hyperlink alone do not establish the publication instant or
+    financial measurement.
+  - Source metadata and redistribution rights await human review.
+- source_id: secz_operating_q2_2026_20261001
+  artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+  citations:
+  - id: reported_revenue
+    role: reported numeric token; column mapping requires review
+    start: 82346
+    end: 82356
+    sha256: cbfc5321572de95f2b6b7022157297b469e4718f523a0b00ed2adec8cad15ad6
+  - id: operating_entity
+    role: operating entity heading
+    start: 461
+    end: 477
+    sha256: af1e141d854bdc7e9e718d8abf2ae1f1dc4ed8871c7086681a828c68a11d5d5e
+  - id: quarter_duration
+    role: duration heading; does not spell out quarter start
+    start: 80258
+    end: 80276
+    sha256: 015136f3b935a011bf55bd3b42d71980846a4931cabeeaabe43d68286b028422
+  limitations:
+  - Operating-company Securitize, Inc. is distinct from the listed issuer and predecessor
+    shell; current secz_revenue role targets SECZ.
+  - Revenue token occurs three times; explicit table-column mapping is necessary.
+  - Original uses a dollar symbol, not an accepted USD token; quarter start and filing
+    publication date are absent as literal tokens.
+  - Parent 8-K/A date and exhibit relationship need a multi-document citation contract;
+    fiscal calendar and historical publication timezone remain unverified.
+- source_id: uni_proposal_93_20261001
+  artifact_sha256: 21efa35abcf40f9057a72a983a8b4ac32a78f721158d99530842ae743d8cd0c6
+  citations:
+  - id: title
+    role: proposal title
+    start: 6281
+    end: 6292
+    sha256: 3c7817ad37e7718e660ff955b13759de3894e8e47b9eadc12662a97c07286cd0
+  - id: reported_execution_label
+    role: portal reported status; no receipt/log validation
+    start: 101595
+    end: 101611
+    sha256: 54a67f6ce91d61b69e429f479a0a3328c6c0da3d5a8050c99238fffbaaab6308
+  - id: reported_creation_time
+    role: embedded portal createdTime field
+    start: 91684
+    end: 91708
+    sha256: 444c74c1f5b838fde3507fc28d8ce298bdc149701f627fc7c62f60b9b73b206b
+  - id: reported_execution_time
+    role: embedded portal executedTime field
+    start: 91897
+    end: 91921
+    sha256: cf0debb2c9597f7e807fcabdad5e05f4b560697e929ced4986ec2bbe1aab878e
+  limitations:
+  - Server HTML contains proposal text and portal-reported execution fields; scripts
+    are not executed.
+  - A portal execution claim is not a verified onchain receipt, inclusive-period burn
+    reconciliation or realized USD burn value.
+  - Existing event adapter does not accept EXECUTED/COMPLETED, and publication evidence/source
+    date remains unreviewed.
+  - Duplicated embedded timestamps require field-level mapping; this audit cannot
+    authorize event publication.

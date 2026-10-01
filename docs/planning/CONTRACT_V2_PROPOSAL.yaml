@@ -1,5 +1,5 @@
-# P2-10 adds explicit extraction review publication; no real evidence is ingested by this code change.
-contract_version: '2.0-proposal.9'
+# P2-10 adds bounded acquisition and unreviewed real originals; canonical financial evidence remains empty.
+contract_version: '2.0-proposal.10'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -62,7 +62,10 @@ market_bridge:
 
 source_archive:
   staging_ledger: sources/staging.yaml
-  adapter: MANUAL_FILE_V1
+  adapters: [MANUAL_FILE_V1, OFFICIAL_HTTP_V1]
+  staging_schema: '1.1'
+  acquisition_registry: spec/v2/source-acquisition.yaml
+  http_receipt_required: [requested_at, completed_at, status_code, content_type]
   canonical_source_optional: [document_kind, artifact_sha256, artifact_bytes, artifact_media_type, artifact_locator, review_id]
   artifact_bytes_location: external_content_addressed_store_outside_public_checkout
   invariants:
@@ -70,6 +73,8 @@ source_archive:
     - 'Approved source metadata records exact digest, locator and review ID; source capture never creates an OBSERVED value.'
     - 'Raw restricted bytes and credential-bearing URLs are not written to the public repository.'
     - 'The v2 bundle archives review metadata and hashes, not the external original document bytes.'
+    - 'HTTP captures use exact official HTTPS hosts, no redirects, bounded UTF-8 text and declared User-Agent; error bodies never count as acquired evidence.'
+    - 'HTTP request/completion/retrieval clocks describe the actual attempt, never historical publication; identical retries do not fetch again.'
 
 research_refresh:
   registry: spec/v2/research-refresh.yaml
@@ -82,7 +87,8 @@ research_refresh:
     - 'Actual extraction approval time determines canonical ingestion; absent source timezone remains unknown for historical selection.'
     - 'Governance milestones cannot automatically create economics, LIVE usage or burn observations.'
     - 'HOLD and REJECTED remain append-only; interrupted approved publication recovers all outputs without duplicate evidence.'
-  unimplemented: [automatic_source_polling, provider_acquisition, PDF_OCR, real_document_end_to_end_acceptance]
+  implemented_acquisition: explicitly_started_OFFICIAL_HTTP_V1
+  unimplemented: [automatic_source_discovery_and_polling, PDF_OCR, real_document_reviewed_financial_and_event_acceptance]
 
 event_monitor:
   ledger: data/v2/events/research.yaml

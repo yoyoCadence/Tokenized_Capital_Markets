@@ -1,0 +1,12 @@
+schema_version: '1.0'
+adapter: OFFICIAL_HTTP_V1
+hosts:
+  FILING: [www.sec.gov, sec.gov]
+  GOVERNANCE_PROPOSAL: [vote.uniswapfoundation.org, gov.uniswap.org]
+media_types: [text/plain, text/html, application/xhtml+xml]
+max_bytes: 33554432
+transfer_timeout_seconds: 10
+total_timeout_seconds: 30
+min_interval_seconds: 1
+redirect_policy: REJECT
+review_policy: 'Acquisition creates an unreviewed capture only; source and extraction approvals remain separate.'
