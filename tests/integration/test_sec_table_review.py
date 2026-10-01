@@ -229,6 +229,71 @@ class SecTableTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             load_temporal_project(root=self.root)
 
+    def support_plan(self):
+        text = 'USD means United States dollars in this other document.'
+        cap = self.capture('synthetic_currency', '<p>' + text + '</p>', self.folder + 'currency.htm')
+        self.plan['schema_version'] = '1.1'
+        self.plan['supporting_evidence'] = [dict(source_id=cap['id'], artifact_sha256=cap['artifact_sha256'],
+            citations=[dict(id='currency_context', role='Applicability pending human review', normalized_text_sha256=hashlib.sha256(text.encode()).hexdigest(),
+                citation=dict(start=0, end=len(text)+7, sha256=cap['artifact_sha256']))])]
+        self.save_plan()
+        return cap
+
+    def test_supporting_currency_text_never_implicitly_approves_or_sets_unit(self):
+        cap = self.support_plan()
+        before = fingerprints(self.root)
+        packet = self.packet()
+        self.assertEqual(packet['schema_version'], '1.1')
+        self.assertEqual(packet['first_seen_at'], cap['retrieved_at'])
+        self.assertEqual(len(packet['sources']), 3)
+        self.assertTrue(packet['supporting_evidence'][0]['citations'][0]['text_verified'])
+        self.assertEqual(packet['supporting_evidence'][0]['citations'][0]['semantic_status'], 'PENDING_REVIEW')
+        self.assertTrue(all(row['unit'] is None for row in packet['candidates']))
+        self.assertFalse(packet['canonical_admission'])
+        self.assertEqual(packet['publication']['published_on'], '2026-08-13')
+        self.assertEqual(fingerprints(self.root), before)
+        self.assertEqual(load_temporal_project(root=self.root)['records'], [])
+
+    def test_supporting_version_text_and_citation_tampering_rejected(self):
+        self.support_plan()
+        original = copy.deepcopy(self.plan)
+        for key, value in [('normalized_text_sha256', '0'*64), ('citation', dict(start=0, end=2, sha256='0'*64)),
+                           ('unit', 'USD')]:
+            self.plan = copy.deepcopy(original)
+            self.plan['supporting_evidence'][0]['citations'][0][key] = value
+            self.save_plan()
+            with self.subTest(key=key), self.assertRaises(ValidationError):
+                self.packet()
+        self.plan = copy.deepcopy(original)
+        self.plan['supporting_evidence'][0]['artifact_sha256'] = '0'*64
+        self.save_plan()
+        with self.assertRaises(ValidationError):
+            self.packet()
+
+    def test_supporting_evidence_schema_counts_duplicates_and_scripts_rejected(self):
+        self.support_plan()
+        original = copy.deepcopy(self.plan)
+        for docs in ([], original['supporting_evidence']*2,
+                     [{**original['supporting_evidence'][0], 'citations': []}],
+                     [{**original['supporting_evidence'][0], 'citations': original['supporting_evidence'][0]['citations']*2}]):
+            self.plan = {**original, 'supporting_evidence': docs}
+            self.save_plan()
+            with self.subTest(docs=docs), self.assertRaises(ValidationError):
+                self.packet()
+        self.plan = copy.deepcopy(original)
+        self.plan['schema_version'] = '1.0'
+        self.save_plan()
+        with self.assertRaisesRegex(ValidationError, 'UNKNOWN_FIELDS'):
+            self.packet()
+        cap = self.capture('synthetic_script', '<script>USD</script>', self.folder + 'script.htm')
+        self.plan = copy.deepcopy(original)
+        self.plan['supporting_evidence'] = [dict(source_id=cap['id'], artifact_sha256=cap['artifact_sha256'],
+            citations=[dict(id='script', role='Must reject', normalized_text_sha256=hashlib.sha256(b'USD').hexdigest(),
+                citation=dict(start=0, end=20, sha256=cap['artifact_sha256']))])]
+        self.save_plan()
+        with self.assertRaises(ValidationError):
+            self.packet()
+
 
 if __name__ == '__main__':
     unittest.main()

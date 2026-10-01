@@ -1,5 +1,5 @@
 # P2-10 adds bounded acquisition and unreviewed real originals; canonical financial evidence remains empty.
-contract_version: '2.0-proposal.11'
+contract_version: '2.0-proposal.12'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -93,7 +93,13 @@ research_refresh:
 sec_table_review:
   policy: spec/v2/sec-table-review.yaml
   command: sec-table-preview
-  packet_schema: '1.0'
+  packet_schema: ['1.0', '1.1']
+  supporting_evidence_1_1:
+    document_fields: [source_id, artifact_sha256, citations]
+    citation_fields: [id, role, citation, normalized_text_sha256]
+    bounds: '1..8 documents, 1..20 unique citations per document, 8192 bytes per span'
+    semantics: 'Exact original and normalized inert text digests; text_verified does not approve accounting, currency or cross-period applicability.'
+    timestamps: 'Packet first_seen_at includes every supporting original acquisition; publication and numeric candidate source_ids remain tied to the original table/index.'
   status: PENDING_REVIEW
   canonical_admission: false
   invariants:
