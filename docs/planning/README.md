@@ -1,12 +1,12 @@
 # 從 MVP 到可用、可驗證投資成果的研究系統
 
-**原始規劃日期：2026-09-25｜進度更新：2026-09-30｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P1-05～07、P2-04、P2-08 研究阻塞中**
+**原始規劃日期：2026-09-25｜進度更新：2026-10-01｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P2-10 IN_PROGRESS；P1-05～07、P2-04、P2-08 研究阻塞中**
 
 原始程式審查基準：commit **68f19531cfd77bc2c70006921a6402e7a10f04f6**。2026-09-25 的交付是規劃與稽核文件；2026-09-26 完成第一個工程工作包。金融觀察值與公式沒有變更。
 
 ## 最新進度
 
-**WP-01（P0-02、P0-01）、P0-03～10、P1-01～04、P1-08 與 P2-07 DONE**：51 項任務中完成 16 項、30 項 PLANNED、P1-05～07、P2-04、P2-08 BLOCKED。軟體 0.1.19；[UNI 證據](../../reports/p1-05-validation.md)、[SECZ 原文](../../reports/p1-06-validation.md)、[XLM native demand](../../reports/p1-07-validation.md)仍有原始證據缺口。[P2-04 TAM](../../reports/p2-04-validation.md)與 [P2-08 Open Universe](../../reports/p2-08-validation.md)已建立唯讀審計橋接，真實證券全集、發現紀錄、四道晉升證據及個人交易資格仍未驗證。SECZ 個人交易資格 unknown；真實 v2 observation 為 0。**v1 金融引擎、thesis 和 snapshot 仍無歷史可知性保證**。G0 工程通過、決策級研究發布 BLOCKED；下一獨立工作包是 **P2-10：有審閱的自動研究 refresh**。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.20**；[P2-10 第一增量](../../reports/p2-10-validation.md)已實作兩條手動原文擷取、獨立審閱、原子發布與離線回放工程流程。自動來源取得／追蹤與真實官方文檔操作驗收未完成，下一工作包仍是 **P2-10**。[UNI](../../reports/p1-05-validation.md)、[SECZ](../../reports/p1-06-validation.md)、[XLM](../../reports/p1-07-validation.md)、[TAM](../../reports/p2-04-validation.md)和 [Open Universe](../../reports/p2-08-validation.md)的真實證據缺口保持可見。真實 v2 observation 為 0、SECZ 個人交易資格 unknown；G0 工程通過、決策級研究發布 BLOCKED。**v1 金融引擎、thesis 和 snapshot 仍無歷史可知性保證**。
 
 ## 先讀這三個結論
 

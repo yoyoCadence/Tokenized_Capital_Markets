@@ -1,5 +1,5 @@
-# P1-04 adds a read-only market bridge; no real prices or financial observations are ingested.
-contract_version: '2.0-proposal.8'
+# P2-10 adds explicit extraction review publication; no real evidence is ingested by this code change.
+contract_version: '2.0-proposal.9'
 status: PROPOSED
 baseline_schema: spec/canonical-schema.yaml
 canonical_classifications: [OBSERVED, DERIVED, ASSUMPTION, SCENARIO]
@@ -70,6 +70,19 @@ source_archive:
     - 'Approved source metadata records exact digest, locator and review ID; source capture never creates an OBSERVED value.'
     - 'Raw restricted bytes and credential-bearing URLs are not written to the public repository.'
     - 'The v2 bundle archives review metadata and hashes, not the external original document bytes.'
+
+research_refresh:
+  registry: spec/v2/research-refresh.yaml
+  ledger: data/v2/refresh/research.yaml
+  implemented_adapters: [SEC_FILING_TEXT_V1, UNISWAP_GOVERNANCE_TEXT_V1]
+  publication: atomic_review_evidence_audit_snapshot_changelog
+  invariants:
+    - 'Exact UTF-8 byte ranges and hashes refer to an approved externally archived original version; raw bytes never enter the refresh ledger.'
+    - 'Source approval and extraction approval are separate; strict template and exact tokens do not verify entity or accounting semantics without review.'
+    - 'Actual extraction approval time determines canonical ingestion; absent source timezone remains unknown for historical selection.'
+    - 'Governance milestones cannot automatically create economics, LIVE usage or burn observations.'
+    - 'HOLD and REJECTED remain append-only; interrupted approved publication recovers all outputs without duplicate evidence.'
+  unimplemented: [automatic_source_polling, provider_acquisition, PDF_OCR, real_document_end_to_end_acceptance]
 
 event_monitor:
   ledger: data/v2/events/research.yaml

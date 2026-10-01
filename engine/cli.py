@@ -12,6 +12,7 @@ from engine.normalization import normalize_plan
 from engine.propagation.ingest import commit_event
 from engine.publication import read_lock, recover, write_lock
 from engine.readiness import load_readiness_plan, readiness_report
+from engine.research_refresh import build_refresh_plan, prepare_refresh, review_refresh, refresh_status
 from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
 from engine.server import serve
 from engine.snapshots import compare, read_snapshots, save_snapshot
@@ -104,6 +105,23 @@ def _main(argv=None):
     artifact.add_argument("--id", required=True)
     artifact.add_argument("--store-dir", type=Path, required=True)
     sub.add_parser("source-status", help="Inspect staged sources without publication")
+    refresh_plan = sub.add_parser("refresh-plan", help="Locate unique original tokens and print an unreviewed extraction plan")
+    refresh_plan.add_argument("--draft", type=Path, required=True)
+    refresh_plan.add_argument("--store-dir", type=Path, required=True)
+    for command in ("refresh-preview", "refresh-stage"):
+        refresh = sub.add_parser(command, help="Verify exact original spans; preview or stage an extraction")
+        refresh.add_argument("--plan", type=Path, required=True)
+        refresh.add_argument("--store-dir", type=Path, required=True)
+    refresh_review = sub.add_parser("refresh-review", help="Review extraction and atomically publish approved evidence")
+    refresh_review.add_argument("--id", required=True)
+    refresh_review.add_argument("--decision", required=True, choices=("APPROVED", "HOLD", "REJECTED"))
+    refresh_review.add_argument("--reviewer", required=True)
+    refresh_review.add_argument("--reason", required=True)
+    refresh_review.add_argument("--store-dir", type=Path, required=True)
+    refresh_review.add_argument("--economic-cutoff")
+    refresh_review.add_argument("--realized-quarter-end")
+    refresh_review.add_argument("--horizon-end")
+    sub.add_parser("refresh-status", help="Inspect pending extraction reviews without publication")
     identity = sub.add_parser("identity", help="Read-only entity/security and eligibility status")
     identity.add_argument("--asset", choices=("UNI", "SECZ", "XLM"))
     identity.add_argument("--namespace")
@@ -232,6 +250,21 @@ def _main(argv=None):
                          ensure_ascii=False, indent=2))
     elif args.command == "source-status":
         print(json.dumps(staging_status(root=args.root), ensure_ascii=False, indent=2))
+    elif args.command == "refresh-plan":
+        result = build_refresh_plan(root=args.root, draft_path=args.draft, store_dir=args.store_dir)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command in ("refresh-preview", "refresh-stage"):
+        result = prepare_refresh(root=args.root, plan_path=args.plan, store_dir=args.store_dir,
+                                 stage=args.command == "refresh-stage")
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "refresh-review":
+        result = review_refresh(root=args.root, proposal_id=args.id, decision=args.decision,
+            reviewer=args.reviewer, reason=args.reason, store_dir=args.store_dir,
+            economic_cutoff=args.economic_cutoff, realized_quarter_end=args.realized_quarter_end,
+            horizon_end=args.horizon_end)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif args.command == "refresh-status":
+        print(json.dumps(refresh_status(root=args.root), ensure_ascii=False, indent=2))
     elif args.command == "identity":
         with read_lock(args.root):
             master = load_identity(args.root)

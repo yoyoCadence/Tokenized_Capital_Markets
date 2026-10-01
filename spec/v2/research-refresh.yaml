@@ -1,0 +1,21 @@
+schema_version: '1.0'
+adapters:
+  SEC_FILING_TEXT_V1:
+    document_kind: FILING
+    hosts: [www.sec.gov, sec.gov]
+    target: OBSERVATION
+  UNISWAP_GOVERNANCE_TEXT_V1:
+    document_kind: GOVERNANCE_PROPOSAL
+    hosts: [vote.uniswapfoundation.org, gov.uniswap.org]
+    target: EVENT
+    types: [governance, protocol_fee_change]
+    statuses: [PLANNED, ANNOUNCED, APPROVED]
+unit_tokens:
+  USD: [USD, US dollars, dollars]
+  USD_MILLION: [USD millions, dollars in millions]
+  BP: [BP, basis points]
+  PERCENT: [PERCENT, percent, '%']
+  SHARE: [SHARE, shares]
+  UNI: [UNI]
+artifact_policy: 'Exact UTF-8 byte spans in an archived original; no OCR, executable source instructions, implicit scaling or AI SDK.'
+review_policy: 'Source approval and extraction approval are separate. Matching bytes do not establish accounting scope or economic truth.'
