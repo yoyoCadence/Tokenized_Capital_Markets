@@ -52,13 +52,29 @@ python -m engine.cli source-verify --id official_http_v1 --store-dir /private/ar
 - 相同 ID／metadata 重試只回既有紀錄；CAPTURED 必須先驗證外部原文，FAILED 不自動重打。需重新取得時 append 新 ID，適用時附 `supersedes_id`。舊 1.0 manual ledger 可讀，首次 HTTP capture 升為 1.1。
 - 原文存放與備份由外部 artifact store 負責。clone repo 只有 metadata／hash，不能取代原文；缺少原版 bytes 時不能完成引用驗證，不可覆寫舊 digest，重新下載要新版本。
 
-三份真實官方原文已取得但未核准，詳見 [第二增量驗收](../reports/p2-10-acquisition-validation.md)。可使用本次原版 artifact store 執行唯讀引用稽核：
+第二增量取得三份未核准官方原文，詳見 [驗收](../reports/p2-10-acquisition-validation.md)；第三增量再取得 SEC 索引，現在共四份待審原文。可使用原版 artifact store 執行第二增量的唯讀引用稽核：
 
 ```bash
 python -m scripts.verify_original_citations --plan research/refresh/p2-10-original-citations.yaml --store-dir /private/artifacts
 ```
 
 這只核對完整原文 hash 和九處 byte ranges，明示 `UNREVIEWED_RESEARCH_LEADS`／`financial_publication=false`。SEC 財報以表頭、年份欄位及 `$` 記帳，沒有擷取器要求的起日、USD 與公開日期字面 token；同一收入數字出現三次。不能拼出原文沒有的引用，也不能把合併前營運公司數字直接指派給上市 SECZ。治理 HTML 包含 portal-reported execution／creation timestamps；未審日期、欄位對應和鏈上 receipt 仍是缺口。
+
+## 真實 SEC 表格審閱包
+
+`sec-table-preview` 是獨立的唯讀、離線候選檢查，可從未審 captured 原文建立 review packet；它不會替來源核准，不沿用文字 adapter 的 literal 日期假設，也不發布 v2 record。
+
+```bash
+python -m engine.cli sec-table-preview --plan research/secz/p2-10-table-plan.yaml --store-dir /private/artifacts
+```
+
+本次 plan 明確引用完整 financial table、近旁營運公司及 statement heading，以及同 accession 的 SEC index。colspans 展開成 logical columns，Revenue row 的數字綁定各自 `$`／year／Three or Six Months Ended cell；每一個 cell 保存 exact raw bytes citation。索引的 EX-99.1 href 必須指向同一原版，Filing Date 有獨立引用；Period of Report 和簽名日期不代替 publication。
+
+plan 欄位：`schema_version: '1.0'`、`id`、`entity_id: securitize_inc`、`source_id`／`artifact_sha256`、`index_source_id`／`index_artifact_sha256`、`entity_heading`／`statement_heading`／`table` 各自的 `{start,end,sha256}`、`period_row`／`year_row` zero-based row index，以及 `columns` 的 `{id,value_column,symbol_column}` zero-based **logical** indices。目前只支援這種顯式營運公司 Revenue table，拒絕 rowspans、nested／irregular rows、不明符號／數字／period 和無法核對的關聯，不宣稱泛用 HTML/CSS 解析。
+
+四筆真實擷取結果保存在 [packet](../research/secz/p2-10-table-packet.yaml)，皆 **PENDING_REVIEW**／`publishable=false`／`canonical_admission=false`。unit null，因 `$` 不足以認定 USD。Three／Six Months Ended 加年份的月末日期可生成明示的待審日曆區間，標 `ANALYST_NORMALIZED_PENDING_REVIEW`，不是原文含起日的 quote；fiscal calendar／量測口徑仍未知。entity 固定為營運公司 `securitize_inc`，不能改成上市 SECZ role。
+
+來源/數值分類、日曆推導、publication date、unknown timezone、兩份原文的實際 retrieval 和完整 review requirements 都在 packet 保留。first_seen 用兩份 supporting originals 的較晚 retrieval；ingested_at null。clone repo 的 packet 只供審閱，不能直接複製到 canonical records；財務 validator 會拒絕它。語義人審、幣別證據與 packet-to-canonical admission 尚未完成，見 [第三增量驗收](../reports/p2-10-sec-table-validation.md)。
 
 ## 草稿格式
 
@@ -111,6 +127,6 @@ JSON plan 可由 strict YAML loader 讀取。每個 `citations` 欄位是 `{star
 
 精確引用、原始數字、單位和期間校驗能拒絕一類擷取錯誤；它們不能證明被引數字真是該公司、该季度或該會計概念。context span 保存定位與 digest，語義仍須審閱。instruction marker 的負例只是有限模式偵測，不是通用 prompt injection 分類器；核心防線是原文永不執行、候選 schema 嚴格、明確人工審閱和經濟 scope 限制。
 
-尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是 SEC 表格／多文件引用與 operating-company 口徑，以及治理欄位／receipt 的明確映射。repo 有三筆未審原文 capture；canonical source/observation/event/refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
+尚未實作：自動 discovery／polling／排程、PDF/OCR、網頁多版自動比對、任意文件語義理解、真實 SEC／治理原文的審閱發布端到端驗收。P2-10 因此維持 **IN_PROGRESS**，下一步是幣別／量測口徑原文證據與 reviewed operating-company admission，再處理治理欄位／receipt 映射。repo 有四筆未審原文 capture、四筆只供審閱的 SEC 表格候選；canonical source/observation/event/refresh ledger 仍空，G1 和決策級研究發布維持 BLOCKED。
 
-新 snapshot 為 `2.0-compute-bundle.9`，包含 HTTP staging receipt、取得 policy／程式及擷取審閱 ledger。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。
+新 snapshot 為 `2.0-compute-bundle.10`，包含 HTTP staging receipt、取得及表格 packet policy／程式和擷取審閱 ledger；packet 不會進核心計算。前版 bundle 不改写；回放舊 v2 bundle 需匹配它封存的程式／環境版本。兩份原始 v1 demo snapshot 不變。

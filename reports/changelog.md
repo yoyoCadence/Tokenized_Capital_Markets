@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.22 / P2-10 real SEC table review packet — 2026-10-01
+
+- Merge verified PR #21 and add offline read-only `sec-table-preview`: original table/nearby operating-entity/statement hashes, colspan logical columns, Revenue/year/duration/value/currency-symbol cells and same-accession SEC index EX-99.1 relationship.
+- Archive the real SEC filing index externally and retain its actual acquisition metadata. Separate labeled Filing Date from report period/signature; unknown timezone stays unknown. Reproduce four real operating-company candidate quantities with exact cell citations and supporting original digests.
+- Dollar symbol does not establish USD: unit stays null. Calendar-month bounds are explicit analyst normalization pending review, not invented original quotes. Operating-company quantities cannot enter the SECZ issuer role; packet is not a canonical v2 record, and ingestion remains null.
+- [Third-increment validation](p2-10-sec-table-validation.md) and [workflow](../docs/RESEARCH_REFRESH.md) retain four unreviewed captures, zero canonical research evidence, P2-10 IN_PROGRESS and research publication BLOCKED. Bundle `.10` freezes code/policy; existing financial formulas and snapshots remain unchanged. Next work is explicit currency/measurement evidence and reviewed operating-company admission, then governance evidence.
+
 ## Software 0.1.21 / P2-10 official acquisition and original citation audit — 2026-10-01
 
 - Merge verified PR #20 and add explicitly started `OFFICIAL_HTTP_V1` source acquisition: exact official HTTPS hosts, declared User-Agent, no redirect, bounded text/UTF-8/size/transfer time, shared project interval and sanitized persistent failures. Idempotent retries verify existing originals without refetching.

@@ -6,7 +6,7 @@
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.21**；[P2-10 第一增量](../../reports/p2-10-validation.md)的原文擷取、獨立審閱、原子發布與離線回放已合併；[第二增量](../../reports/p2-10-acquisition-validation.md)補上手動啟動官方 HTTPS 下載，三份真實原文待審、九處 byte citations 核對成功。自動發現／polling 和真實 SEC 表格／多文件／實體口徑及治理事件審閱驗收未完成，下一工作包仍是 **P2-10**。[UNI](../../reports/p1-05-validation.md)、[SECZ](../../reports/p1-06-validation.md)、[XLM](../../reports/p1-07-validation.md)、[TAM](../../reports/p2-04-validation.md)和 [Open Universe](../../reports/p2-08-validation.md)的真實證據缺口保持可見。真實 canonical source/observation/event 為 0、SECZ 個人交易資格 unknown；G0 工程通過、決策級研究發布 BLOCKED。**v1 金融引擎、thesis 和 snapshot 仍無歷史可知性保證**。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.22**；[P2-10 第一增量](../../reports/p2-10-validation.md)的審閱發布／回放和[第二增量](../../reports/p2-10-acquisition-validation.md)的官方原文取得已合併。[第三增量](../../reports/p2-10-sec-table-validation.md)從真實表格／同 accession 索引生成四筆可重現的營運公司 Revenue 候選，保留 exact cell citations、publication date 與 unknown currency/timezone。四份原文待審；日曆區間為明示待審推導，packet 不入上市 SECZ role 或 canonical ledger。下一工作包仍 **P2-10**：幣別／量測原文與 reviewed admission，然後治理證據。真實 canonical source/observation/event 為 0、SECZ 個人交易資格 unknown；[UNI](../../reports/p1-05-validation.md)、[SECZ](../../reports/p1-06-validation.md)、[XLM](../../reports/p1-07-validation.md)、[TAM](../../reports/p2-04-validation.md)、[Open Universe](../../reports/p2-08-validation.md)及 G1 的缺口保持可見；G0 工程通過、決策級研究發布 BLOCKED。**v1 金融引擎、thesis 和 snapshot 仍無歷史可知性保證**。
 
 ## 先讀這三個結論
 

@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.11'
+version: '1.12'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-10-01'
@@ -592,12 +592,12 @@ tasks:
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
     progress:
       prepared_on: '2026-10-01'
-      implementation_ref: feat/p2-10-official-acquisition
-      evidence: reports/p2-10-acquisition-validation.md
-      prior_evidence: reports/p2-10-validation.md
+      implementation_ref: feat/p2-10-sec-table-review
+      evidence: reports/p2-10-sec-table-validation.md
+      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md]
       changelog: reports/changelog.md
-      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py]
-      result: 原文定位/擷取審閱/原子發布/離線回放與手動啟動官方 HTTPS 下載已實作；三份真實 SEC/治理原文已存證待審、九處引用離線核對成功。自動發現/polling、真實財報表格/多文件/實體口徑與治理事件端到端核准未完成，維持 IN_PROGRESS，下一工作包仍 P2-10。
+      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py]
+      result: 原文定位/審閱發布/回放與官方 HTTPS 下載已實作；四份真實原文待審，SEC 表格加同 accession 索引可離線生成四筆有 column/year/duration/value/currency-symbol 引用的營運公司候選。起日為待審日曆推導，幣別 null，不入上市 SECZ role。仍缺審閱幣別/會計期間口徑、候選入庫、治理事件與自動 polling，維持 IN_PROGRESS，下一工作包仍 P2-10。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2
