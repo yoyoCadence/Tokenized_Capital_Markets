@@ -1,8 +1,8 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.9'
+version: '1.10'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-09-30'
+updated_on: '2026-10-01'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
@@ -581,7 +581,7 @@ tasks:
     title: 有審閱的自動研究 refresh
     phase: P2
     priority: P1
-    status: PLANNED
+    status: IN_PROGRESS
     owner_role: engineering_research
     effort_points: 5
     depends_on: [P1-01, P1-08, P2-07]
@@ -590,6 +590,13 @@ tasks:
       - SEC 財報與 protocol governance 至少各一個可重播流程。
       - AI 擷取有原文 locator/版本，捏造引用、錯單位、prompt injection 測試拒絕。
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
+    progress:
+      prepared_on: '2026-10-01'
+      implementation_ref: feat/p2-10-reviewed-refresh
+      evidence: reports/p2-10-validation.md
+      changelog: reports/changelog.md
+      tests: [tests/integration/test_research_refresh.py]
+      result: 兩條手動原文定位/擷取審閱/原子發布/離線回放工程流程已實作；原文與擷取結果分開核准，拒絕假引用/錯單位/常見指令注入。自動取得/追蹤與真實 SEC/治理原文操作驗收未完成，維持 IN_PROGRESS，下一工作包仍 P2-10。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2

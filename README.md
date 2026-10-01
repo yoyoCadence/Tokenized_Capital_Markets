@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-09-30 已完成 **WP-01、P0-03～P0-10、P1-01～04、P1-08 與 P2-07**。軟體版本 0.1.19，見 [P2-08 Open Universe 驗收](reports/p2-08-validation.md)。v2 有雙時間選值、經濟 scope、季度證據、身分主檔、唯讀正規化、市場橋接、事件監控、bottom-up TAM 與候選研究 ledger；原始來源需存證人審才能成為研究證據。v1 財務／thesis／舊快照仍是 LEGACY。G0 工程通過，真實 observation 與正式 promotion 均為 0；P1-05～07、P2-04、P2-08 研究仍 BLOCKED，決策級研究發布不可用。下一個獨立工作包 **P2-10：有審閱的自動研究 refresh**，依賴與驗收見 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
+2026-10-01 軟體版本 **0.1.20**：已合併 [P2-08 Open Universe](reports/p2-08-validation.md)，並實作 [P2-10 審閱更新第一增量](reports/p2-10-validation.md)。可手動從已核准原文定位財報數值／治理里程碑，經獨立擷取審閱後原子入庫、產生 audit bundle 並離線回放；原文版本、數值、單位與期間須精確匹配。自動取得／追蹤與真實文檔操作驗收未完成，**P2-10 IN_PROGRESS**，下一步仍是 P2-10。v1 財務／thesis／舊快照仍是 LEGACY；真實 v2 observation 與正式 promotion 均為 0，P1-05～07、P2-04、P2-08 研究及決策級發布維持 BLOCKED。詳見 [操作說明](docs/RESEARCH_REFRESH.md)和 [backlog](docs/planning/IMPLEMENTATION_BACKLOG.yaml)。
 
 ## Requirements / 啟動
 
@@ -42,6 +42,7 @@ python -m engine.cli readiness-report --economic-cutoff 2026-09-30 --knowledge-c
 python -m engine.cli event-monitor --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T02:00:00Z --policy AS_KNOWN_BY_SYSTEM
 python -m engine.cli tam-report
 python -m engine.cli universe-report --economic-cutoff 2026-09-30 --knowledge-cutoff 2026-09-30T06:00:00Z --policy AS_KNOWN_BY_SYSTEM
+python -m engine.cli refresh-status
 ```
 
 `identity` 是唯讀的公開資料重建，日期只判斷工具 alias 的有效期間，不表示本系統當日已取得證據。SECZ `market_instrument_status=LISTED`，但 `user_trade_eligibility=UNKNOWN`、`investable=null`；tokenized form 的個人資格和起始時間另待驗證。見 [P1-02 報告](reports/p1-02-validation.md)。

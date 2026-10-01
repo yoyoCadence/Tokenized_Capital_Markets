@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.20 / P2-10 reviewed refresh first increment — 2026-10-01
+
+- Merge verified PR #19 and add manually started SEC filing / Uniswap governance extraction adapters with original-version byte citations, separate source/extraction review, exact units and calendar periods, and no AI SDK or key requirement.
+- Add atomic approved extraction publication and actual UTC ingestion with replayable bundle `.8`, including proposal/review metadata; reject fabricated spans, scale/unit mismatches and known instruction markers. Source text is never executed, and human semantic review remains necessary.
+- [P2-10 validation](p2-10-validation.md) and [workflow](../docs/RESEARCH_REFRESH.md) record synthetic verification and remaining acquisition/real-document gaps. P2-10 is IN_PROGRESS; all real evidence remains empty and research publication BLOCKED. No v1 source, financial formula or snapshot changed.
+
 ## Software 0.1.19 / P2-08 open universe audit — 2026-09-30
 
 - Add strict read-only `universe-report` with all 13 legacy research, secondary and context nodes, all seven discovery trigger types, raw lead provenance, assumed exposure graph and new candidate links. Undated legacy seed labels are visible without claiming historical system knowledge.

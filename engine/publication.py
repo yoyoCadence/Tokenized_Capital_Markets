@@ -182,7 +182,9 @@ def recover_locked(root):
             label = entry["label"]
             relative = entry["path"]
             allowed = ((label == "ledger" and relative in ("data/observed/demo.yaml", "data/observed/research.yaml",
-                                                          "data/v2/events/demo.yaml", "data/v2/events/research.yaml")) or
+                                                          "data/v2/events/demo.yaml", "data/v2/events/research.yaml",
+                                                          "data/v2/observed/research.yaml")) or
+                       (label in ("refresh_staging", "refresh_review") and relative == "data/v2/refresh/research.yaml") or
                        (label == "source_staging" and relative == "sources/staging.yaml") or
                        (label == "source_registry_v2" and relative == "sources/v2/sources.yaml") or
                        (label == "changelog" and relative == "reports/changelog.md") or
