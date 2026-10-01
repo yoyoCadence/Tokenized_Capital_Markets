@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.19 / P2-08 open universe audit — 2026-09-30
+
+- Add strict read-only `universe-report` with all 13 legacy research, secondary and context nodes, all seven discovery trigger types, raw lead provenance, assumed exposure graph and new candidate links. Undated legacy seed labels are visible without claiming historical system knowledge.
+- Keep HOLD/REJECT/PROMOTE reviews as ordered versions. Four independent gates require evidence before promotion, with named personal instrument route for investability. Historical cutoffs exclude later triggers and decisions; demo fixture promotions never become real CORE or trade authorization.
+- [P2-08 validation](p2-08-validation.md) records the empty real trigger/decision ledger and BLOCKED research gate. No canonical source, observation, formula or snapshot changed; P2-10 is the next independent package.
+
 ## Software 0.1.18 / P2-04 bottom-up TAM accounting — 2026-09-30
 
 - Add read-only `tam-report` with explicit equity/fund/credit issuer/security cohorts, one legal claim per security, native/wrapped/bridged representation lineage and fund-underlying overlap links. Stock steps require separate evidence and shrink from eligible through issued, float and serviceable float; incomplete coverage returns null.
