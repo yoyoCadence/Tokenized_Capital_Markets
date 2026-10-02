@@ -362,4 +362,184 @@ captures:
   artifact_sha256: 3da86359f4eaff67b5cc9343ddb992a2a5411ef00ab926ae13e54e64533c6046
   artifact_bytes: 42835
   failure_reason: null
+- id: uni_receipt_receipt_blast_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth-mainnet.public.blastapi.io
+  publisher: Blast API
+  title: 'UNI receipt/vesting review: receipt_blast'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:42.515104+00:00'
+  retrieved_at: '2026-10-02T10:58:42.515104+00:00'
+  artifact_sha256: dbc7e1cd166a870c97d5545d6990d815ff6f2a691c1756fdbeeac54dadced2a9
+  artifact_bytes: 20888
+  failure_reason: null
+- id: uni_receipt_receipt_mev_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://rpc.mevblocker.io
+  publisher: MEV Blocker
+  title: 'UNI receipt/vesting review: receipt_mev'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:42.646739+00:00'
+  retrieved_at: '2026-10-02T10:58:42.646739+00:00'
+  artifact_sha256: 976370bc94e2af3327e22a571b543153d6721bc2025d1af34c156b773f6f8ae4
+  artifact_bytes: 20875
+  failure_reason: null
+- id: uni_receipt_vesting_rpc_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://ethereum-rpc.publicnode.com
+  publisher: PublicNode
+  title: 'UNI receipt/vesting review: vesting_rpc'
+  document_kind: CONTRACT_EVENT
+  source_date: '2026-01-05'
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:42.779595+00:00'
+  retrieved_at: '2026-10-02T10:58:42.779595+00:00'
+  artifact_sha256: 3c058c8432c4f6d3d49cedaa63b301cfcc5830bf3949aec2a2e69940dc7b4604
+  artifact_bytes: 21963
+  failure_reason: null
+- id: uni_receipt_vesting_indexer_tx_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth.blockscout.com/api/v2/transactions/0x3143564279cec3aab40ec01146c0ca4a9b8339f1516646ac58496f6d198148b2
+  publisher: Blockscout
+  title: 'UNI receipt/vesting review: vesting_indexer_tx'
+  document_kind: ANALYTICS
+  source_date: '2026-01-05'
+  tier: 3
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:42.920058+00:00'
+  retrieved_at: '2026-10-02T10:58:42.920058+00:00'
+  artifact_sha256: aa0b46a12fbe45d88d0647292290cd28b0854dd543aa046ebb324690f99fb9eb
+  artifact_bytes: 5032
+  failure_reason: null
+- id: uni_receipt_vesting_indexer_logs_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth.blockscout.com/api/v2/transactions/0x3143564279cec3aab40ec01146c0ca4a9b8339f1516646ac58496f6d198148b2/logs
+  publisher: Blockscout
+  title: 'UNI receipt/vesting review: vesting_indexer_logs'
+  document_kind: ANALYTICS
+  source_date: '2026-01-05'
+  tier: 3
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:43.064709+00:00'
+  retrieved_at: '2026-10-02T10:58:43.064709+00:00'
+  artifact_sha256: 968b49958b89e68e0174f49ee69ba2e03a0474352f0ae78cf8eb6cd64d19ae08
+  artifact_bytes: 7690
+  failure_reason: null
+- id: uni_receipt_vesting_contract_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth.blockscout.com/api/v2/smart-contracts/0xca046a83edb78f74ae338bb5a291bf6fdac9e1d2
+  publisher: Blockscout
+  title: 'UNI receipt/vesting review: vesting_contract'
+  document_kind: ANALYTICS
+  source_date: null
+  tier: 3
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned request/response context; source_date is block context only
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T10:58:43.207092+00:00'
+  retrieved_at: '2026-10-02T10:58:43.207092+00:00'
+  artifact_sha256: 19424349d1b660e892cc11dd65304061a15b66bb58caf4cefebc8fea1e53ed3c
+  artifact_bytes: 65262
+  failure_reason: null
+- id: uni_receipt_official_source_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://raw.githubusercontent.com/Uniswap/protocol-fees/0c071d199dc32556365c78e03ec3f4d09b9fbf37/src/UNIVesting.sol
+  publisher: Uniswap
+  title: 'UNI receipt/vesting review: official_source'
+  document_kind: OTHER
+  source_date: null
+  tier: 2
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned source bytes; publication date unknown
+  rights: RESTRICTED
+  media_type: text/plain
+  attempted_at: '2026-10-02T10:58:43.354635+00:00'
+  retrieved_at: '2026-10-02T10:58:43.354635+00:00'
+  artifact_sha256: b03f86dae389e0b452e21e30583ee70d0dd4d39abf9cfab6b99a68752a1a1442
+  artifact_bytes: 6206
+  failure_reason: null
+- id: uni_receipt_official_interface_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://raw.githubusercontent.com/Uniswap/protocol-fees/0c071d199dc32556365c78e03ec3f4d09b9fbf37/src/interfaces/IUNIVesting.sol
+  publisher: Uniswap
+  title: 'UNI receipt/vesting review: official_interface'
+  document_kind: OTHER
+  source_date: null
+  tier: 2
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned source bytes; publication date unknown
+  rights: RESTRICTED
+  media_type: text/plain
+  attempted_at: '2026-10-02T10:58:43.503870+00:00'
+  retrieved_at: '2026-10-02T10:58:43.503870+00:00'
+  artifact_sha256: a7207aee868d6cfcfcabc58fd12a232bb17d761b13b2b6362ac1815a545cc043
+  artifact_bytes: 2908
+  failure_reason: null
+- id: uni_receipt_publisher_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://vote.uniswapfoundation.org/forums/7/duni-q4-and-year-end-2025-financial-statements-and-tax-update
+  publisher: Uniswap governance forum / DUNI
+  title: 'UNI receipt/vesting review: publisher'
+  document_kind: OFFICIAL_RELEASE
+  source_date: null
+  tier: 2
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Pinned source bytes; publication date unknown
+  rights: RESTRICTED
+  media_type: text/html
+  attempted_at: '2026-10-02T10:58:43.694640+00:00'
+  retrieved_at: '2026-10-02T10:58:43.694640+00:00'
+  artifact_sha256: 92292a8a2fff451c1398df101f797c5029b9ee5f0aaf13ba2904c1ce238a3c50
+  artifact_bytes: 266191
+  failure_reason: null
 reviews: []

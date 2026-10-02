@@ -196,3 +196,15 @@ python -m scripts.verify_uni_execution --plan research/uni/p2-10-execution-plan.
 [真實 packet](../research/uni/p2-10-execution-packet.yaml)保存 15 筆 raw log 一致性、八個順序呼叫、UNI raw 金額/18 decimals 展示與日期衝突。100M treasury 轉 dead 是 2025 年一次性動作；40M allowance 不等於季度分配。兩家 RPC 三次 receipt 回覆都是 null，不能據此稱交易 pending 或 failed。full receipt/finality、totalSupply、全期間 recurring fee burn 與 USD 值仍 unknown；正值 receipt 需追加新版稽核契約。
 
 十二份唯一原文／十六個未審 captures，0 reviews／canonical evidence；舊 SEC proposals 不變。各 JSON 為手動提供原檔的實際 archive 時點，沒有 HTTP receipt，source_date 僅 block context。舊 portal 日期仍 null；96,972 秒 UTC 衝突保留。請依 [來源與語義待審事項](../research/uni/p2-10-execution-review.md)完成真實 acceptance 與 P1-05 季度 coverage；[工程驗收](../reports/p2-10-governance-execution-validation.md)不代表 G1 已通過。
+
+## 第八增量：完整 receipt 與第一筆實際 vesting
+
+新增 [receipt-capable helper](../scripts/verify_uni_receipts.py)、[九角色 plan](../research/uni/p2-10-receipt-plan.yaml) 和 [packet](../research/uni/p2-10-receipt-packet.yaml)。先重播未修改的治理 checker，再驗證 Blast API／MEV Blocker 的正值 receipts、standard fields 和所有 raw logs。舊 null 原文不覆寫；source review／financial admission 仍沒有自動批准。
+
+```bash
+python -m scripts.verify_uni_receipts --plan research/uni/p2-10-receipt-plan.yaml --store-dir /private/artifacts
+```
+
+治理 15 logs 相同；Jan5 三筆 Approval／Transfer／Withdrawn 支持 treasury 的單筆 5M UNI 轉出，並與官方 DUNI 的第一筆 grant 敘述相符。caller 與 recipient 不同；40M allowance 與 35M 剩餘 allowance 不能當成分配量。全文 source／interface 與 pinned GitHub commit byte match 只提供 ABI context，不能代替歷史 bytecode／設定核對。
+
+完整標準 receipt payloads 一致仍未提供 trie inclusion／finality ancestry；portal 時間衝突保留。quartersPaid=1 不是季度 coverage，Q1 total／fee burn／totalSupply／USD 留 null。新九筆手動 capture 的 actual archive clocks 與 envelope acquisition clocks 分開，source dates 不冒充 API／報告公開日。21 originals／25 captures、0 reviews／canonical evidence；SEC proposals 不變。詳見 [具體審閱事項](../research/uni/p2-10-receipt-review.md) 與 [工程驗收](../reports/p2-10-receipt-validation.md)。P2-10 IN_PROGRESS、G1 BLOCKED。
