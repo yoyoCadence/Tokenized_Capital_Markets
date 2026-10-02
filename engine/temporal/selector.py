@@ -220,10 +220,10 @@ def validate_temporal_project(project):
                             "operations_basis": str, "fiscal_calendar_id": str,
                             "comparability": str}, {}, f"{path}.measurement_basis")
             if (basis["accounting_basis"] not in {"GAAP", "IFRS", "ADJUSTED", "NOT_APPLICABLE"} or
-                    basis["presentation"] not in {"GROSS", "NET", "NOT_APPLICABLE"} or
+                    basis["presentation"] not in {"GROSS", "NET", "AS_REPORTED", "NOT_APPLICABLE"} or
                     basis["consolidation"] not in {"CONSOLIDATED", "SEGMENT", "NOT_APPLICABLE"} or
                     basis["operations_basis"] not in {"CONTINUING", "ALL", "NOT_APPLICABLE"} or
-                    basis["comparability"] not in {"STANDARD", "FISCAL_CHANGE", "FIFTY_THREE_WEEK", "PRE_POST_COMBINATION"}):
+                    basis["comparability"] not in {"STANDARD", "FISCAL_CHANGE", "FIFTY_THREE_WEEK", "PRE_POST_COMBINATION", "ACQUISITION_SCOPE_CHANGE"}):
                 _error("MEASUREMENT_BASIS", "Invalid accounting or comparability dimensions", path)
         period = record["economic_period"]
         _fields(period, {"basis": str, "start": str, "end": str},

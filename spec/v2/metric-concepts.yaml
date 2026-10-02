@@ -36,3 +36,4 @@ concepts:
   - {concept_id: xlm_circulating_supply, description: 'Observed circulating native XLM supply', unit: XLM, measure_kind: STOCK, permitted_scopes: [REALIZED]}
   - {concept_id: xlm_total_supply, description: 'Observed total native XLM supply', unit: XLM, measure_kind: STOCK, permitted_scopes: [REALIZED]}
   - {concept_id: xlm_circulating_provider_cap, description: 'Third-party circulating native XLM cap', unit: USD, measure_kind: STOCK, permitted_scopes: [REALIZED]}
+  - {concept_id: securitize_inc_revenue, description: 'Reported operating-company Securitize Inc. revenue, separate from listed issuer inputs', unit: USD, measure_kind: FLOW, permitted_scopes: [REALIZED]}
