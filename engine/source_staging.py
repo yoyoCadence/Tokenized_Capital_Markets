@@ -43,7 +43,7 @@ def _instant(value, path):
         _fail("STAGE_TIME", "Expected timezone-aware ISO instant", path)
 
 
-def _metadata(meta, root):
+def _metadata(meta, root, *, known_concepts=None):
     shape = Shape()
     expected = {"url": str, "publisher": str, "title": str, "document_kind": str,
                 "source_date": (str, type(None)),
@@ -62,10 +62,11 @@ def _metadata(meta, root):
     if (type(meta["tier"]) is not int or meta["tier"] not in range(1, 6) or
             meta["rights"] not in RIGHTS or meta["document_kind"] not in DOCUMENT_KINDS):
         _fail("STAGE_METADATA", "Invalid tier, document kind or redistribution rights", "source-metadata")
-    concepts = read_yaml(Path(root) / "spec/v2/metric-concepts.yaml")["concepts"]
-    known = {row["concept_id"] for row in concepts}
+    if known_concepts is None:
+        concepts = read_yaml(Path(root) / "spec/v2/metric-concepts.yaml")["concepts"]
+        known_concepts = {row["concept_id"] for row in concepts}
     metrics = meta["covered_metrics"]
-    if not metrics or len(metrics) != len(set(metrics)) or not set(metrics) <= known:
+    if not metrics or len(metrics) != len(set(metrics)) or not set(metrics) <= known_concepts:
         _fail("STAGE_COVERAGE", "Use explicit, unique v2 metric concept IDs", "source-metadata.covered_metrics")
     if meta["source_date"] is not None:
         try:
@@ -99,12 +100,17 @@ def _validate_ledger(doc, root):
         shape.fields(row, review_fields, {}, f"{LEDGER}:reviews[{n}]")
     reject_errors(shape.issues)
     captures = {}
+    # Reuse one strict read within this ledger validation only. Never cache across
+    # calls: changed dictionaries must be re-read and invalid coverage rejected.
+    known_concepts = ({row["concept_id"] for row in read_yaml(Path(root) / "spec/v2/metric-concepts.yaml")["concepts"]}
+                      if doc["captures"] else set())
     for row in doc["captures"]:
         id_ = row["id"]
         if not IDENTITY.fullmatch(id_) or id_ in captures:
             _fail("STAGE_ID", "Duplicate or invalid capture ID", id_)
         _metadata({key: row[key] for key in ("url", "publisher", "title", "document_kind", "source_date", "tier",
-                                                 "covered_metrics", "locator", "rights", "media_type")}, root)
+                                                 "covered_metrics", "locator", "rights", "media_type")}, root,
+                  known_concepts=known_concepts)
         attempted = _instant(row["attempted_at"], id_)
         if row["adapter"] not in {"MANUAL_FILE_V1", "OFFICIAL_HTTP_V1"} or row["status"] not in {"CAPTURED", "FAILED"}:
             _fail("STAGE_STATUS", "Unknown adapter or status", id_)
