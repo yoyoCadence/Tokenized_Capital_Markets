@@ -173,3 +173,14 @@ python -m engine.cli recover
 `AS_REPORTED` 是經審閱保留原表總數和其 reported basis，**不是**把未知 gross/net 改名已知；它不聲稱所有收入流採統一 gross/net 原則，也不默認跨公司可比。`ACQUISITION_SCOPE_CHANGE` 留下收購範圍影響，不是 STANDARD；舊 issuer definitions/formulas 不增加這些 inputs。calendar ID 必须用獨立 `securitize_inc_` prefix，日期起點為審閱過的日曆 duration normalization，不能宣稱原文明列起日或上市 SECZ fiscal calendar 已核准。
 
 本次仍 **0 canonical observations**。即使日後 admission 審閱通過，publication timezone=null 仍維持歷史 temporal eligibility Unknown，不以 ingestion 倒推 SEC 發布時區。audit bundle 不宣稱研究可供決策。reviewer string 也沒有登入／簽章驗證，不是已建立多使用者審核系統。
+
+## 第六增量：實際原文查核與完整量測提議
+
+[四筆收入審閱材料](../research/secz/p2-10-review-decisions.md) 將五項 acknowledgements、來源 metadata、數值、推導與保留事項逐項列明。新 [decision plan](../research/secz/p2-10-decision-plan.yaml) 已 append stage，提出 USD / AS_REPORTED / CONTINUING / 營運公司 Dec31 日曆期間；其 USD applicability 與期間起日都標明分析者推論，沒有冒稱 Q2 字面 USD／Apr1 引用。Q2 Note 2 年度交叉閱讀／政策延續、Note 4 停業收入另表、S-1 同營運公司年度貨幣政策與年末，共新增 14 段 exact original/normalized-text citations。
+
+```bash
+python -m engine.cli sec-admission-preview --plan research/secz/p2-10-decision-plan.yaml --store-dir /private/artifacts
+python -m engine.cli sec-admission-status
+```
+
+狀態為 **兩個 PENDING_REVIEW proposals、0 reviews、0 published records**，兩個提案引用同四筆值，不是八筆收入。舊提案／原文／來源 captures 不變。新 plan mappings 填完整只是可供決議，raw packet unit 仍 null；四個獨立來源批准與五項實際人審尚未記錄。clone checkout 仍需原版外部 store 才能重播引用驗證。contract proposal.13／bundle .12 沒有 schema 或 runtime 變更。

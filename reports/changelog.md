@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.25 / P2-10 real measurement decision proposal — 2026-10-02
+
+- Merge PR #24 after exact-head G0 SUCCESS; examine actual Q2 Note 2/4 and S-1 operating-company annual notes/auditor evidence. Add fourteen exact byte/normalized-text citations, retaining the previous eight.
+- Append an immutable four-record proposal with complete proposed USD / AS_REPORTED / CONTINUING / independent Dec31 calendar mappings. Cross-document USD applicability and Apr1/Jan1 starts are explicit analyst inferences pending review; separately reported discontinued revenue is excluded and acquisition scope remains flagged.
+- Prepare five concrete measurement decisions and four source metadata reviews in [the human review packet](../research/secz/p2-10-review-decisions.md). Preserve the original incomplete proposal, captures, raw quantities and canonical ledgers. Two pending proposals reference the same four values, zero reviews/observations, unknown publication timezone and G1 BLOCKED.
+- [Validation](p2-10-review-validation.md) verifies original/span hashes, preserved prior proposal, read-only preview/idempotent stage retry and existing G0 checks. No runtime, schema, formula or snapshot format change; contract proposal.13 / bundle `.12` stay unchanged. P2-10 remains IN_PROGRESS; actual review acceptance and governance chain receipts remain necessary.
+
 ## Software 0.1.24 / P2-10 operating-company batch admission — 2026-10-01
 
 - Merge verified PR #23. Reuse securitize_inc identity and add independent revenue concept, QUARTER/YTD roles and measurement definition; original SECZ roles and formulas are unchanged.

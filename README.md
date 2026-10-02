@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-01 軟體版本 **0.1.24**：已合併 [幣別／會計證據包](reports/p2-10-measurement-validation.md)，並完成 [營運公司批次審閱入庫流程](reports/p2-10-admission-validation.md)。獨立 `securitize_inc_revenue` concept 和 quarter/YTD roles 保留營運公司與上市 SECZ 差別；一個真實四筆提案已 stage，來源及量測欄位仍待審，**canonical observation 仍為 0**。核准後可一次發布四筆、audit snapshot 與 changelog，支援中斷恢復及重試。六份唯一原文／十個 metadata captures；P2-10 **IN_PROGRESS**，下一步為實際來源與量測決議、治理 receipt 證據。G1／決策級研究發布仍 BLOCKED，v1 公式與舊快照不變。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
+2026-10-02 軟體版本 **0.1.25**：已合併 [營運公司批次入庫流程](reports/p2-10-admission-validation.md)，並以真實原文完成 [四筆收入待審決議](research/secz/p2-10-review-decisions.md)。新增十四段引用，提出 USD／AS_REPORTED／CONTINUING／Dec31 日曆期間；幣別適用與期間起日的推論清楚標示。保留舊提案、追加完整 mapping 新提案；**兩個 pending proposals、0 reviews、canonical observation 0**，來源與五項具名量測決議仍需審閱。六份唯一原文／十個 captures 不變；[本次驗收](reports/p2-10-review-validation.md)保留 G1／決策級發布 BLOCKED。P2-10 **IN_PROGRESS**，下一步為實際人審與治理 receipt 證據。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
 
 ## Requirements / 啟動
 

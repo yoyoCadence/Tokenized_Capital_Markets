@@ -1,8 +1,8 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.14'
+version: '1.15'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-10-01'
+updated_on: '2026-10-02'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
@@ -591,13 +591,13 @@ tasks:
       - AI 擷取有原文 locator/版本，捏造引用、錯單位、prompt injection 測試拒絕。
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
     progress:
-      prepared_on: '2026-10-01'
-      implementation_ref: feat/p2-10-operating-admission
-      evidence: reports/p2-10-admission-validation.md
-      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md]
+      prepared_on: '2026-10-02'
+      implementation_ref: feat/p2-10-measurement-decisions
+      evidence: reports/p2-10-review-validation.md
+      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md]
       changelog: reports/changelog.md
       tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py]
-      result: 已實作營運公司專用 concept/roles 與四筆批次審閱入庫、atomic snapshot/changelog、recover/retry。六份唯一原文、十個未審 capture（四個新 concept coverage metadata）；一個真實四筆提案已 stage，unit/部分口徑仍 null、0 canonical observations。來源與擷取人審驗收、治理 receipt 及自動 polling 仍缺，P2-10 IN_PROGRESS。
+      result: 已用真實原文追加十四段引用，提出 USD/AS_REPORTED/CONTINUING/Dec31 完整待審口徑，五項量測決議與四份來源 metadata 逐項列明。六份唯一原文、十個未審 capture 不變；保留原提案並追加新版，兩個 pending proposals 引用同四筆值，0 reviews/0 canonical observations。跨文件 USD 與期間起日為明示推論，時區仍 unknown。下一步是實際具名来源/量測決議及治理 receipt 證據，P2-10 IN_PROGRESS。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2

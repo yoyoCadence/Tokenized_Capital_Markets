@@ -1,0 +1,299 @@
+schema_version: '1.0'
+id: securitize_inc_revenue_measurement_proposed_20261002
+table_plan:
+  schema_version: '1.1'
+  id: securitize_inc_measurement_decisions_table_20261002
+  entity_id: securitize_inc
+  source_id: securitize_inc_financials_scope_20261001
+  artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+  index_source_id: securitize_inc_index_scope_20261001
+  index_artifact_sha256: 5ffd7893b144a5561073ad15dae18ab3e20f2944708e3921fe102faee5b446d9
+  entity_heading:
+    start: 78850
+    end: 78883
+    sha256: 9053c314e6e6dab08ea8d98f11f6ee505e71309055e855a042fa255b54fcaae0
+  statement_heading:
+    start: 79039
+    end: 79119
+    sha256: 63819ebdf652f5f2d721aefccf7e205daf9f89373893f12bafe4d10f47488153
+  table:
+    start: 79171
+    end: 140583
+    sha256: 455e159e4127441f9b7fab3ff6099ae4f85bea941a600d8821c6fa0967dbab7a
+  period_row: 1
+  year_row: 2
+  columns:
+  - id: q2_2026_revenue
+    value_column: 4
+    symbol_column: 3
+  - id: q2_2025_revenue
+    value_column: 10
+    symbol_column: 9
+  - id: h1_2026_revenue
+    value_column: 16
+    symbol_column: 15
+  - id: h1_2025_revenue
+    value_column: 22
+    symbol_column: 21
+  supporting_evidence:
+  - source_id: securitize_inc_financials_scope_20261001
+    artifact_sha256: 271119e0e767211e69179cba9e8a30e24f4b15877918ea1402eb42b02cae3e31
+    citations:
+    - id: gaap_consolidation
+      role: Accounting and consolidation basis
+      citation:
+        start: 688666
+        end: 689173
+        sha256: 9b12a374e2ad6a99e4bde4dd13aa308f52a03222fd132a49d6827e13f69c69d1
+      normalized_text_sha256: 69e58dbef962583c3daa2437775c89e4abbb6b205389485e57d74e78e55b6c29
+    - id: reclassifications
+      role: Prior-period presentation changes
+      citation:
+        start: 695834
+        end: 696101
+        sha256: dbab2e8345e8ff4a9ee189cdc05b9316da7f7cc0772a1d46bfc9caabbca7a9f7
+      normalized_text_sha256: 09f170e851976ec2ac5adf5ce8759d007d88c73ec2ed00585300be1fcb0fc2de
+    - id: tokenization_revenue_policy
+      role: Recognition timing; not proof of a single gross/net convention
+      citation:
+        start: 1107478
+        end: 1108464
+        sha256: 6f74a98ebec2484d1f888eba836afb9cce45ffff0137651afce2fa4d5de0b923
+      normalized_text_sha256: b777b329512cd2d8a9a5144df593bb3c81b5c55e876e356d6537a4c1fbda8e13
+    - id: annual_statements_cross_reference
+      role: Q2 Note 2 explicitly requires reading the December 31 2025/2024 annual
+        statements; cross-document applicability still requires human review
+      citation:
+        start: 693887
+        end: 694639
+        sha256: d389f94c17fe3decaac4eeb4172e1cb91b3ee555a963d54749b7b152a1169074
+      normalized_text_sha256: f380c1e0b2aefc15f4cd95a9044f8694a368bad357b847e6b5665035372ee98e
+    - id: accounting_policy_continuity
+      role: Q2 Note 2 describes no material accounting policy changes except those
+        discussed; not a literal Q2 USD declaration
+      citation:
+        start: 694694
+        end: 695180
+        sha256: 2431818834638e7f1e852472789eb38df2612139a1bb21b8ec09007c30a18c9e
+      normalized_text_sha256: 2baa195d27e62e0ee50f628a1a3ed0e18c6e631bbc60208724404465ac9cb849
+    - id: discontinued_sale_and_presentation
+      role: Q2 Note 4 completed sale and separate discontinued presentation for 2025
+        comparatives
+      citation:
+        start: 752865
+        end: 753447
+        sha256: 461072ffcf70d3f60bf122b6e83b71ae1a9c4d7ecbb3a9105a8e6815decd7567
+      normalized_text_sha256: 934d6282747bb8fab6c6d9a0059b75efa410deec0dc19338f1b78745bc512309
+    - id: discontinued_table_context
+      role: Note 4 identifies the following table as discontinued operations
+      citation:
+        start: 753502
+        end: 753757
+        sha256: c286273613466c39c9b70b4eeea8b84c04c42bf6963c624ff27e4a390db33a25
+      normalized_text_sha256: 0a676cbd0f3f0679814de5e920ff074f8a5a532219ba0fda471249593b8455f0
+    - id: discontinued_quarter_header
+      role: 'Note 4 separate revenue column: three months ended June 30'
+      citation:
+        start: 755549
+        end: 755782
+        sha256: 749f57d67f0d76db1d03dfebb1221368de86e211f8f5ff490989d9700f00e436
+      normalized_text_sha256: 569ae2bb0f3b83127a47cb9f4554443827465d188579e13db315e6b3722dc8d5
+    - id: discontinued_quarter_year
+      role: Note 4 separate quarter column year 2025
+      citation:
+        start: 756362
+        end: 756572
+        sha256: 5c0e889d2262fc662a6f6eb22a1b10db3832fad8bf687a275713a5386777ae23
+      normalized_text_sha256: b2b2f104d32c638903e151a9b20d6e27b41d8c0c84cf8458738f83ca2f1dd744
+    - id: discontinued_ytd_header
+      role: 'Note 4 separate revenue column: six months ended June 30'
+      citation:
+        start: 755952
+        end: 756183
+        sha256: ce2cdaea86f823a5bb913878f3c0fbda9377b46b0f69dcc46fdba28f83eb6739
+      normalized_text_sha256: 819c0debdb4f4b9e3d740f5ede57c5de62bfb3a633ac7d405ff762e653c9656f
+    - id: discontinued_ytd_year
+      role: Note 4 separate YTD column year 2025
+      citation:
+        start: 756742
+        end: 756952
+        sha256: 5c0e889d2262fc662a6f6eb22a1b10db3832fad8bf687a275713a5386777ae23
+      normalized_text_sha256: b2b2f104d32c638903e151a9b20d6e27b41d8c0c84cf8458738f83ca2f1dd744
+    - id: discontinued_revenue_label
+      role: Separate discontinued Revenue row; exclude from proposed continuing revenue
+      citation:
+        start: 756961
+        end: 757197
+        sha256: e9b71ea8dc0c3b5a8082501881712f75243b5f18b4bc17af1371d54aa44eb9df
+      normalized_text_sha256: c4b7330bd91e0c971041618056cb7201fd3f384e5db390bc89230d70712d7a47
+    - id: discontinued_quarter_revenue
+      role: Separate discontinued quarter revenue 60682; contextual evidence only,
+        not a canonical observation
+      citation:
+        start: 757601
+        end: 757855
+        sha256: 5876f239b15b5fb6585053d79daa16357d5b0786b64cfe4a887c18eeca4ebfbb
+      normalized_text_sha256: d07ca862b685d68b66ff786a662960d6fcdc38c5be0bf37221db6eacc494db27
+    - id: discontinued_ytd_revenue
+      role: Separate discontinued YTD revenue 71319; contextual evidence only, not
+        a canonical observation
+      citation:
+        start: 758460
+        end: 758714
+        sha256: 9c241c06aad0ba22aff347537e52afb71e5124eccce4cbef298bfe1190c6d013
+      normalized_text_sha256: b1f15a7c382ad2f3005a2a43c0c46035085a28cb39d7d426df6f3eef97c9b6b9
+  - source_id: securitize_inc_mda_scope_20261001
+    artifact_sha256: 7f7ae28126b26c8f3716d01e91213412b3b200a12bc66cab6ca3f888a042ab9a
+    citations:
+    - id: reporting_entity_transition
+      role: Pre/post-business-combination entity context
+      citation:
+        start: 666
+        end: 2496
+        sha256: d759513b223e4786b32bdf1d67549e238eac5711d65b54e7bb80c16f08159715
+      normalized_text_sha256: d25bc49d13e86c882e086b40cbe95230213db7bda7f61cf0e308d67b4d9774f1
+    - id: acquisition_comparability
+      role: Acquisition-date consolidation changes comparison scope
+      citation:
+        start: 28088
+        end: 28758
+        sha256: 9baa346c2eb4759ed16d5e312d6b35df9a2281d70c5ced15c17ab4d99b2dce5f
+      normalized_text_sha256: d0146f067bae815cdc611bfaba669df505cb2625eb026f5018a50b1d39693764
+    - id: discontinued_operations
+      role: Continuing/discontinued presentation needs review
+      citation:
+        start: 46935
+        end: 47450
+        sha256: 89e290ae198bee2141cc5d70fb054ef699242afd124dbc8711f7ec745decb5f3
+      normalized_text_sha256: fc5b2a3c7797a55c68770fd8980f99327ba7bb840c47cbc97cbd564d2781a063
+  - source_id: securitize_inc_s1_scope_20261001
+    artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
+    citations:
+    - id: document_currency_definition
+      role: USD symbol definition applies to this S-1; later-exhibit applicability
+        needs review
+      citation:
+        start: 415035
+        end: 415356
+        sha256: 8502d3e6e1e87419d935a2872f267ff71626b84230bb7639fbcaabd1cd198098
+      normalized_text_sha256: 56c76dec530c8be61abcf772ecc7b75b117a10478176267f746309306b4804f7
+    - id: historical_currency_presentation
+      role: Historical operating statements translation; Q2 continuity needs review
+      citation:
+        start: 4698755
+        end: 4699533
+        sha256: 38756258590d63775e2c2dc8b033978959ab0e88db9cbfb4345e2351b7559936
+      normalized_text_sha256: 0d997a48a7bd6f89da8ded9c9d687bfc506f4abac4aeda43a09053126982c076
+    - id: annual_operating_entity_heading
+      role: Currency policy is in Securitize Inc annual financial notes, distinct
+        from earlier shell sections in the S-1
+      citation:
+        start: 4684645
+        end: 4684839
+        sha256: 584ef807c8d631bdda51eb42ac7c08a97bb5214d0352f8b823569c3445f3559a
+      normalized_text_sha256: 9053c314e6e6dab08ea8d98f11f6ee505e71309055e855a042fa255b54fcaae0
+    - id: annual_audit_year_end
+      role: Auditor identifies Securitize Inc annual statements for years ended December
+        31 2025 and 2024; supports proposed calendar year end
+      citation:
+        start: 4122638
+        end: 4123557
+        sha256: 001a4ba5ffbbdee5e11e8c46100621dc5cfcfea228e0009088e75f0b5612c08a
+      normalized_text_sha256: 66ca5fd1f4bb363036ccce2d201559a7a72a84ec0dd4f825a66e58cecbaf67bd
+    - id: historical_fiscal_year_end
+      role: S-1 explicitly names Securitize Inc fiscal years ended December 31 2024
+        and 2023; historical corroboration only
+      citation:
+        start: 2219006
+        end: 2219486
+        sha256: 484246f3525644a7bfe9baa39d7525d3af983672a0d1eb0d8810240fec9d9ed7
+      normalized_text_sha256: 2447d29635980750b939c88c235367bb6d44bee86d3eb2e4e611e49111ab2bae
+mappings:
+- candidate_id: q2_2026_revenue
+  record_id: securitize_inc_q2_2026_revenue_proposed_20261002
+  unit: USD
+  measurement_basis:
+    definition_id: SECURITIZE_INC_REPORTED_REVENUE
+    accounting_basis: GAAP
+    presentation: AS_REPORTED
+    consolidation: CONSOLIDATED
+    operations_basis: CONTINUING
+    fiscal_calendar_id: securitize_inc_calendar_dec31_v1
+    comparability: ACQUISITION_SCOPE_CHANGE
+  rationale: 'PROPOSED, NOT APPROVED. USD: Q2 Note 2 annual cross-reference and policy
+    continuity plus the same operating company annual translation policy; applicability
+    is an analyst inference requiring CURRENCY_APPLICABILITY review, not a literal
+    Q2 currency declaration. AS_REPORTED retains the statement aggregate without asserting
+    uniform gross/net. CONTINUING: Q2 Note 4 separately presents discontinued revenue
+    for 2025; do not add it to the primary row. Calendar Dec31: annual audit/historical
+    fiscal year evidence and Three/Six Months Ended June30; Apr1/Jan1 are analyst
+    calendar-month normalizations. MG Stover consolidation begins Apr15 2025, so ACQUISITION_SCOPE_CHANGE
+    persists. GAAP/CONSOLIDATED and operating entity are proposed from cited notes.
+    All five human acknowledgements and four independent source approvals remain required.
+    Publication timezone remains unknown and temporal eligibility stays blocked.'
+- candidate_id: q2_2025_revenue
+  record_id: securitize_inc_q2_2025_revenue_proposed_20261002
+  unit: USD
+  measurement_basis:
+    definition_id: SECURITIZE_INC_REPORTED_REVENUE
+    accounting_basis: GAAP
+    presentation: AS_REPORTED
+    consolidation: CONSOLIDATED
+    operations_basis: CONTINUING
+    fiscal_calendar_id: securitize_inc_calendar_dec31_v1
+    comparability: ACQUISITION_SCOPE_CHANGE
+  rationale: 'PROPOSED, NOT APPROVED. USD: Q2 Note 2 annual cross-reference and policy
+    continuity plus the same operating company annual translation policy; applicability
+    is an analyst inference requiring CURRENCY_APPLICABILITY review, not a literal
+    Q2 currency declaration. AS_REPORTED retains the statement aggregate without asserting
+    uniform gross/net. CONTINUING: Q2 Note 4 separately presents discontinued revenue
+    for 2025; do not add it to the primary row. Calendar Dec31: annual audit/historical
+    fiscal year evidence and Three/Six Months Ended June30; Apr1/Jan1 are analyst
+    calendar-month normalizations. MG Stover consolidation begins Apr15 2025, so ACQUISITION_SCOPE_CHANGE
+    persists. GAAP/CONSOLIDATED and operating entity are proposed from cited notes.
+    All five human acknowledgements and four independent source approvals remain required.
+    Publication timezone remains unknown and temporal eligibility stays blocked.'
+- candidate_id: h1_2026_revenue
+  record_id: securitize_inc_h1_2026_revenue_proposed_20261002
+  unit: USD
+  measurement_basis:
+    definition_id: SECURITIZE_INC_REPORTED_REVENUE
+    accounting_basis: GAAP
+    presentation: AS_REPORTED
+    consolidation: CONSOLIDATED
+    operations_basis: CONTINUING
+    fiscal_calendar_id: securitize_inc_calendar_dec31_v1
+    comparability: ACQUISITION_SCOPE_CHANGE
+  rationale: 'PROPOSED, NOT APPROVED. USD: Q2 Note 2 annual cross-reference and policy
+    continuity plus the same operating company annual translation policy; applicability
+    is an analyst inference requiring CURRENCY_APPLICABILITY review, not a literal
+    Q2 currency declaration. AS_REPORTED retains the statement aggregate without asserting
+    uniform gross/net. CONTINUING: Q2 Note 4 separately presents discontinued revenue
+    for 2025; do not add it to the primary row. Calendar Dec31: annual audit/historical
+    fiscal year evidence and Three/Six Months Ended June30; Apr1/Jan1 are analyst
+    calendar-month normalizations. MG Stover consolidation begins Apr15 2025, so ACQUISITION_SCOPE_CHANGE
+    persists. GAAP/CONSOLIDATED and operating entity are proposed from cited notes.
+    All five human acknowledgements and four independent source approvals remain required.
+    Publication timezone remains unknown and temporal eligibility stays blocked.'
+- candidate_id: h1_2025_revenue
+  record_id: securitize_inc_h1_2025_revenue_proposed_20261002
+  unit: USD
+  measurement_basis:
+    definition_id: SECURITIZE_INC_REPORTED_REVENUE
+    accounting_basis: GAAP
+    presentation: AS_REPORTED
+    consolidation: CONSOLIDATED
+    operations_basis: CONTINUING
+    fiscal_calendar_id: securitize_inc_calendar_dec31_v1
+    comparability: ACQUISITION_SCOPE_CHANGE
+  rationale: 'PROPOSED, NOT APPROVED. USD: Q2 Note 2 annual cross-reference and policy
+    continuity plus the same operating company annual translation policy; applicability
+    is an analyst inference requiring CURRENCY_APPLICABILITY review, not a literal
+    Q2 currency declaration. AS_REPORTED retains the statement aggregate without asserting
+    uniform gross/net. CONTINUING: Q2 Note 4 separately presents discontinued revenue
+    for 2025; do not add it to the primary row. Calendar Dec31: annual audit/historical
+    fiscal year evidence and Three/Six Months Ended June30; Apr1/Jan1 are analyst
+    calendar-month normalizations. MG Stover consolidation begins Apr15 2025, so ACQUISITION_SCOPE_CHANGE
+    persists. GAAP/CONSOLIDATED and operating entity are proposed from cited notes.
+    All five human acknowledgements and four independent source approvals remain required.
+    Publication timezone remains unknown and temporal eligibility stays blocked.'
