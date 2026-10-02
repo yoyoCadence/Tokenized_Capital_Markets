@@ -1,12 +1,12 @@
 # 從 MVP 到可用、可驗證投資成果的研究系統
 
-**原始規劃日期：2026-09-25｜進度更新：2026-10-01｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P2-10 IN_PROGRESS；P1-05～07、P2-04、P2-08 研究阻塞中**
+**原始規劃日期：2026-09-25｜進度更新：2026-10-02｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P2-10 IN_PROGRESS；P1-05～07、P2-04、P2-08 研究阻塞中**
 
 原始程式審查基準：commit **68f19531cfd77bc2c70006921a6402e7a10f04f6**。2026-09-25 的交付是規劃與稽核文件；2026-09-26 完成第一個工程工作包。金融觀察值與公式沒有變更。
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.24**；[第五增量](../../reports/p2-10-admission-validation.md)完成 operating-company concept/roles、待審批次及核准後四檔原子發布／恢復／重試。真實四筆提案已 stage；六份唯一原文／十個 capture，來源未審、unit／部分量測字段 null、canonical observation 0。下一工作包仍 **P2-10**：來源與量測人審驗收及治理 receipt 證據。G1／決策級發布 BLOCKED，既有金融公式與快照不變。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.25**；[第六增量](../../reports/p2-10-review-validation.md)用原文新增十四段引用，將四筆收入整理成 [五項具體待審決議](../../research/secz/p2-10-review-decisions.md)，並追加完整 mapping 新提案。保留舊提案，兩個 pending proposals 引用同四筆值；六份唯一原文／十個 captures 不變，0 reviews／canonical observation 0。下一工作包仍 **P2-10**：實際具名來源與量測 acceptance 及治理 receipt 證據。G1／決策級發布 BLOCKED，既有金融公式與快照不變。
 
 ## 先讀這三個結論
 
