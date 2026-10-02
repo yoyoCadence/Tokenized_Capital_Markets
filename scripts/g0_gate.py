@@ -46,7 +46,9 @@ def acceptance(root=ROOT):
     ]
     results = {}
     for name, command in checks:
-        run = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=180)
+        # The full suite includes offline evidence and negative integration cases;
+        # hosted runners need headroom beyond the local execution time.
+        run = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=300)
         results[name] = {"passed": run.returncode == 0,
                          "output": (run.stdout + run.stderr).strip()}
         if run.returncode:

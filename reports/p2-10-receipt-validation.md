@@ -20,3 +20,5 @@ PR #26 最新 head `ec16b137f27d5b31f3fd01cf97e018dbd3ddd7c1` 的 G0 `3697122759
 本版僅新增 separately hash-pinned audit helper 與研究原文；engine runtime、formula locks、canonical schema、contract proposal.13、bundle .12 均不變。clone repo 仍需原版 checkout 外 artifact store 才能驗證原文；缺失或變更會拒絕。
 
 G0 在鎖定 CPython 3.12.14／PyYAML 6.0.3 完整通過：267 tests，118.973 秒；DEMO／RESEARCH 各 94 metrics、0 issues。`g0_engineering=PASS`，`research_publication=BLOCKED`。strict YAML、Markdown local links 與 `git diff --check` 通過。P2-10 IN_PROGRESS；P1-05／G1 研究發布仍 BLOCKED。下一步為 real source／semantic acceptance、finality ancestry、Q1 完整 UNI coverage、supply／USD basis，而非把本次 5M 轉帳當成全季總量。
+
+遠端第一個 run `37000361200` 在 G0 unittest subprocess 的 180 秒硬上限觸發 TimeoutExpired。此非成功驗收，失敗記錄保留。將 G0 的單一子程序有界預算改為 300 秒，保留全部 tests、兩種 validation、鎖定環境與非零退出，並明設 workflow 10 分鐘外層上限；不跳過斷言，也不改 engine runtime。修正後本機完整重跑：267 tests，118.142 秒；DEMO／RESEARCH 各 94 metrics、0 issues，G0 PASS／research BLOCKED。最新遠端 head CI 另行核對，不能沿用原失敗 run。

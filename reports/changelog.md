@@ -7,6 +7,7 @@
 - New read-only receipt audit replays the unchanged previous checker/plan, matches positive standard governance receipt payloads/15 logs/eight calls, and Jan5 Approval/Transfer/Withdrawn logs for one treasury-funded 5M UNI transfer. Caller/recipient, original 40M allowance and remaining 35M allowance stay distinct. Exact publisher claim span and official-source/ABI context are digest pinned.
 - Preserve prior null receipts and portal/block 96,972-second conflict. Full receipt payload consistency is not trie proof/finality ancestry. Historical bytecode/configuration, legal recipient identity, complete Q1 total, supply changes and USD holder economics stay unknown or pending. SEC proposals and v1 snapshots unchanged; no engine/schema/formula/bundle change, contract proposal.13 / bundle .12 remain.
 - [Validation](p2-10-receipt-validation.md): ten synthetic negative/integration tests plus full G0 checks. P2-10 IN_PROGRESS; next is real source/semantic acceptance and complete-period UNI coverage, G1 BLOCKED.
+- First PR #27 remote run `37000361200` exceeded the G0 180-second unittest subprocess cap; local complete suite passed in 118.973s. Raise the bounded per-check budget to 300s for hosted-runner headroom, set a 10-minute workflow deadline, retain all checks and nonzero failures, then re-run the complete gate and exact-head CI. No engine validation or computation behavior is changed.
 
 ## Software 0.1.26 / P2-10 real governance execution evidence — 2026-10-02
 
