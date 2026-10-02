@@ -1,5 +1,13 @@
 # Research/software changelog
 
+## Software 0.1.27 / P2-10 positive receipts and first vesting transfer — 2026-10-02
+
+- Merge PR #26 at verified head `ec16b137f27d5b31f3fd01cf97e018dbd3ddd7c1` after G0 `36971227592` SUCCESS; start from main `032e073121803f35f5a4a6efc6aa07d97a6966bd`.
+- Append nine real originals/captures: two RPC request/response receipt envelopes, Jan5 RPC/indexer context, verified-source assertion, pinned official Solidity source/interface and publisher report. Twenty-one originals / twenty-five unreviewed captures; previous sixteen rows unchanged, zero real reviews/canonical evidence. Manual archive clocks are actual, distinct from acquisition clocks; no fabricated OFFICIAL_HTTP_V1 receipts.
+- New read-only receipt audit replays the unchanged previous checker/plan, matches positive standard governance receipt payloads/15 logs/eight calls, and Jan5 Approval/Transfer/Withdrawn logs for one treasury-funded 5M UNI transfer. Caller/recipient, original 40M allowance and remaining 35M allowance stay distinct. Exact publisher claim span and official-source/ABI context are digest pinned.
+- Preserve prior null receipts and portal/block 96,972-second conflict. Full receipt payload consistency is not trie proof/finality ancestry. Historical bytecode/configuration, legal recipient identity, complete Q1 total, supply changes and USD holder economics stay unknown or pending. SEC proposals and v1 snapshots unchanged; no engine/schema/formula/bundle change, contract proposal.13 / bundle .12 remain.
+- [Validation](p2-10-receipt-validation.md): ten synthetic negative/integration tests plus full G0 checks. P2-10 IN_PROGRESS; next is real source/semantic acceptance and complete-period UNI coverage, G1 BLOCKED.
+
 ## Software 0.1.26 / P2-10 real governance execution evidence — 2026-10-02
 
 - Merge PR #25 at verified head `5e22697fe2ac2b2e27f163079136a3626cdf1b37` after G0 SUCCESS. Archive six actual RPC/indexer responses through manual staging with actual capture clocks; preserve all ten prior captures and six originals.

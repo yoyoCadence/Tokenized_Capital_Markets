@@ -1,0 +1,39 @@
+schema_version: '1.0'
+id: uni_receipts_vesting_20261002
+execution_plan: research/uni/p2-10-execution-plan.yaml
+execution_plan_sha256: bf306688ae28bd0105c867408345777fa450382d8682edc82cb856574eab4493
+transaction_hash: '0x3143564279cec3aab40ec01146c0ca4a9b8339f1516646ac58496f6d198148b2'
+vesting: '0xca046a83edb78f74ae338bb5a291bf6fdac9e1d2'
+upstream_commit: 0c071d199dc32556365c78e03ec3f4d09b9fbf37
+publisher_citation:
+  start: 122550
+  end: 122676
+  sha256: 7ea744abbc053426759c731895b7d444b43cb03dbe8bc2a77d30253c5a110528
+documents:
+  receipt_blast:
+    source_id: uni_receipt_receipt_blast_20261002
+    artifact_sha256: dbc7e1cd166a870c97d5545d6990d815ff6f2a691c1756fdbeeac54dadced2a9
+  receipt_mev:
+    source_id: uni_receipt_receipt_mev_20261002
+    artifact_sha256: 976370bc94e2af3327e22a571b543153d6721bc2025d1af34c156b773f6f8ae4
+  vesting_rpc:
+    source_id: uni_receipt_vesting_rpc_20261002
+    artifact_sha256: 3c058c8432c4f6d3d49cedaa63b301cfcc5830bf3949aec2a2e69940dc7b4604
+  vesting_indexer_tx:
+    source_id: uni_receipt_vesting_indexer_tx_20261002
+    artifact_sha256: aa0b46a12fbe45d88d0647292290cd28b0854dd543aa046ebb324690f99fb9eb
+  vesting_indexer_logs:
+    source_id: uni_receipt_vesting_indexer_logs_20261002
+    artifact_sha256: 968b49958b89e68e0174f49ee69ba2e03a0474352f0ae78cf8eb6cd64d19ae08
+  vesting_contract:
+    source_id: uni_receipt_vesting_contract_20261002
+    artifact_sha256: 19424349d1b660e892cc11dd65304061a15b66bb58caf4cefebc8fea1e53ed3c
+  official_source:
+    source_id: uni_receipt_official_source_20261002
+    artifact_sha256: b03f86dae389e0b452e21e30583ee70d0dd4d39abf9cfab6b99a68752a1a1442
+  official_interface:
+    source_id: uni_receipt_official_interface_20261002
+    artifact_sha256: a7207aee868d6cfcfcabc58fd12a232bb17d761b13b2b6362ac1815a545cc043
+  publisher:
+    source_id: uni_receipt_publisher_20261002
+    artifact_sha256: 92292a8a2fff451c1398df101f797c5029b9ee5f0aaf13ba2904c1ce238a3c50

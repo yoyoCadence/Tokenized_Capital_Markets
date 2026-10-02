@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.16'
+version: '1.17'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-10-02'
@@ -592,12 +592,12 @@ tasks:
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
     progress:
       prepared_on: '2026-10-02'
-      implementation_ref: feat/p2-10-governance-execution-evidence
-      evidence: reports/p2-10-governance-execution-validation.md
-      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md]
+      implementation_ref: feat/p2-10-uni-receipt-distributions
+      evidence: reports/p2-10-receipt-validation.md
+      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md, reports/p2-10-governance-execution-validation.md]
       changelog: reports/changelog.md
-      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py]
-      result: 新增六份真實 RPC/indexer 原文及只讀離線核對。15 筆 raw logs 和八個 timelock 呼叫相符；portal 時間比區塊晚 96972 秒，保留衝突。100M UNI treasury 轉 dead 與 40M allowance 分開；兩家 RPC receipt 仍 null，季度分配/totalSupply/USD 為 unknown。十二份唯一原文/十六個未審 captures，0 reviews/0 canonical observations；SEC 舊提案及五項量測決議不變。下一步是實際具名 acceptance、完整 receipt/finality 與 2026Q1 全期間證據，P2-10 IN_PROGRESS。
+      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py, tests/integration/test_uni_receipt_audit.py]
+      result: 追加九份真實原文，兩家 RPC 成功 receipts 與治理 15 logs 和 Jan5 三筆事件一致；確認一筆 5M UNI treasury transfer，quartersPaid=1，35M remaining allowance 分開。舊 null 證據/portal 96972 秒衝突保留；全季 coverage/finality/supply/USD unknown。21 originals/25 captures，0 reviews/canonical evidence；SEC 原四筆值/两個 proposals/五項量測決議不變。下一步為實際 source/semantic acceptance 與全季 UNI 查核，P2-10 IN_PROGRESS。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2
