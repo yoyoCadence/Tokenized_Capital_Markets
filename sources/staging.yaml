@@ -230,4 +230,136 @@ captures:
   artifact_sha256: 065f5b66392946775efc368726896c902ed7e239bbb4edc8d12de08d53fc439d
   artifact_bytes: 5790137
   failure_reason: null
+- id: uni_execution_rpc_tx_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://ethereum-rpc.publicnode.com
+  publisher: PublicNode Ethereum RPC
+  title: UNI proposal 93 execution rpc_transaction — pending source review
+  document_kind: CONTRACT_EVENT
+  source_date: '2025-12-27'
+  tier: 1
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: Batch IDs 1 chainId, 2 null receipt, 3 transactionByHash; source_date is
+    block context, not API publication.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:33.315001+00:00'
+  retrieved_at: '2026-10-02T05:25:33.315001+00:00'
+  artifact_sha256: 37b8a6893b2731019ecc2d904d46dcf5ac90b2c0ec8c1adc88f90871f4f00847
+  artifact_bytes: 892
+  failure_reason: null
+- id: uni_execution_rpc_block_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://ethereum-rpc.publicnode.com
+  publisher: PublicNode Ethereum RPC
+  title: UNI proposal 93 execution rpc_block — pending source review
+  document_kind: CONTRACT_EVENT
+  source_date: '2025-12-27'
+  tier: 1
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: Batch IDs 1 chainId, 2 null receipt, 3 blockByHash; source_date is block
+    context, not API publication.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:33.600956+00:00'
+  retrieved_at: '2026-10-02T05:25:33.600956+00:00'
+  artifact_sha256: ca2142be6bed02d1d65265d9bccc3b9f1e9fca7d17d25328ce56e6ccbcdd9b95
+  artifact_bytes: 22786
+  failure_reason: null
+- id: uni_execution_rpc_logs_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://ethereum-rpc.publicnode.com
+  publisher: PublicNode Ethereum RPC
+  title: UNI proposal 93 execution rpc_logs — pending source review
+  document_kind: CONTRACT_EVENT
+  source_date: '2025-12-27'
+  tier: 1
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: eth_getLogs pinned blockHash, five emitting contracts; 15 raw log records;
+    source_date is block context.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:33.902429+00:00'
+  retrieved_at: '2026-10-02T05:25:33.902429+00:00'
+  artifact_sha256: d4fac93898d75bd975b1c72134200b07367331f310fdb3dba71d79aa68f7b478
+  artifact_bytes: 15176
+  failure_reason: null
+- id: uni_execution_rpc_null_receipt_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://rpc.flashbots.net
+  publisher: Flashbots Ethereum RPC
+  title: UNI proposal 93 execution secondary_receipt — pending source review
+  document_kind: OTHER
+  source_date: null
+  tier: 3
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: eth_getTransactionReceipt ID 1 returned null. No execution failure or absence
+    inferred.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:34.220561+00:00'
+  retrieved_at: '2026-10-02T05:25:34.220561+00:00'
+  artifact_sha256: ca3db3fe00f86a9485058afc1daf2f0547027fc3262b67c570f89d0b4638c8c6
+  artifact_bytes: 39
+  failure_reason: null
+- id: uni_execution_indexer_tx_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth.blockscout.com/api/v2/transactions/0x091f0083242a777d55821c1189e568d6d033d9da501b75087dc736fa143d2c1e
+  publisher: Blockscout Ethereum indexer
+  title: UNI proposal 93 execution explorer_transaction — pending source review
+  document_kind: ANALYTICS
+  source_date: '2025-12-27'
+  tier: 3
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: Transaction hash/status/raw_input/block_number/timestamp; source_date is
+    indexed block context, not API publication.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:34.567451+00:00'
+  retrieved_at: '2026-10-02T05:25:34.567451+00:00'
+  artifact_sha256: 1db157b7a324b216c67034b4222b5519fa6cc67c2e43611d4ac0d7b8eb779e5a
+  artifact_bytes: 14177
+  failure_reason: null
+- id: uni_execution_indexer_logs_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth.blockscout.com/api/v2/transactions/0x091f0083242a777d55821c1189e568d6d033d9da501b75087dc736fa143d2c1e/logs
+  publisher: Blockscout Ethereum indexer
+  title: UNI proposal 93 execution explorer_logs — pending source review
+  document_kind: ANALYTICS
+  source_date: '2025-12-27'
+  tier: 3
+  covered_metrics:
+  - uni_burn_value
+  - uni_distribution_value
+  - uni_effective_protocol_fee
+  locator: 15 items; next_page_params null; raw address/topics/data/index/transaction/block
+    fields; source_date is indexed block context.
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T05:25:34.926232+00:00'
+  retrieved_at: '2026-10-02T05:25:34.926232+00:00'
+  artifact_sha256: 3da86359f4eaff67b5cc9343ddb992a2a5411ef00ab926ae13e54e64533c6046
+  artifact_bytes: 42835
+  failure_reason: null
 reviews: []

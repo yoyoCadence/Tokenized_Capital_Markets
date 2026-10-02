@@ -1,5 +1,13 @@
 # Research/software changelog
 
+## Software 0.1.26 / P2-10 real governance execution evidence — 2026-10-02
+
+- Merge PR #25 at verified head `5e22697fe2ac2b2e27f163079136a3626cdf1b37` after G0 SUCCESS. Archive six actual RPC/indexer responses through manual staging with actual capture clocks; preserve all ten prior captures and six originals.
+- Add an offline read-only proposal-93 audit and digest-pinned [plan/packet](../research/uni/p2-10-execution-review.md): mainnet transaction and block, 15 matching raw logs, Governor ProposalExecuted(93), and eight ordered timelock calls matching the original portal actions. External JSON/Flight data is inert and untrusted.
+- Preserve the 96,972-second portal/block timestamp conflict, both RPC providers' null receipts and unavailable historical state. Separate the one-time 100M UNI treasury transfer to dead from the 40M UNI allowance; no quarterly distribution, totalSupply reduction or USD economics admitted.
+- [Validation](p2-10-governance-execution-validation.md) covers wrong chain/transaction/selector, original tampering, missing/removed/duplicate logs, ABI and amount mismatch, pagination and inert instructions. Twelve originals / sixteen unreviewed captures, zero real reviews/canonical evidence; SEC proposals preserved. Financial schema/formula/bundle format `.12` and contract proposal.13 stay unchanged; the standalone audit pins its own checker digest. P2-10 remains IN_PROGRESS.
+- First remote CI exceeded G0's 180-second subprocess limit. Profile and fix repeated metric dictionary reads in engine source validation: one strict read per ledger invocation, every capture checked, no cross-invocation cache or timeout change. Regression rejects changed dictionary coverage; new bundles freeze optimized engine bytes using the same archive format.
+
 ## Software 0.1.25 / P2-10 real measurement decision proposal — 2026-10-02
 
 - Merge PR #24 after exact-head G0 SUCCESS; examine actual Q2 Note 2/4 and S-1 operating-company annual notes/auditor evidence. Add fourteen exact byte/normalized-text citations, retaining the previous eight.

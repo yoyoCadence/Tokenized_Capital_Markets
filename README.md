@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-02 軟體版本 **0.1.25**：已合併 [營運公司批次入庫流程](reports/p2-10-admission-validation.md)，並以真實原文完成 [四筆收入待審決議](research/secz/p2-10-review-decisions.md)。新增十四段引用，提出 USD／AS_REPORTED／CONTINUING／Dec31 日曆期間；幣別適用與期間起日的推論清楚標示。保留舊提案、追加完整 mapping 新提案；**兩個 pending proposals、0 reviews、canonical observation 0**，來源與五項具名量測決議仍需審閱。六份唯一原文／十個 captures 不變；[本次驗收](reports/p2-10-review-validation.md)保留 G1／決策級發布 BLOCKED。P2-10 **IN_PROGRESS**，下一步為實際人審與治理 receipt 證據。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
+2026-10-02 軟體版本 **0.1.26**：合併 PR #25 後，完成 [UNI 提案 93 鏈上執行核對](reports/p2-10-governance-execution-validation.md)。新增六份 RPC／indexer 原文，15 筆 raw logs 相符，八個 timelock 呼叫與官方提案一致。區塊時間與 portal 相差 96,972 秒，衝突保留；一次性 100M UNI treasury 轉 dead 與 40M UNI allowance 分開列示。完整 receipt、供給變化及季度實際分配仍未證實。十二份唯一原文／十六個未審 captures；[收入待審決議](research/secz/p2-10-review-decisions.md)與兩個 pending proposals 保留，**0 reviews、canonical observation 0**。P2-10 **IN_PROGRESS**，G1／決策級發布 BLOCKED。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
 
 ## Requirements / 啟動
 

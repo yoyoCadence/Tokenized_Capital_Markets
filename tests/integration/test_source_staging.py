@@ -14,7 +14,7 @@ import yaml
 
 from engine.publication import recover
 from engine.snapshots_v2 import make_snapshot_v2, replay_snapshot_v2, save_snapshot_v2
-from engine.source_staging import review_source, stage_source, staging_status, verify_artifact
+from engine.source_staging import _validate_ledger, review_source, stage_source, staging_status, verify_artifact
 from engine.storage import ROOT, read_yaml
 from engine.temporal import load_temporal_project
 from engine.validation.errors import ValidationError
@@ -53,6 +53,21 @@ class SourceStagingTests(unittest.TestCase):
     def cli(self, *args):
         return subprocess.run([sys.executable, "-m", "engine.cli", "--root", str(self.root), *args],
                               cwd=ROOT, capture_output=True, text=True, timeout=20)
+
+    def test_ledger_reads_one_concept_dictionary_and_rechecks_each_invocation(self):
+        self.stage()
+        ledger = read_yaml(self.root / 'sources/staging.yaml')
+        with patch('engine.source_staging.read_yaml', wraps=read_yaml) as reader:
+            _validate_ledger(ledger, self.root)
+            reads = [call for call in reader.call_args_list if Path(call.args[0]).name == 'metric-concepts.yaml']
+            self.assertEqual(len(reads), 1)
+        # A new dictionary version must invalidate previously valid coverage.
+        path = self.root / 'spec/v2/metric-concepts.yaml'
+        concepts = read_yaml(path)
+        concepts['concepts'] = [row for row in concepts['concepts'] if row['concept_id'] != 'uni_burn_value']
+        path.write_text(yaml.safe_dump(concepts, sort_keys=False))
+        with self.assertRaisesRegex(ValidationError, 'STAGE_COVERAGE'):
+            _validate_ledger(ledger, self.root)
 
     def test_manual_capture_review_and_digest_are_metadata_only(self):
         before = fingerprints(self.root)
