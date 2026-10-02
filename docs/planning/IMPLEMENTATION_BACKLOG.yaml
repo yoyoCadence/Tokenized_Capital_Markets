@@ -1,5 +1,5 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.17'
+version: '1.18'
 status: ACTIVE
 planning_date: '2026-09-25'
 updated_on: '2026-10-02'
@@ -592,12 +592,12 @@ tasks:
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
     progress:
       prepared_on: '2026-10-02'
-      implementation_ref: feat/p2-10-uni-receipt-distributions
-      evidence: reports/p2-10-receipt-validation.md
-      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md, reports/p2-10-governance-execution-validation.md]
+      implementation_ref: feat/p2-10-uni-q1-log-coverage
+      evidence: reports/p2-10-q1-coverage-validation.md
+      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md, reports/p2-10-governance-execution-validation.md, reports/p2-10-receipt-validation.md]
       changelog: reports/changelog.md
-      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py, tests/integration/test_uni_receipt_audit.py]
-      result: 追加九份真實原文，兩家 RPC 成功 receipts 與治理 15 logs 和 Jan5 三筆事件一致；確認一筆 5M UNI treasury transfer，quartersPaid=1，35M remaining allowance 分開。舊 null 證據/portal 96972 秒衝突保留；全季 coverage/finality/supply/USD unknown。21 originals/25 captures，0 reviews/canonical evidence；SEC 原四筆值/两個 proposals/五項量測決議不變。下一步為實際 source/semantic acceptance 與全季 UNI 查核，P2-10 IN_PROGRESS。
+      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py, tests/integration/test_uni_receipt_audit.py, tests/integration/test_uni_q1_coverage.py]
+      result: 追加六份 RPC acquisition originals，Q1 邊界與兩家 full／三段成功結果一致，唯一 Jan5 receipt-bound withdrawal；selected vesting DERIVED sum 5M UNI。MEV partial errors 與 Blast range limits 保留未知，global UNI distribution／finality／supply／USD 未知。27 originals／31 captures，0 reviews／canonical evidence，SEC 原四筆值／兩個 proposals／五項待審決議不變。下一步具名 source／semantic acceptance 與完整 UNI distribution universe；P2-10 IN_PROGRESS、G1 BLOCKED。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2

@@ -1,0 +1,54 @@
+schema_version: '1.0'
+id: uni_q1_vesting_coverage_20261002
+receipt_plan: research/uni/p2-10-receipt-plan.yaml
+receipt_plan_sha256: 0a6ce0ce29fb18a16f86144ea7cc5402a93c1a5a0a689ef886ad72e97ca97461
+period:
+  start: '2026-01-01'
+  end: '2026-03-31'
+  start_block: 24136053
+  end_block: 24781026
+segments:
+- from_block: 24136053
+  to_block: 24351043
+- from_block: 24351044
+  to_block: 24566034
+- from_block: 24566035
+  to_block: 24781026
+documents:
+  boundary_mev:
+    source_id: uni_q1_boundary_mev_20261002
+    artifact_sha256: 94c48cf189085e06d42496f975e5eeae937ca0fdb260b3648c48d846be62a818
+  boundary_tenderly:
+    source_id: uni_q1_boundary_tenderly_20261002
+    artifact_sha256: 573c6dd6a493b59c3bc7c49dcd3f8c1c55b246674fb43f19a8d813a0d1d511d8
+  range_mev_initial:
+    source_id: uni_q1_range_mev_initial_20261002
+    artifact_sha256: 3eab2102d55bf4749b3b3a1f101ed5040cc31b6cca70b057bb16cd302c6d59a3
+  range_mev_followup:
+    source_id: uni_q1_range_mev_followup_20261002
+    artifact_sha256: 79a2ad11be065cbaa1b05b569815025612154641b5d88f8f6d392326c189b98e
+  range_tenderly:
+    source_id: uni_q1_range_tenderly_20261002
+    artifact_sha256: 066d112b6e05e5a9448c0c51a53d00123d3bab5ccf6387eeba62a3550158bcf9
+  diagnostic_blast:
+    source_id: uni_q1_diagnostic_blast_20261002
+    artifact_sha256: 58f5e2d2a869db2890f42ac10041e4abd89fd62ab633322e725171cee879f4b5
+range_selections:
+  mev:
+  - document_role: range_mev_initial
+    response_id: 2
+  - document_role: range_mev_followup
+    response_id: 3
+  - document_role: range_mev_initial
+    response_id: 4
+  - document_role: range_mev_initial
+    response_id: 5
+  tenderly:
+  - document_role: range_tenderly
+    response_id: 2
+  - document_role: range_tenderly
+    response_id: 3
+  - document_role: range_tenderly
+    response_id: 4
+  - document_role: range_tenderly
+    response_id: 5
