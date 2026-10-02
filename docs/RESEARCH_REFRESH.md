@@ -184,3 +184,15 @@ python -m engine.cli sec-admission-status
 ```
 
 狀態為 **兩個 PENDING_REVIEW proposals、0 reviews、0 published records**，兩個提案引用同四筆值，不是八筆收入。舊提案／原文／來源 captures 不變。新 plan mappings 填完整只是可供決議，raw packet unit 仍 null；四個獨立來源批准與五項實際人審尚未記錄。clone checkout 仍需原版外部 store 才能重播引用驗證。contract proposal.13／bundle .12 沒有 schema 或 runtime 變更。
+
+## 第七增量：UNI 提案的真實鏈上執行核對
+
+[只讀 helper](../scripts/verify_uni_execution.py)使用 [七角色 plan](../research/uni/p2-10-execution-plan.yaml) 核對已存證的官方 portal、RPC 交易/區塊/事件、第二家 RPC null receipt，以及 indexer 交易/事件。所有原文依 capture/hash 驗證；JSON/Flight 與額外 decoded metadata 都不執行。只輸出 audit packet，不提供核准或 publication 指令。
+
+```bash
+python -m scripts.verify_uni_execution --plan research/uni/p2-10-execution-plan.yaml --store-dir /private/artifacts
+```
+
+[真實 packet](../research/uni/p2-10-execution-packet.yaml)保存 15 筆 raw log 一致性、八個順序呼叫、UNI raw 金額/18 decimals 展示與日期衝突。100M treasury 轉 dead 是 2025 年一次性動作；40M allowance 不等於季度分配。兩家 RPC 三次 receipt 回覆都是 null，不能據此稱交易 pending 或 failed。full receipt/finality、totalSupply、全期間 recurring fee burn 與 USD 值仍 unknown；正值 receipt 需追加新版稽核契約。
+
+十二份唯一原文／十六個未審 captures，0 reviews／canonical evidence；舊 SEC proposals 不變。各 JSON 為手動提供原檔的實際 archive 時點，沒有 HTTP receipt，source_date 僅 block context。舊 portal 日期仍 null；96,972 秒 UTC 衝突保留。請依 [來源與語義待審事項](../research/uni/p2-10-execution-review.md)完成真實 acceptance 與 P1-05 季度 coverage；[工程驗收](../reports/p2-10-governance-execution-validation.md)不代表 G1 已通過。

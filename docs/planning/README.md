@@ -6,7 +6,7 @@
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.25**；[第六增量](../../reports/p2-10-review-validation.md)用原文新增十四段引用，將四筆收入整理成 [五項具體待審決議](../../research/secz/p2-10-review-decisions.md)，並追加完整 mapping 新提案。保留舊提案，兩個 pending proposals 引用同四筆值；六份唯一原文／十個 captures 不變，0 reviews／canonical observation 0。下一工作包仍 **P2-10**：實際具名來源與量測 acceptance 及治理 receipt 證據。G1／決策級發布 BLOCKED，既有金融公式與快照不變。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.26**；[第七增量](../../reports/p2-10-governance-execution-validation.md)取得 UNI 提案 93 的 RPC 交易／區塊／15 筆 raw logs，與 indexer 和八個官方提案呼叫比對。保留 portal／區塊日期衝突，100M treasury 轉帳與 40M allowance 分開；完整 receipt、季度 coverage 和供給狀態仍缺。十二份唯一原文／十六個未審 captures，0 reviews／canonical observation 0；SEC 四筆值及 [五項待審決議](../../research/secz/p2-10-review-decisions.md)不變。下一工作包仍 **P2-10**：實際具名 acceptance 與完整 receipt／季度證據。G1／決策級發布 BLOCKED。
 
 ## 先讀這三個結論
 
