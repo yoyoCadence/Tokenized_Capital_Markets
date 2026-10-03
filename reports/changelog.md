@@ -1,5 +1,12 @@
 # Research/software changelog
 
+## Software 0.1.29 / P2-10 distribution universe and request planning — 2026-10-03
+
+- Merge PR #28 at expected head after G0 37004994192 SUCCESS; main `6ddb78561c4a3a7a0c38be46491ae2e9543eff3b` retains the tested tree. No source or economic approval is inferred from merge authorization.
+- Add strict read-only distribution scope planner: six required proposed accounting lanes, OPEN control inventory, pinned old plan/packets/checkers and source metadata; distinguish metadata-only from optional original replay. Preserve the pending 5M subset without claiming a global total or minimum.
+- Generate deterministic, unexecuted full/split UNI token Transfer census, seed outflow/inflow, mint/dead diagnostics for two providers: 670 requests/65 segments with explicit bounds. First-exit, raw/economic dedup and returns policies are proposed, not implemented aggregation or accepted financial evidence.
+- Add 14 disposable negative/integration tests, [validation](p2-10-distribution-validation.md) and [review/request workflow](../research/uni/p2-10-distribution-review.md). Preserve 27 originals/31 captures, real reviews/canonical evidence zero, SEC proposals, all old packets/period/v1 snapshots and engine/schema/formula/contract proposal.13/bundle .12. Planning 1.19; P2-10 IN_PROGRESS, P1-05/G1 BLOCKED. Next: actual transfer-census acquisition and inventory reconciliation.
+
 ## Software 0.1.28 / P2-10 Q1 selected vesting coverage — 2026-10-02
 
 - Merged PR #27 after exact-head G0 SUCCESS and matching merge tree. Added six immutable RPC acquisition envelopes: Q1 boundaries, two partial MEV acquisitions, Tenderly full/split success, Blast range-limit errors. 27 originals / 31 captures; prior rows and all real reviews/canonical evidence unchanged.

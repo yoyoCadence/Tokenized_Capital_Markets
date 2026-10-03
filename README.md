@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-02 軟體版本 **0.1.28**：PR #27 已合併，完成 [2026Q1 UNIVesting 查詢範圍對帳](reports/p2-10-q1-coverage-validation.md)。兩家 RPC 全區間／三段聯集一致，唯一 Jan5 event 與前版 receipt 相符，指定合約 DERIVED sum 5M UNI。MEV 暫時錯誤與 Blast 範圍限制保留為未知；全 UNI 季度分配、finality／supply／USD economics 仍未知。27 份唯一原文／31 個未審 captures，**0 reviews、canonical observation 0**，SEC proposals 不變。P2-10 **IN_PROGRESS**，G1／決策級發布 BLOCKED；詳見 [審閱事項](research/uni/p2-10-q1-coverage-review.md)。
+2026-10-03 軟體版本 **0.1.29**：PR #28 已合併，新增 [UNI 分配全集查詢規劃](reports/p2-10-distribution-validation.md)：六個 proposed lanes／OPEN 控制全集、兩家 providers 的 670 個未執行 Transfer requests，完整季度與 65 相鄰分段。`python -m scripts.plan_uni_distribution --summary` 不需 key／原版即可做 metadata-only 核對；提供外部 store 才重播舊 originals。原 5M UNI 是待審子集，不是 global 總量或下界，尚無新 acquisition／聚合。仍 27 份原文／31 captures、**0 reviews／canonical observations**；全球／供給／USD 未知，P2-10 IN_PROGRESS、G1 BLOCKED。[範圍、去重與下一輪取證](research/uni/p2-10-distribution-review.md) 可直接查閱。
 
 ## Requirements / 啟動
 

@@ -1,0 +1,42 @@
+schema_version: '1.0'
+id: uni_q1_distribution_universe_20261003
+classification: ASSUMPTION
+fixture: false
+measure: FIRST_EXIT_OF_REVIEWED_TREASURY_CONTROL
+period:
+  start: '2026-01-01'
+  end: '2026-03-31'
+  chain_id: 1
+  start_block: 24136053
+  end_block: 24781026
+root_inventory:
+  status: OPEN
+  seed_accounts:
+  - '0x1a9c8182c09f50c8318d769245bea52c32be35bc'
+lanes:
+- id: GROWTH_VESTING
+  status: SELECTED_PACKET_ONLY
+- id: TREASURY_DIRECT
+  status: UNQUERIED
+- id: DELEGATED_PROGRAMS
+  status: INVENTORY_UNKNOWN
+- id: CROSS_CHAIN
+  status: INVENTORY_UNKNOWN
+- id: LEGACY_UNLOCKS
+  status: SEPARATE_SUPPLY_UNKNOWN
+- id: MINT_SUPPLY
+  status: SEPARATE_SUPPLY_UNKNOWN
+references:
+  q1_plan:
+    path: research/uni/p2-10-q1-coverage-plan.yaml
+    sha256: 365d6cacb4db170576db52406e9cf6655cf8ab36f0e5b3f602fd0ca2b49fa441
+  q1_packet:
+    path: research/uni/p2-10-q1-coverage-packet.yaml
+    sha256: 688959c3928a800221bd85bc89d5b688772ab235f5c8f6553a3e6c6c82d925ae
+  receipt_packet:
+    path: research/uni/p2-10-receipt-packet.yaml
+    sha256: 7846116e75c54bfc91c20f0420239833b0e98ae898cd71d8cdada7d812bd60db
+query_policy:
+  providers: [mev, tenderly]
+  blocks_per_segment: 10000
+  max_requests: 1024

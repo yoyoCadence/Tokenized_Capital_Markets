@@ -1,12 +1,12 @@
 # 從 MVP 到可用、可驗證投資成果的研究系統
 
-**原始規劃日期：2026-09-25｜進度更新：2026-10-02｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P2-10 IN_PROGRESS；P1-05～07、P2-04、P2-08 研究阻塞中**
+**原始規劃日期：2026-09-25｜進度更新：2026-10-03｜WP-01、P0-03～10、P1-01～04、P1-08、P2-07 已完成；P2-10 IN_PROGRESS；P1-05～07、P2-04、P2-08 研究阻塞中**
 
 原始程式審查基準：commit **68f19531cfd77bc2c70006921a6402e7a10f04f6**。2026-09-25 的交付是規劃與稽核文件；2026-09-26 完成第一個工程工作包。金融觀察值與公式沒有變更。
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.28**；[第九增量](../../reports/p2-10-q1-coverage-validation.md) 核對 Q1 blocks 24,136,053–24,781,026：兩家 RPC full／三段成功 inventory 一致、唯一 Jan5 receipt-bound event，指定 vesting DERIVED sum 5M UNI。失敗回應保持未知，global UNI distribution／finality／supply／USD 仍缺；portal 衝突保留。27 originals／31 captures，reviews／canonical evidence 0，SEC 待審決議不變。下一工作包 **P2-10**：具名 source／semantic acceptance 與完整 UNI distribution universe；G1 BLOCKED。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.29**；[第十增量](../../reports/p2-10-distribution-validation.md) 定義六個 proposed distribution lanes／OPEN 控制全集，生成兩家 providers、full window／65 splits 的 670 個未執行 Transfer requests。Strict metadata／optional originals replay 區分，5M 待審子集不稱 global 總量或下界。沒有新 acquisition／聚合，27 originals／31 captures、reviews／canonical evidence 0，SEC 決議不變。下一工作包 **P2-10**：实际 immutable census 取證與 full/split/provider 對帳，具名 source／semantic acceptance 仍另需完成；G1 BLOCKED。
 
 ## 先讀這三個結論
 
