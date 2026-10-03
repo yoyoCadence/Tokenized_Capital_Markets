@@ -542,4 +542,130 @@ captures:
   artifact_sha256: 92292a8a2fff451c1398df101f797c5029b9ee5f0aaf13ba2904c1ce238a3c50
   artifact_bytes: 266191
   failure_reason: null
+- id: uni_q1_boundary_mev_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://rpc.mevblocker.io
+  publisher: MEV Blocker
+  title: '2026Q1 UNIVesting coverage acquisition: boundary_mev'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:23.545844+00:00'
+  retrieved_at: '2026-10-02T11:59:23.545844+00:00'
+  artifact_sha256: 94c48cf189085e06d42496f975e5eeae937ca0fdb260b3648c48d846be62a818
+  artifact_bytes: 91009
+  failure_reason: null
+- id: uni_q1_boundary_tenderly_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://mainnet.gateway.tenderly.co
+  publisher: Tenderly
+  title: '2026Q1 UNIVesting coverage acquisition: boundary_tenderly'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:23.710732+00:00'
+  retrieved_at: '2026-10-02T11:59:23.710732+00:00'
+  artifact_sha256: 573c6dd6a493b59c3bc7c49dcd3f8c1c55b246674fb43f19a8d813a0d1d511d8
+  artifact_bytes: 91028
+  failure_reason: null
+- id: uni_q1_range_mev_initial_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://rpc.mevblocker.io
+  publisher: MEV Blocker
+  title: '2026Q1 UNIVesting coverage acquisition: range_mev_initial'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:23.843108+00:00'
+  retrieved_at: '2026-10-02T11:59:23.843108+00:00'
+  artifact_sha256: 3eab2102d55bf4749b3b3a1f101ed5040cc31b6cca70b057bb16cd302c6d59a3
+  artifact_bytes: 2932
+  failure_reason: null
+- id: uni_q1_range_mev_followup_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://rpc.mevblocker.io
+  publisher: MEV Blocker
+  title: '2026Q1 UNIVesting coverage acquisition: range_mev_followup'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:23.980666+00:00'
+  retrieved_at: '2026-10-02T11:59:23.980666+00:00'
+  artifact_sha256: 79a2ad11be065cbaa1b05b569815025612154641b5d88f8f6d392326c189b98e
+  artifact_bytes: 3663
+  failure_reason: null
+- id: uni_q1_range_tenderly_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://mainnet.gateway.tenderly.co
+  publisher: Tenderly
+  title: '2026Q1 UNIVesting coverage acquisition: range_tenderly'
+  document_kind: CONTRACT_EVENT
+  source_date: null
+  tier: 1
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:24.118900+00:00'
+  retrieved_at: '2026-10-02T11:59:24.118900+00:00'
+  artifact_sha256: 066d112b6e05e5a9448c0c51a53d00123d3bab5ccf6387eeba62a3550158bcf9
+  artifact_bytes: 3564
+  failure_reason: null
+- id: uni_q1_diagnostic_blast_20261002
+  adapter: MANUAL_FILE_V1
+  status: CAPTURED
+  url: https://eth-mainnet.public.blastapi.io
+  publisher: Blast API
+  title: '2026Q1 UNIVesting coverage acquisition: diagnostic_blast'
+  document_kind: OTHER
+  source_date: null
+  tier: 2
+  covered_metrics:
+  - uni_distribution_value
+  - uni_burn_value
+  locator: Exact RPC batch and response bytes; Q1 adjacent boundaries or full/three
+    contiguous ranges; provider errors preserved
+  rights: RESTRICTED
+  media_type: application/json
+  attempted_at: '2026-10-02T11:59:24.251898+00:00'
+  retrieved_at: '2026-10-02T11:59:24.251898+00:00'
+  artifact_sha256: 58f5e2d2a869db2890f42ac10041e4abd89fd62ab633322e725171cee879f4b5
+  artifact_bytes: 2902
+  failure_reason: null
 reviews: []

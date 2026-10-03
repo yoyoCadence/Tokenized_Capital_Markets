@@ -6,7 +6,7 @@ Local, reproducible investment research software. This MVP is an **engine plus a
 
 已完成 [2026-09-25 詳細規劃與現況稽核](docs/planning/README.md)：可信資料與歷史重播、三資產經濟模型、真實研究流程、投資優勢驗證、成本後模擬與有限人工實證。尚未完成的功能維持 **PROPOSED / PLANNED**。
 
-2026-10-02 軟體版本 **0.1.27**：PR #26 已合併，完成 [完整 receipts 與第一筆 UNI vesting 核對](reports/p2-10-receipt-validation.md)。兩家 RPC 的治理交易成功 receipt 與原 15 logs 相符；2026-01-05 treasury 轉出 5M UNI 的 Transfer／Withdrawn raw events 也一致。這是一筆實際轉帳，季度總量、finality、totalSupply 與 USD economics 仍未知；portal 日期衝突保留。21 份唯一原文／25 個未審 captures；[收入待審決議](research/secz/p2-10-review-decisions.md)與兩個 pending proposals 不變，**0 reviews、canonical observation 0**。P2-10 **IN_PROGRESS**，G1／決策級發布 BLOCKED。詳見 [操作說明](docs/RESEARCH_REFRESH.md)。
+2026-10-02 軟體版本 **0.1.28**：PR #27 已合併，完成 [2026Q1 UNIVesting 查詢範圍對帳](reports/p2-10-q1-coverage-validation.md)。兩家 RPC 全區間／三段聯集一致，唯一 Jan5 event 與前版 receipt 相符，指定合約 DERIVED sum 5M UNI。MEV 暫時錯誤與 Blast 範圍限制保留為未知；全 UNI 季度分配、finality／supply／USD economics 仍未知。27 份唯一原文／31 個未審 captures，**0 reviews、canonical observation 0**，SEC proposals 不變。P2-10 **IN_PROGRESS**，G1／決策級發布 BLOCKED；詳見 [審閱事項](research/uni/p2-10-q1-coverage-review.md)。
 
 ## Requirements / 啟動
 

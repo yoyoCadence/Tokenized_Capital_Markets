@@ -1,5 +1,11 @@
 # Research/software changelog
 
+## Software 0.1.28 / P2-10 Q1 selected vesting coverage — 2026-10-02
+
+- Merged PR #27 after exact-head G0 SUCCESS and matching merge tree. Added six immutable RPC acquisition envelopes: Q1 boundaries, two partial MEV acquisitions, Tenderly full/split success, Blast range-limit errors. 27 originals / 31 captures; prior rows and all real reviews/canonical evidence unchanged.
+- Added standalone read-only Q1 audit: replay prior receipt/execution plans, pin originals/requests/clocks, bracket UTC boundaries with adjacent hashlinks, require contiguous range selections and equality of full/split/two-provider/all-successful-retry inventories. Failed responses remain unknown, never zero. One receipt-bound withdrawal gives selected-contract DERIVED 5M UNI; global distribution, absence proof, finality/configuration/supply/USD remain unknown.
+- Added ten disposable synthetic integration/negative tests and [validation](p2-10-q1-coverage-validation.md), [review](../research/uni/p2-10-q1-coverage-review.md), pinned plan/packet. Preserved SEC proposals, canonical ledgers, prior packets/period, v1 snapshots and engine/contract proposal.13/bundle .12. Version planning 1.18; P2-10 IN_PROGRESS, P1-05/G1 BLOCKED.
+
 ## Software 0.1.27 / P2-10 positive receipts and first vesting transfer — 2026-10-02
 
 - Merge PR #26 at verified head `ec16b137f27d5b31f3fd01cf97e018dbd3ddd7c1` after G0 `36971227592` SUCCESS; start from main `032e073121803f35f5a4a6efc6aa07d97a6966bd`.

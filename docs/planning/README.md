@@ -6,7 +6,7 @@
 
 ## 最新進度
 
-**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.27**；[第八增量](../../reports/p2-10-receipt-validation.md)追加兩家成功 receipts 並保留前版 null 證據。治理 15 raw logs 與八個呼叫可重播；Jan5 三筆 events 確認一筆 5M UNI treasury transfer。季度完整 coverage／finality／supply／USD 仍缺，portal 時間衝突保留。21 份唯一原文／25 個未審 captures，0 reviews／canonical observation 0；SEC 四筆值與 [五項待審決議](../../research/secz/p2-10-review-decisions.md)不變。下一工作包仍 **P2-10**：具名 acceptance 與全季證據。G1／決策級發布 BLOCKED。
+**51 項任務：16 DONE、29 PLANNED、5 BLOCKED、1 IN_PROGRESS**。軟體 **0.1.28**；[第九增量](../../reports/p2-10-q1-coverage-validation.md) 核對 Q1 blocks 24,136,053–24,781,026：兩家 RPC full／三段成功 inventory 一致、唯一 Jan5 receipt-bound event，指定 vesting DERIVED sum 5M UNI。失敗回應保持未知，global UNI distribution／finality／supply／USD 仍缺；portal 衝突保留。27 originals／31 captures，reviews／canonical evidence 0，SEC 待審決議不變。下一工作包 **P2-10**：具名 source／semantic acceptance 與完整 UNI distribution universe；G1 BLOCKED。
 
 ## 先讀這三個結論
 

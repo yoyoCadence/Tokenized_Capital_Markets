@@ -208,3 +208,7 @@ python -m scripts.verify_uni_receipts --plan research/uni/p2-10-receipt-plan.yam
 治理 15 logs 相同；Jan5 三筆 Approval／Transfer／Withdrawn 支持 treasury 的單筆 5M UNI 轉出，並與官方 DUNI 的第一筆 grant 敘述相符。caller 與 recipient 不同；40M allowance 與 35M 剩餘 allowance 不能當成分配量。全文 source／interface 與 pinned GitHub commit byte match 只提供 ABI context，不能代替歷史 bytecode／設定核對。
 
 完整標準 receipt payloads 一致仍未提供 trie inclusion／finality ancestry；portal 時間衝突保留。quartersPaid=1 不是季度 coverage，Q1 total／fee burn／totalSupply／USD 留 null。新九筆手動 capture 的 actual archive clocks 與 envelope acquisition clocks 分開，source dates 不冒充 API／報告公開日。21 originals／25 captures、0 reviews／canonical evidence；SEC proposals 不變。詳見 [具體審閱事項](../research/uni/p2-10-receipt-review.md) 與 [工程驗收](../reports/p2-10-receipt-validation.md)。P2-10 IN_PROGRESS、G1 BLOCKED。
+
+## 第九增量：Q1 指定 vesting 查詢範圍
+
+新增 `python -m scripts.verify_uni_q1_coverage --plan research/uni/p2-10-q1-coverage-plan.yaml --store-dir /absolute/path/to/originals`。先重播原 receipt／execution audit，再核對 Q1 UTC 相鄰邊界、644,974 blocks 的 full／三段聯集與兩家 provider inventory。MEV 分段錯誤保留為 null，逐段選取已保存成功回應，並檢查所有成功 retries 一致；Blast 10-block range limits 僅為診斷。唯一 Jan5 Withdrawn 與前版 receipt identity／ABI 相符，指定合約 DERIVED sum 5M UNI；全球 UNI 分配總量、finality／supply／USD 未知。27 originals／31 captures、0 reviews／canonical evidence；SEC 原四筆值／兩個 proposals 不變。Source dates 不冒充 API publication，舊 period／null receipts／portal 衝突保留。詳見 [待審範圍](../research/uni/p2-10-q1-coverage-review.md) 與 [验收](../reports/p2-10-q1-coverage-validation.md)。P2-10 IN_PROGRESS、P1-05／G1 BLOCKED。

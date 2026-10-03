@@ -1,0 +1,301 @@
+schema_version: '1.0'
+id: uni_q1_vesting_coverage_20261002
+status: Q1_VESTING_QUERIES_MATCHED_PENDING_REVIEW
+checker_sha256: 3f43f25581ea0552f67a1e31773ec7604ca44436452bcf1d442ddcd1972c2ede
+prior_checker_sha256: 70fef62bdcffbc1bd61f1ec3f6431c09b7196f1d651a0ec58a4873d979097956
+financial_publication: false
+canonical_admission: false
+decision_ready: false
+sources:
+- role: portal
+  source_id: uni_proposal_93_20261001
+  artifact_sha256: 21efa35abcf40f9057a72a983a8b4ac32a78f721158d99530842ae743d8cd0c6
+  retrieved_at: '2026-10-01T09:01:22.755301+00:00'
+  source_approved: false
+- role: rpc_transaction
+  source_id: uni_execution_rpc_tx_20261002
+  artifact_sha256: 37b8a6893b2731019ecc2d904d46dcf5ac90b2c0ec8c1adc88f90871f4f00847
+  retrieved_at: '2026-10-02T05:25:33.315001+00:00'
+  source_approved: false
+- role: rpc_block
+  source_id: uni_execution_rpc_block_20261002
+  artifact_sha256: ca2142be6bed02d1d65265d9bccc3b9f1e9fca7d17d25328ce56e6ccbcdd9b95
+  retrieved_at: '2026-10-02T05:25:33.600956+00:00'
+  source_approved: false
+- role: rpc_logs
+  source_id: uni_execution_rpc_logs_20261002
+  artifact_sha256: d4fac93898d75bd975b1c72134200b07367331f310fdb3dba71d79aa68f7b478
+  retrieved_at: '2026-10-02T05:25:33.902429+00:00'
+  source_approved: false
+- role: secondary_receipt
+  source_id: uni_execution_rpc_null_receipt_20261002
+  artifact_sha256: ca3db3fe00f86a9485058afc1daf2f0547027fc3262b67c570f89d0b4638c8c6
+  retrieved_at: '2026-10-02T05:25:34.220561+00:00'
+  source_approved: false
+- role: explorer_transaction
+  source_id: uni_execution_indexer_tx_20261002
+  artifact_sha256: 1db157b7a324b216c67034b4222b5519fa6cc67c2e43611d4ac0d7b8eb779e5a
+  retrieved_at: '2026-10-02T05:25:34.567451+00:00'
+  source_approved: false
+- role: explorer_logs
+  source_id: uni_execution_indexer_logs_20261002
+  artifact_sha256: 3da86359f4eaff67b5cc9343ddb992a2a5411ef00ab926ae13e54e64533c6046
+  retrieved_at: '2026-10-02T05:25:34.926232+00:00'
+  source_approved: false
+- role: receipt_blast
+  source_id: uni_receipt_receipt_blast_20261002
+  artifact_sha256: dbc7e1cd166a870c97d5545d6990d815ff6f2a691c1756fdbeeac54dadced2a9
+  retrieved_at: '2026-10-02T10:58:42.515104+00:00'
+  source_approved: false
+- role: receipt_mev
+  source_id: uni_receipt_receipt_mev_20261002
+  artifact_sha256: 976370bc94e2af3327e22a571b543153d6721bc2025d1af34c156b773f6f8ae4
+  retrieved_at: '2026-10-02T10:58:42.646739+00:00'
+  source_approved: false
+- role: vesting_rpc
+  source_id: uni_receipt_vesting_rpc_20261002
+  artifact_sha256: 3c058c8432c4f6d3d49cedaa63b301cfcc5830bf3949aec2a2e69940dc7b4604
+  retrieved_at: '2026-10-02T10:58:42.779595+00:00'
+  source_approved: false
+- role: vesting_indexer_tx
+  source_id: uni_receipt_vesting_indexer_tx_20261002
+  artifact_sha256: aa0b46a12fbe45d88d0647292290cd28b0854dd543aa046ebb324690f99fb9eb
+  retrieved_at: '2026-10-02T10:58:42.920058+00:00'
+  source_approved: false
+- role: vesting_indexer_logs
+  source_id: uni_receipt_vesting_indexer_logs_20261002
+  artifact_sha256: 968b49958b89e68e0174f49ee69ba2e03a0474352f0ae78cf8eb6cd64d19ae08
+  retrieved_at: '2026-10-02T10:58:43.064709+00:00'
+  source_approved: false
+- role: vesting_contract
+  source_id: uni_receipt_vesting_contract_20261002
+  artifact_sha256: 19424349d1b660e892cc11dd65304061a15b66bb58caf4cefebc8fea1e53ed3c
+  retrieved_at: '2026-10-02T10:58:43.207092+00:00'
+  source_approved: false
+- role: official_source
+  source_id: uni_receipt_official_source_20261002
+  artifact_sha256: b03f86dae389e0b452e21e30583ee70d0dd4d39abf9cfab6b99a68752a1a1442
+  retrieved_at: '2026-10-02T10:58:43.354635+00:00'
+  source_approved: false
+- role: official_interface
+  source_id: uni_receipt_official_interface_20261002
+  artifact_sha256: a7207aee868d6cfcfcabc58fd12a232bb17d761b13b2b6362ac1815a545cc043
+  retrieved_at: '2026-10-02T10:58:43.503870+00:00'
+  source_approved: false
+- role: publisher
+  source_id: uni_receipt_publisher_20261002
+  artifact_sha256: 92292a8a2fff451c1398df101f797c5029b9ee5f0aaf13ba2904c1ce238a3c50
+  retrieved_at: '2026-10-02T10:58:43.694640+00:00'
+  source_approved: false
+- role: boundary_mev
+  source_id: uni_q1_boundary_mev_20261002
+  artifact_sha256: 94c48cf189085e06d42496f975e5eeae937ca0fdb260b3648c48d846be62a818
+  retrieved_at: '2026-10-02T11:59:23.545844+00:00'
+  source_approved: false
+- role: boundary_tenderly
+  source_id: uni_q1_boundary_tenderly_20261002
+  artifact_sha256: 573c6dd6a493b59c3bc7c49dcd3f8c1c55b246674fb43f19a8d813a0d1d511d8
+  retrieved_at: '2026-10-02T11:59:23.710732+00:00'
+  source_approved: false
+- role: range_mev_initial
+  source_id: uni_q1_range_mev_initial_20261002
+  artifact_sha256: 3eab2102d55bf4749b3b3a1f101ed5040cc31b6cca70b057bb16cd302c6d59a3
+  retrieved_at: '2026-10-02T11:59:23.843108+00:00'
+  source_approved: false
+- role: range_mev_followup
+  source_id: uni_q1_range_mev_followup_20261002
+  artifact_sha256: 79a2ad11be065cbaa1b05b569815025612154641b5d88f8f6d392326c189b98e
+  retrieved_at: '2026-10-02T11:59:23.980666+00:00'
+  source_approved: false
+- role: range_tenderly
+  source_id: uni_q1_range_tenderly_20261002
+  artifact_sha256: 066d112b6e05e5a9448c0c51a53d00123d3bab5ccf6387eeba62a3550158bcf9
+  retrieved_at: '2026-10-02T11:59:24.118900+00:00'
+  source_approved: false
+- role: diagnostic_blast
+  source_id: uni_q1_diagnostic_blast_20261002
+  artifact_sha256: 58f5e2d2a869db2890f42ac10041e4abd89fd62ab633322e725171cee879f4b5
+  retrieved_at: '2026-10-02T11:59:24.251898+00:00'
+  source_approved: false
+first_seen_at: '2026-10-02T11:59:24.251898+00:00'
+ingested_at: null
+chain_id: 1
+period:
+  start: '2026-01-01'
+  end: '2026-03-31'
+  start_block: 24136053
+  end_block: 24781026
+end_exclusive_utc: '2026-04-01T00:00:00+00:00'
+matching_boundary_blocks:
+- number: 24136052
+  hash: '0xa08a367ae7bf2f0d018a5001dcf3084e36aa7ce78957ca3b6a4eedc8e59a2474'
+  parent_hash: '0x361d8d35f09e83c041762645a456ffcda720ee4c0cb7eeb201edd5ac445b0b87'
+  time_utc: '2025-12-31T23:59:59+00:00'
+- number: 24136053
+  hash: '0x53e1c0caa885383824d39dc57c0692ea20e971ade409553c4a8031e90f44c516'
+  parent_hash: '0xa08a367ae7bf2f0d018a5001dcf3084e36aa7ce78957ca3b6a4eedc8e59a2474'
+  time_utc: '2026-01-01T00:00:11+00:00'
+- number: 24781026
+  hash: '0xa66185ac20df0d3bb59ad13ef3b0bd3a4eca5b5058504794a554cb74abf529bd'
+  parent_hash: '0x2b450ae9d6373924a25f0498388c4a683c9352f8b28f186750b8a5a9c7512016'
+  time_utc: '2026-03-31T23:59:59+00:00'
+- number: 24781027
+  hash: '0x84b52aea82b4cace3d5224a5f1e771092d360246898940144d05f30653a3c67d'
+  parent_hash: '0xa66185ac20df0d3bb59ad13ef3b0bd3a4eca5b5058504794a554cb74abf529bd'
+  time_utc: '2026-04-01T00:00:11+00:00'
+matching_range_providers:
+- MEV Blocker
+- Tenderly
+query_scope:
+  contract: '0xca046a83edb78f74ae338bb5a291bf6fdac9e1d2'
+  event_signature: Withdrawn(address,uint256,uint48)
+  semantic_status: TREASURY_GROWTH_TRANSFER_PENDING_REVIEW
+query_coverage:
+  requested_blocks: 644974
+  segments:
+  - from_block: 24136053
+    to_block: 24351043
+  - from_block: 24351044
+    to_block: 24566034
+  - from_block: 24566035
+    to_block: 24781026
+  selected_responses:
+    mev:
+    - document_role: range_mev_initial
+      response_id: 2
+    - document_role: range_mev_followup
+      response_id: 3
+    - document_role: range_mev_initial
+      response_id: 4
+    - document_role: range_mev_initial
+      response_id: 5
+    tenderly:
+    - document_role: range_tenderly
+      response_id: 2
+    - document_role: range_tenderly
+      response_id: 3
+    - document_role: range_tenderly
+      response_id: 4
+    - document_role: range_tenderly
+      response_id: 5
+  complete_requested_interval: true
+  full_and_split_queries_match: true
+  events_per_segment:
+  - 1
+  - 0
+  - 0
+  provider_returned_event_count: 1
+  all_returned_events_receipt_matched: true
+  cryptographic_absence_proof_verified: false
+  global_uni_distribution_coverage_complete: false
+receipt_matched_events:
+- block_number: 24169836
+  block_hash: '0x02cbcd55bcb74ed8c011655818f79a91eeb1b7d31fadf1b8415391eec5934812'
+  transaction_hash: '0x3143564279cec3aab40ec01146c0ca4a9b8339f1516646ac58496f6d198148b2'
+  transaction_index: 101
+  log_index: 168
+  recipient: '0xaba63748c4b4def4a3319c3a29fe4829029d926f'
+  raw_base_units: '5000000000000000000000000'
+  quarters_paid: 1
+selected_contract_sum:
+  raw_base_units: '5000000000000000000000000'
+  derived_native_units: '5000000'
+  unit: UNI
+  decimals: 18
+  classification: DERIVED
+  formula: 'uni_selected_vesting_sum@1.0: sum(receipt_matched raw_base_units) / 10**18'
+  status: PROVIDER_REPORTED_SCOPE_PENDING_REVIEW
+  source_ids:
+  - uni_proposal_93_20261001
+  - uni_execution_rpc_tx_20261002
+  - uni_execution_rpc_block_20261002
+  - uni_execution_rpc_logs_20261002
+  - uni_execution_rpc_null_receipt_20261002
+  - uni_execution_indexer_tx_20261002
+  - uni_execution_indexer_logs_20261002
+  - uni_receipt_receipt_blast_20261002
+  - uni_receipt_receipt_mev_20261002
+  - uni_receipt_vesting_rpc_20261002
+  - uni_receipt_vesting_indexer_tx_20261002
+  - uni_receipt_vesting_indexer_logs_20261002
+  - uni_receipt_vesting_contract_20261002
+  - uni_receipt_official_source_20261002
+  - uni_receipt_official_interface_20261002
+  - uni_receipt_publisher_20261002
+  - uni_q1_boundary_mev_20261002
+  - uni_q1_boundary_tenderly_20261002
+  - uni_q1_range_mev_initial_20261002
+  - uni_q1_range_mev_followup_20261002
+  - uni_q1_range_tenderly_20261002
+diagnostics:
+  range_mev_initial:
+    rpc_errors:
+    - response_id: 3
+      rpc_error_code: -32603
+    result_counts:
+    - 1
+    - null
+    - 0
+    - 0
+    split_coverage_complete: false
+    error_is_not_zero: true
+    source_or_semantic_approval: false
+  range_mev_followup:
+    rpc_errors:
+    - response_id: 4
+      rpc_error_code: -32603
+    - response_id: 5
+      rpc_error_code: -32603
+    result_counts:
+    - 1
+    - 1
+    - null
+    - null
+    split_coverage_complete: false
+    error_is_not_zero: true
+    source_or_semantic_approval: false
+  range_tenderly:
+    rpc_errors: []
+    result_counts:
+    - 1
+    - 1
+    - 0
+    - 0
+    split_coverage_complete: true
+    error_is_not_zero: true
+    source_or_semantic_approval: false
+  diagnostic_blast:
+    rpc_errors:
+    - response_id: 2
+      rpc_error_code: -32600
+    - response_id: 3
+      rpc_error_code: -32600
+    - response_id: 4
+      rpc_error_code: -32600
+    - response_id: 5
+      rpc_error_code: -32600
+    result_counts:
+    - null
+    - null
+    - null
+    - null
+    split_coverage_complete: false
+    error_is_not_zero: true
+    source_or_semantic_approval: false
+finality_ancestry_verified: false
+receipt_trie_proof_verified: false
+quarter_total_all_uni_growth_distribution: null
+realized_fee_burn_usd: null
+total_supply_change_uni: null
+holder_cashflow_usd: null
+review_requirements:
+- SOURCE_METADATA_AND_RIGHTS
+- CONTRACT_ABI_AND_IDENTITY
+- TIMESTAMP_CONFLICT
+- RECIPIENT_LEGAL_IDENTITY
+- FINALITY_ANCESTRY
+- COMPLETE_PERIOD_COVERAGE
+- FEE_VS_TREASURY_SEMANTICS
+- SUPPLY_STATE_AND_USD_BASIS
+- SELECTED_VESTING_UNIVERSE_VS_GLOBAL_DISTRIBUTION
+- PROVIDER_EVENT_INVENTORY_AND_OMISSION_RISK
