@@ -1,5 +1,7 @@
 # P2-10：審閱後更新研究資料
 
+最新第十增量：`python -m scripts.plan_uni_distribution --summary` 唯讀驗證舊 metadata／packet pins，列出六個 proposed distribution lanes、OPEN 控制全集與 670 個**未執行** RPC requests。預設不需私人原版；`--store-dir` 才重播舊 Q1 originals，缺原版拒絕且不 fallback。這不是全季度量測或 admission；[範圍／下一輪取證](../research/uni/p2-10-distribution-review.md) 明示 first-exit／raw-log 去重政策與尚未實作的聚合。仍 27 originals／31 captures、0 reviews／canonical evidence，P2-10 IN_PROGRESS、G1 BLOCKED。
+
 這是 **手動啟動、離線可重播的研究更新流程**，現已包含官方 HTTPS 原文下載。沒有 provider key 或 AI SDK 也能執行。AI 可以提出擷取草稿；原文與 AI 輸出都只能當資料，不能授權發布。來源核准與擷取結果核准是兩次不同的操作。
 
 目前兩個可替換 adapter 的界線：

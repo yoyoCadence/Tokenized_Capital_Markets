@@ -1,8 +1,8 @@
 plan_id: TCM-PLAN-2026-09-25
-version: '1.18'
+version: '1.19'
 status: ACTIVE
 planning_date: '2026-09-25'
-updated_on: '2026-10-02'
+updated_on: '2026-10-03'
 baseline_commit: 68f19531cfd77bc2c70006921a6402e7a10f04f6
 classification: ASSUMPTION
 rationale: 依 MVP 稽核與投資研究目標制定的工程及研究順序；不是市場預測或已實作規格。
@@ -591,13 +591,13 @@ tasks:
       - AI 擷取有原文 locator/版本，捏造引用、錯單位、prompt injection 測試拒絕。
       - 無 provider key 仍可手動啟動/更新；不在核心綁定 AI SDK。
     progress:
-      prepared_on: '2026-10-02'
-      implementation_ref: feat/p2-10-uni-q1-log-coverage
-      evidence: reports/p2-10-q1-coverage-validation.md
-      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md, reports/p2-10-governance-execution-validation.md, reports/p2-10-receipt-validation.md]
+      prepared_on: '2026-10-03'
+      implementation_ref: feat/p2-10-uni-distribution-universe
+      evidence: reports/p2-10-distribution-validation.md
+      prior_evidence: [reports/p2-10-validation.md, reports/p2-10-acquisition-validation.md, reports/p2-10-sec-table-validation.md, reports/p2-10-measurement-validation.md, reports/p2-10-admission-validation.md, reports/p2-10-review-validation.md, reports/p2-10-governance-execution-validation.md, reports/p2-10-receipt-validation.md, reports/p2-10-q1-coverage-validation.md]
       changelog: reports/changelog.md
-      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py, tests/integration/test_uni_receipt_audit.py, tests/integration/test_uni_q1_coverage.py]
-      result: 追加六份 RPC acquisition originals，Q1 邊界與兩家 full／三段成功結果一致，唯一 Jan5 receipt-bound withdrawal；selected vesting DERIVED sum 5M UNI。MEV partial errors 與 Blast range limits 保留未知，global UNI distribution／finality／supply／USD 未知。27 originals／31 captures，0 reviews／canonical evidence，SEC 原四筆值／兩個 proposals／五項待審決議不變。下一步具名 source／semantic acceptance 與完整 UNI distribution universe；P2-10 IN_PROGRESS、G1 BLOCKED。
+      tests: [tests/integration/test_research_refresh.py, tests/integration/test_source_acquisition.py, tests/integration/test_sec_table_review.py, tests/integration/test_sec_table_admission.py, tests/integration/test_uni_execution_audit.py, tests/integration/test_uni_receipt_audit.py, tests/integration/test_uni_q1_coverage.py, tests/integration/test_uni_distribution_plan.py]
+      result: 六個 proposed accounting lanes／OPEN 控制全集，唯讀核對舊 packets metadata 或明確 optional originals replay，生成兩家 providers 的 670 個未執行 UNI Transfer census／seed 出入／mint 及 dead 診斷 requests。5M 子集不稱 global total 或 lower bound；無新 acquisition／聚合，27 originals／31 captures、reviews／canonical evidence 0，SEC proposals 與原版保持不變。291 tests／G0 PASS；下一步 actual immutable census acquisitions 及 full/split/provider 對帳，source／semantic acceptance 仍需具名審閱；P2-10 IN_PROGRESS、P1-05/G1 BLOCKED。
   - id: P2-11
     title: 決策研究包與前後版本解釋
     phase: P2
